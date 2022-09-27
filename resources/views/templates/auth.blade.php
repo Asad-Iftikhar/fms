@@ -45,7 +45,7 @@
     <script src="{{ URL::asset('adminassets/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ URL::asset('adminassets/bootstrap/bootstrap.bundle.min.js') }}"></script>
 
-    <script src="{{ URL::asset('adminassets/js/main.js') }}"></script>
+{{--    <script src="{{ URL::asset('adminassets/js/main.js') }}"></script>--}}
 </body>
 
 </html>

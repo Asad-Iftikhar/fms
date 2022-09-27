@@ -21,7 +21,8 @@
                     </div>
                     <div class="card-content">
                         <div class="card-body">
-                            <form class="form form-horizontal">
+                            <form class="form form-horizontal" method="POST" action="{{ route('login') }}">
+                                @csrf
                                 <div class="form-body">
                                     <div class="row">
                                         <div class=" col-12">

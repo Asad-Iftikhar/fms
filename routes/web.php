@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,3 +32,4 @@ Route::get('/change-password', function () {
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 });
+Route::post('/login', [\App\Http\Controllers\LoginController::class , 'login'])->name('login');
