@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -18,9 +19,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'reminder_code',
+        'activation_code',
+        'activated',
+        'disabled',
+        'require_pw_change',
     ];
 
     /**
@@ -31,6 +37,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'activation_code',
+        'reminder_code',
     ];
 
     /**
@@ -41,4 +49,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Checks if Reminder Code is valid
+     * @param $resetCode
+     * @return bool
+     */
+    public function checkResetPasswordCode($resetCode) {
+
+        return ($this->reminder_code == $resetCode);
+    }
+
+    /**
+     * Generates Reminder Code & Saves to DB.
+     *
+     * @return string $hashed
+     */
+    public function generateReminderKey() {
+        $hashed = (string)Str::uuid();
+
+        $this->reminder_code = $hashed;
+        $this->save();
+        return $hashed;
+    }
 }

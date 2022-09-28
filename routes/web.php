@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Auth.login');
 });
 
 Route::get('/login', function () {
@@ -33,4 +33,4 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::post('/login',[\App\Http\Controllers\LoginController::class,'login'])->name('login');
+Route::post('/login',[\App\Http\Controllers\AuthController::class,'login'])->name('login');
