@@ -13,6 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get( '/', 'HomeController@getIndex' );
+
+Route::get('/login', function () {
+    return view('Auth.login');
 });
+
+Route::get('/forgot-password', function () {
+    return view('Auth.forgot_password');
+});
+
+Route::get('/change-password', function () {
+    return view('Auth.change_password');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
+Route::post('/login',[\App\Http\Controllers\AuthController::class,'login'])->name('login');
