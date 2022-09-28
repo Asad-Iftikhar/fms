@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class HomeController extends Controller
 {
     /**
      * Get Home Page View
-     * @return \View
+     * @return \Illuminate\View\View
      */
     public function getIndex() {
         // If User Not Login load login view

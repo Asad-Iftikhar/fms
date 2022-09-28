@@ -1,4 +1,4 @@
-@extends('templates.auth')
+@extends('site.layouts.base')
 
 @section('title','Change Password')
 @section('content')
