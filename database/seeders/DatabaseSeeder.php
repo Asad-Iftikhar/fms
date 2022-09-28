@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
              'name' => 'NextBridge Admin',
              'email' => 'admin@nxb.com.pk',
-             'password' => '123',
+             'password' => bcrypt('123'),
         ]);
 //         \App\Models\User::factory(10)->create();
 

@@ -89,7 +89,7 @@
 
 
                         <li class="sidebar-item  ">
-                            <a href="{{url('admin/logout')}}" class='sidebar-link'>
+                            <a href="{{url('logout')}}" class='sidebar-link'>
                                 <i class="bi bi-door-closed-fill"></i>
                                 <span>Logout</span>
                             </a>

@@ -26,10 +26,21 @@ Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
 });
 
-Route::get('/change-password', function () {
+Route::get('/admin/change-password', function () {
     return view('auth.change-password');
 });
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 });
 Route::post('/login', [\App\Http\Controllers\LoginController::class , 'login'])->name('login');
+Route::get('/logout', [\App\Http\Controllers\LoginController::class , 'logout'])->name('logout');
+
+Route::middleware('auth')->group(function (){
+    Route::get('/logout', [\App\Http\Controllers\LoginController::class , 'logout'])->name('logout');
+    Route::get('/admin/change-password', function () {
+        return view('auth.change-password');
+    });
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
+});
