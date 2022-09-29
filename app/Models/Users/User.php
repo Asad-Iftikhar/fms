@@ -2,11 +2,10 @@
 
 namespace App\Models\Users;
 
-
+use App\Models\Base;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class User extends Base implements AuthenticatableContract, HasLocalePreference
@@ -93,17 +92,11 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      */
     public function getUserRoles() {
         $ThisUser = $this;
-        try {
-            return Cache::tags( 'UserRoles' )->remember( 'User_' . $this->id . ':UserRoles', now()->addDays( 90 ), function () use ($ThisUser) {
-                $UserRoles = array();
-                foreach ( $ThisUser->roles as $UserRole ) {
-                    $UserRoles[$UserRole->id] = $UserRole->name;
-                }
-                return $UserRoles;
-            } );
-        } catch (\Exception $e) {
-            return array();
+        $UserRoles = [];
+        foreach ( $ThisUser->roles as $UserRole ) {
+            $UserRoles[$UserRole->id] = $UserRole->name;
         }
+        return $UserRoles;
     }
 
     /**

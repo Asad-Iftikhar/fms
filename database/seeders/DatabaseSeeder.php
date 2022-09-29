@@ -5,7 +5,6 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -30,10 +29,10 @@ class DatabaseSeeder extends Seeder
             array('name' => 'client', 'description' => 'Normal Client Access', 'level' => 5, 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
         ) );
 
-        $email = 'admin@my-take.com';
+        $email = 'admin@fms.com';
         $user_id = DB::table( 'users' )->insertGetId( array(
-            'username' => 'my-take',
-            'password' => Hash::make( 'FMS12345' ),
+            'username' => 'fms_admin',
+            'password' => bcrypt( 'FMS12345' ),
             'email' => $email,
             'created_at' => date( 'Y-m-d H:i:s' ),
             'updated_at' => date( 'Y-m-d H:i:s' ),
