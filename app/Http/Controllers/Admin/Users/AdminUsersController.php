@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Http\Controllers\AdminController;
 /**
  * Class AdminUsersController
  */
