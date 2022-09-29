@@ -42,7 +42,7 @@
                     <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Log in</button>
                 </form>
                 <div class="text-center mt-5 text-lg fs-4">
-                    <p><a style="color:#111112" class="font-bold" href="//auth-forgot-password.html">Forgot password?</a></p>
+                    <p><a style="color:#111112" class="font-bold" href="{!! url('account/forgot-password') !!}">Forgot password?</a></p>
                 </div>
             </div>
         </div>

@@ -10,21 +10,30 @@
                 </div>
                 <h1 style="color:#111112" class="auth-title">Forgot Password</h1>
                 <p class="auth-subtitle mb-5">Input your email and we will send you reset password link.</p>
-
-                <form action="//index.html">
+                @if (session('message'))
+                    <div class="alert-success" role="alert">
+                        {{session('message')}}
+                    </div>
+                @endif
+                <form action="{!! url('account/forgot-password') !!}" method="post" class="md-float-material">
+                    <!-- CSRF Token -->
+                    @csrf
                     <div class="form-group position-relative has-icon-left mb-4">
                         <label>
-                            <input type="email" class="form-control form-control-xl" placeholder="Email">
+                            <input type="email" class="form-control form-control-xl" name="email" value="{{old('email')}}" placeholder="Email" required autofocus>
                         </label>
                         <div class="form-control-icon">
                             <i class="bi bi-envelope"></i>
                         </div>
+                       @if ($errors->has('email'))
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @endif
                     </div>
-                    <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Send</button>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Send</button>
                 </form>
                 <div class="text-center mt-5 text-lg fs-4">
                     <p class='text-gray-600'>Remember your account?
-                        <a href="//auth-login.html" style="color:#111112" class="font-bold">Log in</a>.
+                        <a href="{!! url('account/login') !!}" style="color:#111112" class="font-bold">Log in</a>.
                     </p>
                 </div>
             </div>

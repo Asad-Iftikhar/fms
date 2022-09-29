@@ -4,14 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Jobs\LogEvent;
 use App\Models\Users\User;
+use Carbon\Carbon;
 use GrahamCampbell\Throttle\Facades\Throttle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as RequestInstance;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use DB;
+use Mail;
 
 class AuthController extends Controller
 {
+    protected $maxattempts = 3;
+
     /**
      * Get Login Page View
      * @return \Illuminate\View\View
@@ -63,9 +69,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function getForgetPassword () {
+    public function getForgetPassword (Request $request) {
         # Check Login
-        # Else Load view
+       if(!Auth::check()){
+          return view('site.account.login');
+       }
+       else{
+           # Else Load view
+           return view('site.account.forgot_password');
+       }
     }
 
     /**
@@ -75,10 +87,20 @@ class AuthController extends Controller
      */
     public function postForgotPassword(Request $request) {
         // Declare the rules for the validator
-        $rules = array(
-            'email' => 'required|email'
-        );
+       $request->validate([
+          'email' => 'required|email|exists:users',
+       ]);
+       $token = Str::random(60);
+       DB::table('password_resets')->insert(
+         ['email'=>$request->email, 'token'=>$token, 'created_at'=>Carbon::now()]
+       );
+        Mail::send('site.account.change_password', ['token' => $token], function($message) use($request){
+            $message->from('abdulhannan.002buic@gmail.com');
+            $message->to($request->email);
+            $message->subject('Reset Password');
+        });
 
+        return back()->with('message', 'We have e-mailed your password reset link!');
         # Throttle Attempts Limit
         # Send Link to Reset Password with Random Token : account/forgot-password/{resetCode}
 
@@ -115,18 +137,12 @@ class AuthController extends Controller
      */
     public function postForgotPasswordConfirmation($resetCode = null) {
         // Declare the rules for the form validation
-        $rules = array(
-            'password' => 'required|between:3,32|confirmed',
-            'password_confirmation' => 'required'
-        );
+
 
         // Validate the inputs
-        $validator = Validator::make( request()->all(), $rules );
 
         // Check if the form validates with success
-        if ( $validator->passes() ) {
 
-        }
     }
 
     /**
@@ -140,7 +156,7 @@ class AuthController extends Controller
         if ( Auth::check() ) {
             $User = Auth::user();
             // Show the page
-            return view( 'site/account/reset-password' );
+            return view( 'site/account/change_password' );
         }
         return redirect( 'account/login' )->with( 'error', 'You must be logged in to reset your password.' );
     }
@@ -151,7 +167,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function postResetPassword() {
-        if ( Auth::check() ) {
+
             // Declare the rules for the form validation
             $rules = array(
                 'password' => 'required|between:3,32|confirmed',
@@ -170,7 +186,6 @@ class AuthController extends Controller
                     }
                 }
             }
-        }
     }
 
     /**

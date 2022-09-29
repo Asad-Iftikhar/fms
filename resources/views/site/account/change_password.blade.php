@@ -10,9 +10,10 @@
                 </div>
                 <h1 style="color:#111112" class="auth-title">Change Password</h1>
                 <form action="//index.html">
+
                     <div class="form-group position-relative has-icon-left mb-4">
                         <label>
-                            <input type="text" class="form-control form-control-xl" placeholder="Email">
+                            <input type="text" class="form-control form-control-xl" placeholder="Email" name ='email' required autofocus>
                         </label>
                         <div class="form-control-icon">
                             <i class="bi bi-person-fill"></i>
@@ -20,7 +21,7 @@
                     </div>
                     <div class="form-group position-relative has-icon-left mb-4">
                         <label>
-                            <input type="password" class="form-control form-control-xl" placeholder="New Password"/>
+                            <input type="password" class="form-control form-control-xl" placeholder="New Password" name = 'password' required autofocus/>
                         </label>
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>

@@ -22,7 +22,7 @@ Route::get( 'account/login', 'AuthController@index' );
 Route::post( 'account/login', 'AuthController@postLogin' );
 
 # Forgot Password
-Route::get( 'account/forgot-password', 'AuthController@getForgotPassword' );
+Route::get( 'account/forgot-password', 'AuthController@getForgetPassword' );
 Route::post( 'account/forgot-password', 'AuthController@postForgotPassword' );
 
 # Reset Password
@@ -31,6 +31,11 @@ Route::post( 'account/reset-password', 'AuthController@postResetPassword' );
 
 # Logout
 Route::get( 'account/logout', 'AuthController@getLogout' );
+
+#reset password
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
 
 /*
 |--------------------------------------------------------------------------
