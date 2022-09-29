@@ -17,15 +17,9 @@ class HomeController extends Controller
             return view( 'site.account.login' );
         }
 
-        // else Load Normal User View
+        // Load Normal User Dashboard
         $User =  Auth::user();
         return view( 'index', compact( 'User' ) );
     }
 
-
-
-    public function login(Request $request){
-
-
-    }
 }
