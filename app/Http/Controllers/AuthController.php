@@ -17,6 +17,11 @@ class AuthController extends Controller
      * @return \Illuminate\View\View
      */
     public function index(Request $request) {
+        // Are we logged in?
+        if ( Auth::check() ) {
+            return redirect( 'account' );
+        }
+        // Show the page
         return view( 'site.account.login' );
     }
 
