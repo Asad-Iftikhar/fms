@@ -42,9 +42,6 @@ class AuthController extends Controller
             }
 
             $RememberMe = request()->filled( 'remember-me' );
-            if ( settings()->get( 'require_login_on_close', '0' ) == 1 ) {
-                $RememberMe = false;
-            }
 
             $field = filter_var( request()->input( 'username' ), FILTER_VALIDATE_EMAIL ) ? 'email' : 'username';
             // Try to log the user in
@@ -53,7 +50,7 @@ class AuthController extends Controller
                 $throttler->clear( $request );
 
                 Auth::logoutOtherDevices( request()->input( 'password' ) );
-                return redirect()->intended( settings()->get( 'template.login_redirection', 'account' ) )->with( 'success', trans( 'account/auth.messages.login.success' ) );
+                return redirect()->intended( 'account' )->with( 'success', trans( 'account/auth.messages.login.success' ) );
             }
             // Login User And Redirect to Last URI OR User Dashboard
         }
@@ -174,6 +171,19 @@ class AuthController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * Logout page.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getLogout() {
+        // Log the user out
+        Auth::logout();
+        session()->invalidate();
+        // Redirect to the users page
+        return redirect( 'account/login' )->with( 'success', 'You have successfully logged out!' );
     }
 
 }

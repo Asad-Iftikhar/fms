@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $email = 'admin@fms.com';
         $user_id = DB::table( 'users' )->insertGetId( array(
             'username' => 'fms_admin',
-            'password' => Hash::make( 'FMS12345' ),
+            'password' => bcrypt( 'FMS12345' ),
             'email' => $email,
             'created_at' => date( 'Y-m-d H:i:s' ),
             'updated_at' => date( 'Y-m-d H:i:s' ),

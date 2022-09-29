@@ -17,9 +17,9 @@ class HomeController extends Controller
             return view( 'site.account.login' );
         }
 
-        // Load Normal User Dashboard
+        // Load Normal User Dashboard (New activities e.g polls ) for now we just show user account dashboard as same as account route
         $User =  Auth::user();
-        return view( 'index', compact( 'User' ) );
+        return view( 'dashboard', compact( 'User' ) );
     }
 
 }

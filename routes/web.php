@@ -13,22 +13,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+# Dashboard
 Route::get( '/', 'HomeController@getIndex' );
+Route::get( 'account', 'Account\AccountController@getIndex' );
 
-Route::get('/login', function () {
-    return view('Auth.login');
-});
+# Login
+Route::get( 'account/login', 'AuthController@index' );
+Route::post( 'account/login', 'AuthController@postLogin' );
 
-Route::get('/forgot-password', function () {
-    return view('Auth.forgot_password');
-});
+# Forgot Password
+Route::get( 'account/forgot-password', 'AuthController@getForgotPassword' );
+Route::post( 'account/forgot-password', 'AuthController@postForgotPassword' );
 
-Route::get('/change-password', function () {
-    return view('Auth.change_password');
-});
+# Reset Password
+Route::get( 'account/reset-password', 'AuthController@getResetPassword' );
+Route::post( 'account/reset-password', 'AuthController@postResetPassword' );
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+# Logout
+Route::get( 'account/logout', 'AuthController@getLogout' );
 
-Route::post('/login',[\App\Http\Controllers\AuthController::class,'login'])->name('login');
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+|
+|
+|
+*/
+# Admin Dashboard
+Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );

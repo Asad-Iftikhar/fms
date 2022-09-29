@@ -2,7 +2,7 @@
 
 namespace App\Models\Users;
 
-
+use App\Models\Base;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
