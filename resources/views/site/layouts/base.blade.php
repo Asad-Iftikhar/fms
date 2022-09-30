@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset("/assets/css/bootstrap.css") }}">
-    <link rel="stylesheet" href="{{ asset("/assets/vendors/bootstrap-icons/bootstrap-icons.css") }}">
-    <link rel="stylesheet" href="{{ asset("/assets/css/app.css") }}">
+    <link rel="stylesheet" href="{!! asset("/assets/css/bootstrap.css") !!}">
+    <link rel="stylesheet" href="{!! asset("/assets/vendors/bootstrap-icons/bootstrap-icons.css") !!}">
+    <link rel="stylesheet" href="{!! asset("/assets/css/app.css") !!}">
     {{--    <link rel="stylesheet" href="{{ asset("/assets/css/pages/auth.css") }}">--}}
-    <link rel="stylesheet" href="{{ asset("assets/css/site.css") }}">
+    <link rel="stylesheet" href="{!! asset("assets/css/site.css") !!}">
 
 </head>
 <body>
@@ -67,9 +67,9 @@
                                     </li>
                                     @if(Auth::user()->can('admin'))
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ur('admin')}}">
                                             <i class="icon-mid bi bi-wallet me-2"></i>
-                                            Admin Panel
+                                            Administration
                                         </a>
                                     </li>
                                     @endif
@@ -97,7 +97,7 @@
                         </div>
                         <div class="float-end">
                             <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
-                                by <a href="https://ahmadsaugi.com">NextBridge</a></p>
+                                by <a href="{{ url('') }}">NextBridge</a></p>
                         </div>
                     </div>
                 </footer>
@@ -106,6 +106,6 @@
     </div>
 
 
-    <script src="{{ asset("assets/js/bootstrap.bundle.min.js") }}"></script>
+    <script src="{!! asset("assets/js/bootstrap.bundle.min.js") !!}"></script>
 </body>
 </html>
