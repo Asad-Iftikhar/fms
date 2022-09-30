@@ -9,7 +9,7 @@
                     <a href="//index.html"><img src="assets/images/logo/nxblogo.svg" alt="Logo"></a>
                 </div>
                 <h1 style="color:#111112" class="auth-title">Change Password</h1>
-                <form action="//index.html">
+                <form action="{!! url('account/reset-password') !!}" method="post">
 
                     <div class="form-group position-relative has-icon-left mb-4">
                         <label>

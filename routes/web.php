@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('test','AuthController@testEmailTemplate');
+
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
@@ -33,9 +35,8 @@ Route::post( 'account/reset-password', 'AuthController@postResetPassword' );
 Route::get( 'account/logout', 'AuthController@getLogout' );
 
 #reset password
-Route::get('/reset-password/{token}', function ($token) {
-    return view('auth.reset-password', ['token' => $token]);
-})->middleware('guest')->name('password.reset');
+Route::get( 'reset-password/{token}', 'AuthController@getResetPassword' );
+
 
 /*
 |--------------------------------------------------------------------------

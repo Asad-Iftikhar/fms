@@ -22,4 +22,18 @@ class HomeController extends Controller
         return view( 'dashboard', compact( 'User' ) );
     }
 
+    public function myDemoMail()
+    {
+        $myEmail = 'tigerhoney123@gmail.com';
+
+        $details = [
+            'title' => 'Mail Demo from ItSolutionStuff.com',
+            'url' =>''
+        ];
+
+        Mail::to($myEmail)->send(new MyDemoMail($details));
+
+        dd("Mail Send Successfully");
+    }
+
 }
