@@ -16,7 +16,7 @@
 <body>
     <div id="app">
         <div id="main" class='layout-navbar'>
-            <header class='mb-3'>
+            <header style="border-bottom: 1px solid #00000021">
                 <nav class="navbar navbar-expand navbar-light ">
                     <div class="container-fluid">
                         <a href="#"><img src="{{ asset('assets/images/logo/nxblogo.svg') }}" alt="Logo" srcset=""></a>
