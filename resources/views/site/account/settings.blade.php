@@ -28,7 +28,7 @@
                     <h4 class="card-title">Account Settings</h4>
                 </div>
                 <div class="card-body">
-                    <ul class="nav">
+                    <ul class="nav nav-pills">
                         <li class="nav-item active">
                             <a class="nav-link {{ Request::segment(2)=='profile-settings'?'active':''}}" href="{{ url('account/profile-settings') }}">My Profile</a>
                         </li>
