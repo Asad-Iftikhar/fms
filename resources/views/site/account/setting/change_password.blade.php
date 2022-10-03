@@ -1,5 +1,4 @@
 <form action="//index.html">
-    
     <div class="form-group position-relative has-icon-left mb-4">
         <label>
             <input type="password" class="form-control form-control-xl" placeholder="New Password"/>
