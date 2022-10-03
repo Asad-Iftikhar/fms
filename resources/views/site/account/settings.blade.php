@@ -42,13 +42,13 @@
                 </div>
             </div>
             <div class="">
-                @@if(Request::segment(2)=='profile-settings')
-                    @include('site.account.profile.profile_settings');
-                @@elseif(Request::segment(2)=='change-avatar')
-                    @include('site.account.profile.change_avatar');
-                @@elseif(Request::segment(2)=='change-password')
-                    @include('site.account.profile.change_password');
-                @@endif
+                @if(Request::segment(2)=='profile-settings')
+                    @include('site.account.profile.profile_settings')
+                @elseif(Request::segment(2)=='change-avatar')
+                    @include('site.account.profile.change_avatar')
+                @elseif(Request::segment(2)=='change-password')
+                    @include('site.account.profile.change_password')
+                @endif
             </div>
         </section>
     </div>
