@@ -16,9 +16,18 @@ use Illuminate\Support\Facades\Route;
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
+
+#profile settings
 Route::get( 'account/profile-settings', 'Account\AccountController@getProfileSettings' );
+Route::post( 'account/profile-settings', 'Account\AccountController@postProfileSettings' );
+
+#Change Avatar
 Route::get( 'account/change-avatar', 'Account\AccountController@getProfileSettings' );
+Route::post( 'account/change-avatar', 'Account\AccountController@postChangeAvatar' );
+
+#Change Password
 Route::get( 'account/change-password', 'Account\AccountController@getProfileSettings' );
+Route::post( 'account/change-password', 'Account\AccountController@postChangePassword' );
 
 # Login
 Route::get( 'account/login', 'AuthController@index' );

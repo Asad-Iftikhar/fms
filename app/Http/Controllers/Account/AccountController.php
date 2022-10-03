@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthorizedController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 
 class AccountController extends AuthorizedController {
@@ -32,6 +33,27 @@ class AccountController extends AuthorizedController {
         return view( 'site/account/settings', compact( 'user' ) );
     }
 
+    /**
+     * Users settings page
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function postProfileSettings(Request $request) {
+        // Get the user information
+        $user = Auth::user();
+
+        $user->first_name = $request->input('first_name');
+        $user->last_name = $request->input('last_name');
+        $user->username = $request->input('username');
+        $user->phone = $request->input('phone');
+        $user->email = $request->input('email');
+        $user->dob = $request->input('dob');
+        $user->gender = $request->input('gender');
+        $user->save();
+        // Show the page
+        return redirect( 'account/profile-settings' )->with( 'success', 'Updated successfully !' );
+    }
 
     /**
      * Users settings form processing page.
