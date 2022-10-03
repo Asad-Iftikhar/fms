@@ -16,7 +16,7 @@
 <body>
     <div id="app">
         <div id="main" class='layout-navbar'>
-            <header class='mb-3'>
+            <header style="border-bottom: 1px solid #00000021">
                 <nav class="navbar navbar-expand navbar-light ">
                     <div class="container-fluid">
                         <a href="#"><img src="{{ asset('assets/images/logo/nxblogo.svg') }}" alt="Logo" srcset=""></a>
@@ -47,7 +47,7 @@
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
-                                                <img src="assets/images/faces/1.jpg">
+                                                <img src="{{ asset('assets/images/faces/1.jpg') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -90,18 +90,19 @@
             </header>
             <div id="main-content">
                 @yield('content')
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2022 &copy; FMS</p>
-                        </div>
-                        <div class="float-end">
-                            <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
-                                by <a href="{{ url('') }}">NextBridge</a></p>
-                        </div>
-                    </div>
-                </footer>
+
             </div>
+            <footer style="padding: 2rem">
+                <div class="footer clearfix mb-0 text-muted">
+                    <div class="float-start">
+                        <p>2022 &copy; FMS</p>
+                    </div>
+                    <div class="float-end">
+                        <p>Crafted with <span class="text-danger"><i class="bi bi-heart-fill icon-mid"></i></span>
+                            by <a href="{{ url('') }}">NextBridge</a></p>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 
