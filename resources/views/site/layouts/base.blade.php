@@ -67,7 +67,7 @@
                                     </li>
                                     @if(Auth::user()->can('admin'))
                                     <li>
-                                        <a class="dropdown-item" href="{{ur('admin')}}">
+                                        <a class="dropdown-item" href="{{url('admin')}}">
                                             <i class="icon-mid bi bi-wallet me-2"></i>
                                             Administration
                                         </a>

@@ -24,7 +24,7 @@ class AccountController extends AuthorizedController {
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\View
      */
-    public function getSettings() {
+    public function getProfileSettings() {
         // Get the user information
         $user = Auth::user();
 
