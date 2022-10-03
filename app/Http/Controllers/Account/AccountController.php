@@ -29,7 +29,7 @@ class AccountController extends AuthorizedController {
         $user = Auth::user();
 
         // Show the page
-        return view( 'site/account/settings', compact( 'user' ) );
+        return view( 'site/account/setting/index', compact( 'user' ) );
     }
 
 

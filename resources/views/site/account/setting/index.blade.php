@@ -28,26 +28,16 @@
                     <h4 class="card-title">Account Settings</h4>
                 </div>
                 <div class="card-body">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item active">
-                            <a class="nav-link {{ Request::segment(2)=='profile-settings'?'active':''}}" href="{{ url('account/profile-settings') }}">My Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::segment(2)=='change-avatar'?'active':''}}" href="{{ url('account/change-avatar') }}">Change Avatar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::segment(2)=='change-password'?'active':''}}" href="{{ url('account/change-password') }}">Change Password</a>
-                        </li>
-                    </ul>
+                    @include('site.account.setting.sidebar')
                 </div>
             </div>
             <div class="">
-                @if(Request::segment(2)=='profile-settings')
-                    @include('site.account.profile.profile_settings')
-                @elseif(Request::segment(2)=='change-avatar')
-                    @include('site.account.profile.change_avatar')
-                @elseif(Request::segment(2)=='change-password')
-                    @include('site.account.profile.change_password')
+                @if (\Request::is('account/setting/profile'))
+                    @include('site.account.setting.profile_settings')
+                @elseif (\Request::is('account/setting/avatar'))
+                    @include('site.account.setting.change_avatar')
+                @elseif(\Request::is('account/setting/change-password'))
+                    @include('site.account.setting.change_password')
                 @endif
             </div>
         </section>
