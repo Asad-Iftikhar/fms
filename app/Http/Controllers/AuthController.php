@@ -23,9 +23,13 @@ class AuthController extends Controller
      * Get Login Page View
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
-    {
-        return view('site.account.login');
+    public function index(Request $request) {
+        // Are we logged in?
+        if ( Auth::check() ) {
+            return redirect( 'account' );
+        }
+        // Show the page
+        return view( 'site.account.login' );
     }
 
     /**
@@ -123,7 +127,6 @@ class AuthController extends Controller
 
         # Throttle Attempts Limit
         # Send Link to Reset Password with Random Token : account/forgot-password/{resetCode}
-
 
     }
 

@@ -1,4 +1,4 @@
-@extends('site.layouts.base')
+@extends('site.layouts.auth')
 @section('title','Login')
 @section('content')
     <div class="row h-100">

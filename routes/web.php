@@ -18,6 +18,10 @@ Route::get('test','AuthController@testEmailTemplate');
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
+# settings
+Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );
+Route::get( 'account/setting/avatar', 'Account\AccountController@getProfileSettings' );
+Route::get( 'account/setting/change-password', 'Account\AccountController@getProfileSettings' );
 
 # Login
 Route::get( 'account/login', 'AuthController@index' );
