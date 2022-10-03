@@ -52,7 +52,7 @@ class AccountController extends AuthorizedController {
         $user->gender = $request->input('gender');
         $user->save();
         // Show the page
-        return redirect( 'account/profile-settings' )->with( 'success', 'Updated successfully !' );
+        return redirect( 'account/setting/profile' )->with( 'success', 'Updated successfully !' );
     }
 
     /**
