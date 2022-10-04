@@ -54,15 +54,15 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <a class="dropdown-item" href="{{ url('account/setting/profile') }}">
+                                        <a class="dropdown-item" href="{{ url('account') }}">
                                             <i class="icon-mid bi bi-person me-2"></i>
                                             My Profile
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ url('account/setting/change-password') }}">
-                                            <i class="icon-mid bi bi-lock me-2"></i>
-                                            Change Password
+                                        <a class="dropdown-item" href="{{ url('account/setting/profile') }}">
+                                            <i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings
                                         </a>
                                     </li>
                                     @if(Auth::user()->can('admin'))
