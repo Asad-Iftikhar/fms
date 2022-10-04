@@ -45,10 +45,10 @@ class AccountController extends AuthorizedController {
         $rules = array (
             'first_name' => 'string|required',
             'last_name' => 'string',
-            'username' => 'string|required|unique:users,username,'.$user->id,
+            'username' => 'required|unique:users,username,'.$user->id,
             'email' => 'email|required|unique:users,email,'.$user->id,
             'dob' => 'date|required',
-            'phone' => 'required|min:11|unique:users,phone,'.$user->id
+            'phone' => 'nullable|min:11|unique:users,phone,'.$user->id
         );
         $validator = Validator::make( request()->all(), $rules );
         if ( $validator->passes() ) {
