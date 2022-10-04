@@ -18,8 +18,14 @@ Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
 # settings
 Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );
+Route::post( 'account/setting/profile', 'Account\AccountController@postProfileSettings' );
+
 Route::get( 'account/setting/avatar', 'Account\AccountController@getProfileSettings' );
+Route::post( 'account/setting/avatar', 'Account\AccountController@postChangeAvatar' );
+
 Route::get( 'account/setting/change-password', 'Account\AccountController@getProfileSettings' );
+Route::post( 'account/setting/change-password', 'Account\AccountController@postChangePassword' );
+
 
 # Login
 Route::get( 'account/login', 'AuthController@index' );
