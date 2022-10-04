@@ -1,4 +1,4 @@
-@extends('site.layouts.base')
+@extends('site.layouts.auth')
 
 @section('title','Forgot Password')
 @section('content')
@@ -25,10 +25,15 @@
                         <div class="form-control-icon">
                             <i class="bi bi-envelope"></i>
                         </div>
-                       @if ($errors->has('email'))
-                            <span class="text-danger">{{ $errors->first('email') }}</span>
-                        @endif
                     </div>
+                    @if ($errors->has('email'))
+                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                    @endif
+                    @if ( session()-> has('success'))
+                        <div class="alert alert-success">
+                            {{ session()->get('success') }}
+                        </div>
+                    @endif
                     <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Send</button>
                 </form>
                 <div class="text-center mt-5 text-lg fs-4">

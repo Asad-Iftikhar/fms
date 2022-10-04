@@ -10,6 +10,11 @@
                     </a>
                 </div>
                 <h1 style="color:#111112" class="auth-title">Log in.</h1>
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('status') }}
+                    </div>
+                @endif
                 <p class="auth-subtitle">Log in with your data that you entered during registration.</p>
                 <form action="{!! url('account/login') !!}" method="post">
                     <!-- CSRF Token -->

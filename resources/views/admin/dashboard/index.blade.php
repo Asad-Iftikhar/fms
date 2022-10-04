@@ -79,7 +79,7 @@
                     <div class="col-12 col-xl-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Latest Comments</h4>
+                                <h4>Users</h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -116,7 +116,8 @@
                                             <td class="col-auto">
                                                 <p class=" mb-0">Wow amazing design! Can you make another
                                                     tutorial for
-                                                    this design?</p>
+                                                    this design?
+                                                </p>
                                             </td>
                                         </tr>
                                         </tbody>

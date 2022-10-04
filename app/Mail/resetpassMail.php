@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Users\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,7 +12,8 @@ class resetpassMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public User $user;
+    public $HashedToken;
 
     /**
      * Create a new message instance.
@@ -20,7 +22,9 @@ class resetpassMail extends Mailable
      */
     public function __construct($user)
     {
+
         $this->user = $user;
+        $this->HashedToken = $this->user->generateResetToken();
     }
 
     /**
@@ -30,6 +34,6 @@ class resetpassMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.myDemoMail');
+        return $this->markdown('emails.sentEmail');
     }
 }

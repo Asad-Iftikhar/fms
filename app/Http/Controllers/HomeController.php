@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\resetpassMail;
 use Illuminate\Http\Request;
+use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -22,18 +25,16 @@ class HomeController extends Controller
         return view( 'dashboard', compact( 'User' ) );
     }
 
-    public function myDemoMail()
+
+
+    public function sendMail($token)
     {
+
         $myEmail = 'tigerhoney123@gmail.com';
 
-        $details = [
-            'title' => 'Mail Demo from ItSolutionStuff.com',
-            'url' =>''
-        ];
+        Mail::to($myEmail)->send(new resetpassMail($token));
 
-        Mail::to($myEmail)->send(new MyDemoMail($details));
-
-        dd("Mail Send Successfully");
+       dd("email sent");
     }
 
 }

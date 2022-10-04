@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('test','AuthController@testEmailTemplate');
-
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
@@ -32,15 +30,11 @@ Route::get( 'account/forgot-password', 'AuthController@getForgetPassword' );
 Route::post( 'account/forgot-password', 'AuthController@postForgotPassword' );
 
 # Reset Password
-Route::get( 'account/reset-password', 'AuthController@getResetPassword' );
-Route::post( 'account/reset-password', 'AuthController@postResetPassword' );
+Route::get( 'account/reset-password/{token}', 'AuthController@getResetPassword' );
+Route::post( 'account/reset-password/{token}', 'AuthController@postResetPassword' );
 
 # Logout
 Route::get( 'account/logout', 'AuthController@getLogout' );
-
-#reset password
-Route::get( 'reset-password/{token}', 'AuthController@getResetPassword' );
-
 
 /*
 |--------------------------------------------------------------------------
@@ -52,3 +46,7 @@ Route::get( 'reset-password/{token}', 'AuthController@getResetPassword' );
 */
 # Admin Dashboard
 Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
+
+#Admin users
+Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
+

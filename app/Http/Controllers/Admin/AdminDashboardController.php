@@ -18,7 +18,6 @@ class AdminDashboardController extends AdminController {
      *
      */
     public function getIndex() {
-
         //Total Members
         $UsersWithRoles = DB::table( 'role_user' )->pluck( 'user_id' )->all();
         if ( is_array( $UsersWithRoles ) && !empty( $UsersWithRoles ) ) {

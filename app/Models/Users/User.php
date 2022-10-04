@@ -84,6 +84,17 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         return $hashed;
     }
 
+    /**
+     * Generates Reminder Code & Saves to DB.
+     *
+     * @return string $hashed
+     */
+    public function generateResetToken() {
+        $hashed = (string)Str::uuid();
+        $this->reset_token = $hashed;
+        $this->save();
+        return $hashed;
+    }
 
     /**
      * Get User Role Array
@@ -141,5 +152,10 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    public function getFullName($token)
+    {
+        return $token;
     }
 }

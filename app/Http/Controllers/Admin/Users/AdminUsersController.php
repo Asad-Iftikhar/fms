@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\AdminController;
+use App\Models\Users\User;
+
 /**
  * Class AdminUsersController
  */
@@ -23,6 +25,11 @@ class AdminUsersController extends AdminController {
         # Show Grid of All users
         // Show the page
         // return view( 'admin/users/index', compact( 'TotalUsers', 'NewUsers', 'ActiveUsers' ) );
+        $users = User::all();
+        return view('admin.dashboard.index')
+            ->with([
+                'users'=>$users
+            ]);
     }
 
     /**
