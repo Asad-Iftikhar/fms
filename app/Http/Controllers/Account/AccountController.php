@@ -34,7 +34,7 @@ class AccountController extends AuthorizedController {
     }
 
     /**
-     * Users settings page
+     * Users settings form processing page.
      *
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -67,13 +67,27 @@ class AccountController extends AuthorizedController {
     }
 
     /**
-     * Users settings form processing page.
+     * Change Password form processing page.
      *
-     * @return \Illuminate\Http\RedirectResponse|\Redirect
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postSettings() {
-        # Update Settings, email, password, username, fname etc
-
+    public function postChangePassword(Request $request) {
+        $user = Auth::user();
+        //  Validate Form
+        $rules = array (
+            'current_password' => 'current_password',
+            'new_password' => 'required|min:6|different:password',
+            'confirm_password' => 'required|same:new_password'
+        );
+        $validator = Validator::make( request()->all(), $rules );
+        if ( $validator->passes() ) {
+            $user->password = bcrypt($request->input('new_password'));
+            $user->save();
+            return redirect( 'account/setting/change-password' )->with( 'success', 'Password Updated Successfully !' );
+        }
+        // Return with errors
+        return redirect( 'account/setting/change-password' )->withInput()->withErrors( $validator );
     }
 
     /**
