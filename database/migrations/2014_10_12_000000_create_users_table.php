@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string( 'locale', 10 )->default( 'en' )->index();
             $table->boolean( 'require_pw_change' )->default( 0 );
             $table->string( 'reminder_code', 60 )->nullable();
+            $table->string( 'reset_token', 60 )->nullable();
             $table->string( 'activation_code', 60 )->nullable();
             $table->text( 'first_name' )->nullable();
             $table->text( 'last_name' )->nullable();

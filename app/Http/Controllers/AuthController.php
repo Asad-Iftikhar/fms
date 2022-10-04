@@ -3,15 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\LogEvent;
+use App\Mail\resetpassMail;
 use App\Models\Users\User;
+use Carbon\Carbon;
 use GrahamCampbell\Throttle\Facades\Throttle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as RequestInstance;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use DB;
+use Mail;
 
 class AuthController extends Controller
 {
+    protected $maxattempts = 3;
+
     /**
      * Get Login Page View
      * @return \Illuminate\View\View
@@ -31,36 +38,31 @@ class AuthController extends Controller
      */
     public function postLogin(Request $request) {
         // Declare the rules for the form validation
-        $rules = array (
+        $rules = array(
             'username' => 'string|required',
             'password' => 'string|required'
         );
-
         // Validate the inputs
-        $validator = Validator::make( request()->all(), $rules );
+        $validator = Validator::make(request()->all(), $rules);
         // Check if the form validates with success
-        if ( $validator->passes() ) {
-
-            $throttler = Throttle::get( RequestInstance::instance(), 5, 5 );
-            if ( !$throttler->attempt() ) {
-                return redirect( 'account/login' )->with( 'error', 'Too many incorrect attempts. Please try again later.');
+        if ($validator->passes()) {
+            $throttler = Throttle::get(RequestInstance::instance(), 5, 5);
+            if (!$throttler->attempt()) {
+                return redirect('account/login')->with('error', 'Too many incorrect attempts. Please try again later.');
             }
-
-            $RememberMe = request()->filled( 'remember-me' );
-
-            $field = filter_var( request()->input( 'username' ), FILTER_VALIDATE_EMAIL ) ? 'email' : 'username';
+            $RememberMe = request()->filled('remember-me');
+            $field = filter_var(request()->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
             // Try to log the user in
-            if ( Auth::attempt( array($field => request()->input( 'username' ), 'password' => request()->input( 'password' ), 'activated' => 1, 'disabled' => 0), $RememberMe ) ) {
+            if (Auth::attempt(array($field => request()->input('username'), 'password' => request()->input('password'), 'activated' => 1, 'disabled' => 0), $RememberMe)) {
                 $request->session()->regenerate();
-                $throttler->clear( $request );
-
-                Auth::logoutOtherDevices( request()->input( 'password' ) );
-                return redirect()->intended( 'account' )->with( 'success', trans( 'account/auth.messages.login.success' ) );
+                $throttler->clear($request);
+                Auth::logoutOtherDevices(request()->input('password'));
+                return redirect()->intended('account')->with('success', trans('account/auth.messages.login.success'));
             }
             // Login User And Redirect to Last URI OR User Dashboard
         }
         // Something went wrong
-        return redirect( 'account/login' )->withInput()->withErrors( $validator );
+        return redirect('account/login')->withInput()->withErrors($validator);
     }
 
     /**
@@ -68,9 +70,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function getForgetPassword () {
+    public function getForgetPassword(Request $request)
+    {
         # Check Login
-        # Else Load view
+        if (Auth::check()) {
+            return redirect('account');
+        } else {
+            //return redirect('account/forgot-password');
+            return view('site.account.forgot_password');
+        }
     }
 
     /**
@@ -79,58 +87,30 @@ class AuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function postForgotPassword(Request $request) {
-        // Declare the rules for the validator
-        $rules = array(
+        //You can add validation login here
+        $user = User::where('email', $request->email)->first();
+        //rules for email pattern
+        $rules = [
             'email' => 'required|email'
-        );
-
-        # Throttle Attempts Limit
-        # Send Link to Reset Password with Random Token : account/forgot-password/{resetCode}
-
-    }
-
-    /**
-     * Forgot Password Confirmation page.
-     *
-     * @param string|null $resetCode
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function getForgotPasswordConfirmation($resetCode = null) {
-        try {
-            if ( $user = User::where( 'reminder_code', '=', $resetCode )->first() ) {
-                if ( $user->checkResetPasswordCode( $resetCode ) ) {
-                    return view( 'site/account/forgot-password-confirmation' );
-                }
-                //Reset Code Not Valid
-                return redirect( 'account/forgot-password' )->with( 'error', 'Reset password code is invalid. Checked' );
-            }
-            //User Not Found
-            return redirect( 'account/forgot-password' )->with( 'error', 'The reset password link you are trying to use has expired. Please try resetting your password again.' );
-        } catch (\Exception $e) {
-            // Redirect to the forgot password page
-            return redirect( 'account/forgot-password' )->with( 'error', 'This user account was not found.' );
+        ];
+        //validation for email pattern
+        $validator = Validator::make($request->all(),$rules);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator->messages());
         }
-    }
+        //Check if the user exists
+        if (!$user) {
+            return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
+        }
 
-    /**
-     * Forgot Password Confirmation form processing page.
-     *
-     * @param string|null $resetCode
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function postForgotPasswordConfirmation($resetCode = null) {
-        // Declare the rules for the form validation
-        $rules = array(
-            'password' => 'required|between:3,32|confirmed',
-            'password_confirmation' => 'required'
-        );
-
-        // Validate the inputs
-        $validator = Validator::make( request()->all(), $rules );
-
-        // Check if the form validates with success
-        if ( $validator->passes() ) {
-
+        if($user->save()) {
+            try {
+                //Email sending
+                Mail::to($user->email)->send(new resetpassMail($user));
+                return redirect()->back()->with('success', trans('Successfully sent e-mail'));
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['email' => trans('There is something wrong, Please try again.')]);
+            }
         }
     }
 
@@ -140,14 +120,15 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function getResetPassword() {
-        // Are we logged in?
-        if ( Auth::check() ) {
-            $User = Auth::user();
-            // Show the page
-            return view( 'site/account/reset-password' );
+    public function getResetPassword($token){
+        // User Auth Login
+        if($user = User::where('reset_token', $token)->get()->first()) {
+            // load view
+            return view('site.account.change_password', compact('user', 'token'));
+        } else {
+            // invalid token
+            return redirect('account/forgot_password')->with('fail', trans('Password Changed'));
         }
-        return redirect( 'account/login' )->with( 'error', 'You must be logged in to reset your password.' );
     }
 
     /**
@@ -155,26 +136,35 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function postResetPassword() {
-        if ( Auth::check() ) {
+    public function postResetPassword($token){
+        if ($token) {
             // Declare the rules for the form validation
             $rules = array(
                 'password' => 'required|between:3,32|confirmed',
                 'password_confirmation' => 'required'
             );
+            //confirm password validation
+
             // Validate the inputs
-            $validator = Validator::make( request()->all(), $rules );
+            $validator = Validator::make(request()->all(), $rules);
             // Check if the form validates with success
-            if ( $validator->passes() ) {
-                if ( $user = Auth::user() ) {
-                    $user->password = request()->input('password');
-                    if ( $user->save() ) {
-                        Auth::logoutOtherDevices( request()->input( 'password' ) );
+            if ($validator->passes()) {
+                // Validate the token
+                if ($user = User::where('reset_token', $token)->get()->first()) {
+                    $user->password = bcrypt(request()->input('password'));
+                    $user->reset_token = null;
+                    if ($user->save()) {
                         # User Password History
-                        return redirect( 'account' )->with( 'success', 'Password successfully reset' );
+                        return redirect('account/login')->with('status', 'Password successfully reset');
                     }
                 }
             }
+            else{
+                    return back()->withInput()->withErrors($validator->messages());
+            }
+            return redirect('account/reset-password/'. $token)->with('error', 'Something went wrong');
+        } else {
+            return redirect('account/forgot-password'. $token)->with('error', 'Token required!');
         }
     }
 
@@ -188,7 +178,6 @@ class AuthController extends Controller
         Auth::logout();
         session()->invalidate();
         // Redirect to the users page
-        return redirect( 'account/login' )->with( 'success', 'You have successfully logged out!' );
+        return redirect('account/login')->with('success', 'You have successfully logged out!');
     }
-
 }

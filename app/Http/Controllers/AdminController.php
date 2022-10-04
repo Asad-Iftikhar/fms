@@ -22,5 +22,4 @@ class AdminController extends AuthorizedController {
         $this->middleware( 'permission:admin' );
 
     }
-
 }

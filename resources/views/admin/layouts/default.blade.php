@@ -17,21 +17,11 @@
     <link rel="stylesheet" href="{{ asset("/assets/css/custom_app.css") }}">
     <link rel="shortcut icon" href="{{ asset("/assets/images/favicon.svg") }}" type="image/x-icon">
 </head>
-
 <body>
+<div id="main-content">
 <div id="app">
     <div id="sidebar" class="active">
         <div class="sidebar-wrapper active">
-            <div class="sidebar-header">
-                <div class="d-flex justify-content-between">
-                    <div class="logo">
-                        <a href="#"><img src="{{ asset('assets/images/logo/nxblogo.svg') }}" alt="Logo" srcset=""></a>
-                    </div>
-                    <div class="toggler">
-                        <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-                    </div>
-                </div>
-            </div>
             <div class="sidebar-menu">
                 <ul class="menu">
                     <li class="sidebar-title">Menu</li>
@@ -132,6 +122,7 @@
             </div>
         </footer>
     </div>
+</div>
 </div>
 <script src="{{ asset("/assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js") }}"></script>
 <script src="{{ asset("/assets/js/bootstrap.bundle.min.js") }}"></script>

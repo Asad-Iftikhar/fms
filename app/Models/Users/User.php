@@ -53,7 +53,6 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         return $this->locale;
     }
 
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -78,12 +77,22 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      */
     public function generateReminderKey() {
         $hashed = (string)Str::uuid();
-
         $this->reminder_code = $hashed;
         $this->save();
         return $hashed;
     }
 
+    /**
+     * Reset Change Password token.
+     *
+     * @return string $hashed
+     */
+    public function generateResetToken() {
+        $hashed = (string)Str::uuid();
+        $this->reset_token = $hashed;
+        $this->save();
+        return $hashed;
+    }
 
     /**
      * Get User Role Array
