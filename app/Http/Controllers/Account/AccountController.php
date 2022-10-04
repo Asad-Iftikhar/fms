@@ -40,19 +40,30 @@ class AccountController extends AuthorizedController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postProfileSettings(Request $request) {
-        // Get the user information
         $user = Auth::user();
-
-        $user->first_name = $request->input('first_name');
-        $user->last_name = $request->input('last_name');
-        $user->username = $request->input('username');
-        $user->phone = $request->input('phone');
-        $user->email = $request->input('email');
-        $user->dob = $request->input('dob');
-        $user->gender = $request->input('gender');
-        $user->save();
-        // Show the page
-        return redirect( 'account/setting/profile' )->with( 'success', 'Updated successfully !' );
+        //  Validate Form
+        $rules = array (
+            'first_name' => 'string|required',
+            'last_name' => 'string',
+            'username' => 'string|required|unique:users,username,'.$user->id,
+            'email' => 'email|required|unique:users,email,'.$user->id,
+            'dob' => 'date|required',
+            'phone' => 'required|min:11|unique:users,phone,'.$user->id
+        );
+        $validator = Validator::make( request()->all(), $rules );
+        if ( $validator->passes() ) {
+            $user->first_name = $request->input('first_name');
+            $user->last_name = $request->input('last_name');
+            $user->username = $request->input('username');
+            $user->phone = $request->input('phone');
+            $user->email = $request->input('email');
+            $user->dob = $request->input('dob');
+            $user->gender = $request->input('gender');
+            $user->save();
+            return redirect( 'account/setting/profile' )->with( 'success', 'Updated successfully !' );
+        }
+        // Return with errors
+        return redirect( 'account/setting/profile' )->withInput()->withErrors( $validator );
     }
 
     /**

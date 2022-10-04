@@ -40,7 +40,7 @@
                                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
                                         <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">{{Auth::user()->username}}</h6>
+                                            <h6 class="mb-0 text-gray-600">{{ Auth::user()->first_name.' '.Auth::user()->last_name }}</h6>
                                             @if(Auth::user()->can('admin'))
                                                 <p class="mb-0 text-sm text-gray-600">Administrator</p>
                                             @endif
@@ -54,20 +54,20 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{ url('account/setting/profile') }}">
                                             <i class="icon-mid bi bi-person me-2"></i>
                                             My Profile
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="icon-mid bi bi-gear me-2"></i>
-                                            Settings
+                                        <a class="dropdown-item" href="{{ url('account/setting/change-password') }}">
+                                            <i class="icon-mid bi bi-lock me-2"></i>
+                                            Change Password
                                         </a>
                                     </li>
                                     @if(Auth::user()->can('admin'))
                                     <li>
-                                        <a class="dropdown-item" href="{{url('admin')}}">
+                                        <a class="dropdown-item" href="{{ url('admin') }}">
                                             <i class="icon-mid bi bi-wallet me-2"></i>
                                             Administration
                                         </a>
@@ -77,7 +77,7 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{url('account/logout')}}">
+                                        <a class="dropdown-item" href="{{ url('account/logout') }}">
                                             <i class="icon-mid bi bi-box-arrow-left me-2"></i>
                                             Logout
                                         </a>
@@ -88,6 +88,16 @@
                     </div>
                 </nav>
             </header>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div id="main-content">
                 @yield('content')
 
