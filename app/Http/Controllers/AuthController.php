@@ -17,6 +17,8 @@ use Mail;
 
 class AuthController extends Controller
 {
+    protected $maxattempts = 3;
+
     /**
      * Get Login Page View
      * @return \Illuminate\View\View
@@ -34,7 +36,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postLogin(Request $request){
+    public function postLogin(Request $request) {
         // Declare the rules for the form validation
         $rules = array(
             'username' => 'string|required',
@@ -84,7 +86,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function postForgotPassword(Request $request){
+    public function postForgotPassword(Request $request) {
         //You can add validation login here
         $user = User::where('email', $request->email)->first();
         //Check if the user exists
@@ -156,7 +158,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function getLogout(){
+    public function getLogout() {
         // Log the user out
         Auth::logout();
         session()->invalidate();
