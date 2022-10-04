@@ -9,7 +9,7 @@
                         <img src="{{ asset("/assets/images/logo/nxblogo.svg") }}" alt="Logo">
                     </a>
                 </div>
-                <h1 style="color:#111112" class="auth-title">Log in.</h1>
+                <h3 style="color:#111112">Log in.</h3>
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}

@@ -6,9 +6,9 @@
         <div class="col-lg-5 col-12">
             <div id="auth-left">
                 <div class="auth-logo">
-                    <a href="//index.html"><img src="assets/images/logo/nxblogo.svg" alt="Logo"></a>
+                    <a href="//index.html"><img src="{{ asset("/assets/images/logo/nxblogo.svg") }}" alt="Logo"></a>
                 </div>
-                <h1 style="color:#111112" class="auth-title">Forgot Password</h1>
+                <h3 style="color:#111112">Forgot Password</h3>
                 <p class="auth-subtitle mb-5">Input your email and we will send you reset password link.</p>
                 @if (session('message'))
                     <div class="alert-success" role="alert">
@@ -20,7 +20,7 @@
                     @csrf
                     <div class="form-group position-relative has-icon-left mb-4">
                         <label>
-                            <input type="email" class="form-control form-control-xl" name="email" value="{{old('email')}}" placeholder="Email" required autofocus>
+                            <input type="email" class="form-control form-control-xl @error('email') is-invalid @enderror" name="email" value="{{old('email')}}" placeholder="Email" required autofocus>
                         </label>
                         <div class="form-control-icon">
                             <i class="bi bi-envelope"></i>

@@ -89,10 +89,20 @@ class AuthController extends Controller
     public function postForgotPassword(Request $request) {
         //You can add validation login here
         $user = User::where('email', $request->email)->first();
+        //rules for email pattern
+        $rules = [
+            'email' => 'required|email'
+        ];
+        //validation for email pattern
+        $validator = Validator::make($request->all(),$rules);
+        if($validator->fails()){
+            return redirect()->back()->withErrors($validator->messages());
+        }
         //Check if the user exists
         if (!$user) {
             return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
         }
+
         if($user->save()) {
             try {
                 //Email sending
@@ -133,6 +143,8 @@ class AuthController extends Controller
                 'password' => 'required|between:3,32|confirmed',
                 'password_confirmation' => 'required'
             );
+            //confirm password validation
+
             // Validate the inputs
             $validator = Validator::make(request()->all(), $rules);
             // Check if the form validates with success
@@ -146,6 +158,9 @@ class AuthController extends Controller
                         return redirect('account/login')->with('status', 'Password successfully reset');
                     }
                 }
+            }
+            else{
+                    return back()->withInput()->withErrors($validator->messages());
             }
             return redirect('account/reset-password/'. $token)->with('error', 'Something went wrong');
         } else {

@@ -8,7 +8,7 @@
                 <div class="auth-logo">
                     <a href="//index.html"><img src="assets/images/logo/nxblogo.svg" alt="Logo"></a>
                 </div>
-                <h2 style="color:#111112" >Change Password</h2>
+                <h3 style="color:#111112" >Change Password</h3>
                 <form action="{!! url('account/reset-password/' . $token ) !!}" method="post">
                     @csrf
                     <div class="form-group position-relative has-icon-left mb-4">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group position-relative has-icon-left mb-4">
                         <label>
-                            <input type="password" class="form-control form-control-xl" placeholder="New Password" name='password' required autofocus/>
+                            <input type="password" class="form-control form-control-xl @error('password') is-invalid @enderror" placeholder="New Password" name='password' required autofocus/>
                         </label>
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>
@@ -26,7 +26,8 @@
                     </div>
                     <div class="form-group position-relative has-icon-left mb-4">
                         <label>
-                            <input type="password" name="password_confirmation" class="form-control form-control-xl" placeholder="Confirm Password"/>
+                            <input type="password" name="password_confirmation" class="form-control form-control-xl @error('password') is-invalid @enderror" placeholder="Confirm Password"/>
+                            {!! $errors->first('password', '<small class="error">:message</small>') !!}
                         </label>
                         <div class="form-control-icon">
                             <i class="bi bi-shield-lock"></i>

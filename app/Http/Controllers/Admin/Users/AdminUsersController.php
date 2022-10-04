@@ -26,10 +26,7 @@ class AdminUsersController extends AdminController {
         // Show the page
         // return view( 'admin/users/index', compact( 'TotalUsers', 'NewUsers', 'ActiveUsers' ) );
         $users = User::all();
-        return view('admin.dashboard.index')
-            ->with([
-                'users'=>$users
-            ]);
+        return view('admin.dashboard.index')->with(['users'=>$users]);
     }
 
     /**
