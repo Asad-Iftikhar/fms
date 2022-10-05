@@ -56,4 +56,5 @@ Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
 
 #Admin users
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
+Route::get('admin/users/getuser','Admin\Users\AdminUsersController@fetch_user');
 

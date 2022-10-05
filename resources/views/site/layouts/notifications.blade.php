@@ -42,7 +42,6 @@
 @section('javascript')
 @parent
 <script type="text/javascript">
-    console.log('sadfas');
     $(document).ready(function() {
         window.setTimeout(function() {
             $(".NotificationAlert ").fadeTo(500, 0).slideUp(500, function(){
