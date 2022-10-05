@@ -2,8 +2,6 @@
 
 @section('title', 'Dashboard')
 @section('content')
-
-
     <div class="page-heading">
                 <div class="page-title">
                     <div class="row">
