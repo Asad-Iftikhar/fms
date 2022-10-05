@@ -14,7 +14,7 @@
                                     <label for="first-name-icon">Current Password</label>
                                     {!! $errors->first('current_password', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
-                                        <input type="text"  class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!}"
+                                        <input type="password"  class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!}"
                                                placeholder="Enter Current Password" name="current_password"
                                                id="current-password-icon">
                                         <div class="form-control-icon">
@@ -28,7 +28,7 @@
                                     <label for="first-name-icon">New Password</label>
                                     {!! $errors->first('new_password', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
-                                        <input type="text"  class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!}"
+                                        <input type="password"  class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!}"
                                                placeholder="Enter New Password" name="new_password"
                                                id="new-password-icon">
                                         <div class="form-control-icon">
@@ -42,7 +42,7 @@
                                     <label for="first-name-icon">Confirm Password</label>
                                     {!! $errors->first('confirm_password', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
-                                        <input type="text"  class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!}"
+                                        <input type="password"  class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!}"
                                                placeholder="Confirm Password" name="confirm_password"
                                                id="confirm-password-icon">
                                         <div class="form-control-icon">
