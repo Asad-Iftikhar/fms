@@ -57,7 +57,7 @@ class AuthController extends Controller
                 $request->session()->regenerate();
                 $throttler->clear($request);
                 Auth::logoutOtherDevices(request()->input('password'));
-                return redirect()->intended('account')->with('success', trans('account/auth.messages.login.success'));
+                return redirect()->intended('account')->with('success', 'You have successfully logged in.');
             }
             // Login User And Redirect to Last URI OR User Dashboard
         }
@@ -127,7 +127,7 @@ class AuthController extends Controller
             return view('site.account.change_password', compact('user', 'token'));
         } else {
             // invalid token
-            return redirect('account/forgot_password')->with('fail', trans('Password Changed'));
+            return redirect('account/forgot_password')->with('fail', 'Password Changed');
         }
     }
 

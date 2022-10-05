@@ -1,9 +1,6 @@
 @extends('site.layouts.base')
-
-@section('title', 'Dashboard')
+@section('title', 'Settings')
 @section('content')
-
-
     <div class="page-heading">
         <div class="page-title">
             <div class="row">
@@ -41,6 +38,4 @@
             </div>
         </div>
     </div>
-
-
 @stop
