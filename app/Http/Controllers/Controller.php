@@ -41,12 +41,12 @@ class Controller extends BaseController
     /**
      * Delete Image from db and storage.
      *
-     * @param  integer $media_id
+     * @param  integer $id
      * @return void
      */
     protected function remove_file ( $id ): void
     {
-        $media_row = media::find($id);
+        $media_row = Media::find($id);
         if(!empty($media_row)){
             Storage::disk('public')->delete($media_row->file_path.$media_row->name);
             $media_row->delete();

@@ -93,7 +93,6 @@ class AccountController extends AuthorizedController {
     /**
      * User Avatar processing page.
      *
-     * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postChangeAvatar() {
@@ -110,7 +109,7 @@ class AccountController extends AuthorizedController {
                 $user->avatar = $avatar_id;
                 $user->save();
                 return redirect( 'account/setting/avatar' )->with( 'success', 'Image Updated Successfully !' );
-            }else{
+            } else {
                 return redirect( 'account/setting/avatar' )->with( 'error', 'Something Went Wrong !' );
             }
         }

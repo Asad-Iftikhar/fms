@@ -1,8 +1,4 @@
-@section('styles')
-@parent
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
-@stop
+
 <div class="col-md-6 col-12 mx-auto">
     <div class="card">
         <div class="card-header">
@@ -48,30 +44,3 @@
     </div>
 </div>
 
-@section('javascript')
-    @parent
-{{--       <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-       <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-
-       <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-
-       <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
-       <script type="text/javascript">
-           FilePond.registerPlugin(
-               // preview the image file type...
-               FilePondPluginImagePreview,
-           );
-           // Filepond: Image Preview
-           FilePond.create( document.querySelector('.image-preview-upload'), {
-               allowImagePreview: true,
-               allowImageFilter: false,
-               allowImageExifOrientation: false,
-               allowImageCrop: false,
-               acceptedFileTypes: ['image/png','image/jpg','image/jpeg','image/svg'],
-               fileValidateTypeDetectType: (source, type) => new Promise((resolve, reject) => {
-                   // Do custom type detection here and return with promise
-                   resolve(type);
-               })
-           });
-       </script>--}}
-@stop
