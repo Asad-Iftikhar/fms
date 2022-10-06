@@ -91,6 +91,51 @@ class AccountController extends AuthorizedController {
     }
 
     /**
+     * User Avatar processing page.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function postChangeAvatar() {
+        $user = Auth::user();
+        //  Validate Form
+        $rules = array (
+            'image' => 'mimes:jpeg,png,jpg,svg|required|max:3072',
+        );
+        $validator = Validator::make( request()->all(), $rules );
+        if ( $validator->passes() ) {
+            $avatar_id = $this->upload_file(request()->file('image'),'/users/avatars/','user_');
+            if ( $avatar_id ) {
+                $this->remove_file($user->avatar);
+                $user->avatar = $avatar_id;
+                $user->save();
+                return redirect( 'account/setting/avatar' )->with( 'success', 'Image Updated Successfully !' );
+            }else{
+                return redirect( 'account/setting/avatar' )->with( 'error', 'Something Went Wrong !' );
+            }
+        }
+        // Return with errors
+        return redirect( 'account/setting/avatar' )->withInput()->withErrors( $validator );
+    }
+
+    /**
+     * User Avatar processing page.
+     *
+     *
+     * @return
+     */
+    public function removeAvatar() {
+        $user = Auth::user();
+        if($user->avatar){
+            $this->remove_file($user->avatar);
+            $user->avatar = null;
+            $user->save();
+            return redirect( 'account/setting/avatar' )->with( 'success', 'Successfully Removed !' );
+        }
+        return redirect( 'account/setting/avatar' )->with( 'error', 'Image Already Removed !' );
+    }
+
+    /**
      * Verify if Email is Taken
      * @return \Illuminate\Http\JsonResponse
      */

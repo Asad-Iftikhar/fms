@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\Base;
+use App\Models\Media\Media;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -25,6 +26,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         'activation_code',
         'activated',
         'disabled',
+        'avatar',
         'require_pw_change',
     ];
 
@@ -58,6 +60,10 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      */
     public function roles() {
         return $this->belongsToMany( Role::class, 'role_user' )->withTimestamps();
+    }
+
+    public function avatarImage() {
+        return $this->belongsTo(Media::class,'avatar');
     }
 
     /**
@@ -150,5 +156,23 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Get User Avatar
+     *
+     * @return string
+     */
+    public function getUserAvatar() {
+
+        if ($this->avatar) {
+            return $this->avatarImage->url_file;
+        } else {
+            // on the base of gender return default avatar
+            if ($this->gender == 'female') {
+                return asset('assets/images/faces/3.jpg');
+            }
+        }
+        return asset('assets/images/faces/2.jpg');
     }
 }
