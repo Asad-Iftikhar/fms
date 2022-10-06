@@ -23,6 +23,7 @@ Route::post( 'account/setting/profile', 'Account\AccountController@postProfileSe
 
 Route::get( 'account/setting/avatar', 'Account\AccountController@getProfileSettings' );
 Route::post( 'account/setting/avatar', 'Account\AccountController@postChangeAvatar' );
+Route::get( 'account/setting/remove-avatar', 'Account\AccountController@removeAvatar' );
 
 Route::get( 'account/setting/change-password', 'Account\AccountController@getProfileSettings' );
 Route::post( 'account/setting/change-password', 'Account\AccountController@postChangePassword' );
