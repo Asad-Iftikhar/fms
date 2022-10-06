@@ -8,7 +8,11 @@
 @section('content')
 {{-- Users Grid Datatable   --}}
     <div class="card">
-        <div class="card-header">Users</div>
+        <div class="card-header">Users list
+            <span>
+                  <button type="button" class="btn btn-primary" style="float: right">Add User <span class="bi bi-plus" style="position: relative; top: 3px"></span></button>
+            </span>
+        </div>
         <div class="card-body">
             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
                 <div class="dataTable-container">
