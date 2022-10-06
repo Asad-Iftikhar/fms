@@ -30,8 +30,11 @@ class AdminUsersController extends AdminController {
         return view('admin.users.index', compact('data'))->render();
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
     public function fetch_user(Request $request) {
-        //print_r($request->all());
         # Read value
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -80,14 +83,6 @@ class AdminUsersController extends AdminController {
         );
 
         return response()->json($response);
-    }
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Throwable
-     */
-    public function postGetUsers() {
-        # DataTable Data Populating
-        // return response()->json( array('users' => $UserHtml, 'filters' => $activeFilters, 'query' => $CurrentIDs, 'total' => number_format($Users->Total()), 'pagination' => $Users->links( 'vendor.pagination.default' )->toHtml(), 'pagination_number' => $PaginationNumber), 200 );
     }
 
     # Create User
