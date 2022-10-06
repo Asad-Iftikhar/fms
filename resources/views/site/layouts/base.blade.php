@@ -90,9 +90,9 @@
                 </nav>
             </header>
             <div id="main-content">
-                <!-- Notifications -->
+                {{--  Notifications  --}}
                 @include('site.layouts.notifications')
-                <!-- ./ Notifications -->
+                {{--  Notifications --}}
                 <div class="row">
                     <div class="col-12">
                         <!-- Content -->
