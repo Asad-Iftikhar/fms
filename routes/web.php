@@ -59,3 +59,7 @@ Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
 Route::get('admin/users/getuser','Admin\Users\AdminUsersController@fetch_user');
 
+#Admin roles
+Route::get( 'admin/user-roles', 'Admin\Users\AdminRolesController@getIndex' );
+Route::get('admin/users-roles/getuserroles','Admin\Users\AdminRolesController@fetch_userRoles');
+

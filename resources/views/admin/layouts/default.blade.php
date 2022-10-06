@@ -138,7 +138,7 @@
                                         <a href="{!! url('admin/users') !!}">Users</a>
                                     </li>
                                     <li class="submenu-item">
-                                        <a href="{{url('admin/roles')}}">User Roles</a>
+                                        <a href="{{url('admin/user-roles')}}">User Roles</a>
                                     </li>
                                 </ul>
                             </li>
