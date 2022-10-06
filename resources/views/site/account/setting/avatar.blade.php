@@ -29,6 +29,7 @@
                                             <img height="200px" class="text-center mx-auto" src="{{ $user->getUserAvatar() }}">
                                             <!-- File uploader with image preview -->
                                             <input type="file" name="image" class="image-preview-upload">
+                                            {!! $errors->first('image', '<br><small class="text-danger">:message</small>') !!}
                                         </div>
                                     </div>
                                 </div>
