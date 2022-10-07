@@ -61,3 +61,9 @@ Route::get('admin/users/getuser','Admin\Users\AdminUsersController@fetch_user');
 Route::get( 'admin/users/create', 'Admin\Users\AdminUsersController@createUser' );
 Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postUser' );
 
+#Admin roles
+Route::get( 'admin/roles', 'Admin\Users\AdminRolesController@getIndex' );
+
+#Admin Create roles
+Route::get('admin/roles/create', 'Admin\Users\AdminRolesController@createRoles');
+

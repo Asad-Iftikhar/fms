@@ -52,4 +52,6 @@ class Role extends Base {
         return $this->belongsToMany( Permission::class, 'permission_role' )->withTimestamps();
     }
 
+
+
 }

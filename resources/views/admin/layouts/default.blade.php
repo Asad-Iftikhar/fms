@@ -9,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset("/assets/css/bootstrap.css") }}">
-{{--        <link rel="stylesheet" href="{{ asset("/assets/vendors/iconly/bold.css") }}">--}}
+        <link rel="stylesheet" href="{{ asset("/assets/vendors/iconly/bold.css") }}">
         <link rel="stylesheet" href="{{ asset("assets/vendors/simple-datatables/style.css") }}">
         <link rel="stylesheet" href="{{ asset("/assets/vendors/perfect-scrollbar/perfect-scrollbar.css") }}">
         <link rel="stylesheet" href="{{ asset("/assets/vendors/bootstrap-icons/bootstrap-icons.css") }}">
@@ -20,7 +20,7 @@
     <div id="app">
         @include('admin.layouts.sidebar')
         <div id="main" class='layout-navbar'>
-            <header class='mb-3'>
+            <header>
                 <nav class="navbar navbar-expand navbar-light ">
                     <div class="container-fluid">
                         <a href="#" class="burger-btn d-block">
@@ -68,7 +68,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{url('account/setting/profile')}}">
                                             <i class="icon-mid bi bi-gear me-2"></i>
                                             Settings
                                         </a>
@@ -97,7 +97,7 @@
                 </div>
 
                 <footer>
-                    <div class="footer clearfix mb-0 text-muted">
+                    <div class="footer clearfix px-4 text-muted">
                         <div class="float-start">
                             <p>2022 &copy; Funds Management System</p>
                         </div>

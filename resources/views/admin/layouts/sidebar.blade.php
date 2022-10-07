@@ -21,7 +21,7 @@
 
                 <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/users') || \Request::is('admin/roles')])>
                     <a href="#" class='sidebar-link'>
-                        <i class="bi bi-users"></i>
+                        <i class="iconly-boldProfile"></i>
                         <span>Manage Users</span>
                     </a>
                     <ul @class(["submenu", "active" => \Request::is('admin/users') || \Request::is('admin/roles')])>
