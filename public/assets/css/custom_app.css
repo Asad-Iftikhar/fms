@@ -1390,6 +1390,7 @@
 
 #main-content section > .card {
     border-radius: 0px;
+    min-height: 400px;
 }
 .page-heading {
     margin: 0 0 2rem
