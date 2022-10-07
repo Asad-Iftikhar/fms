@@ -1388,10 +1388,9 @@
     padding: 0
 }
 
-#main #main-content {
-    padding: 0 2rem;
+#main-content section > .card {
+    border-radius: 0px;
 }
-
 .page-heading {
     margin: 0 0 2rem
 }

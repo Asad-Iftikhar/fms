@@ -60,20 +60,20 @@
                                             My Profile
                                         </a>
                                     </li>
+                                    @if(Auth::user()->can('admin'))
+                                        <li>
+                                            <a class="dropdown-item" href="{{ url('admin') }}">
+                                                <i class="icon-mid bi bi-wallet me-2"></i>
+                                                Administration
+                                            </a>
+                                        </li>
+                                    @endif
                                     <li>
                                         <a class="dropdown-item" href="{{ url('account/setting/profile') }}">
                                             <i class="icon-mid bi bi-gear me-2"></i>
                                             Settings
                                         </a>
                                     </li>
-                                    @if(Auth::user()->can('admin'))
-                                    <li>
-                                        <a class="dropdown-item" href="{{ url('admin') }}">
-                                            <i class="icon-mid bi bi-wallet me-2"></i>
-                                            Administration
-                                        </a>
-                                    </li>
-                                    @endif
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>

@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-header">Users
             <span>
-                  <button type="button" class="btn btn-primary" style="float: right"><span class="bi bi-plus" style="position: relative; top: 3px"></span> Add User</button>
+                  <button type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Add User</button>
             </span>
         </div>
         <div class="card-body">
