@@ -30,6 +30,7 @@ return new class extends Migration
             $table->text( 'phone' )->nullable();
             $table->enum( 'gender', ['male', 'female'])->nullable();
             $table->integer( 'avatar' )->unsigned()->nullable();
+            $table->date( 'joining_date' )->nullable();
             $table->date( 'dob' )->nullable();
             $table->dateTime( 'last_login' )->nullable()->index();
             $table->boolean( 'activated' )->default( 0 );
