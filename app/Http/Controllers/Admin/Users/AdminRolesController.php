@@ -28,12 +28,20 @@ class AdminRolesController extends AdminController {
         return view('admin.users.roles.index', ['roles'=>$roles]);
     }
 
+
+    /**
+     * @return string
+     */
     public function getCreateRole() {
         $roles = Role::all();
         $permissions = Permission::all();
-        return view('admin.users.roles.create',compact('roles','permissions'))->render();
+        return view('admin.users.roles.create',compact('roles','permissions'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function postCreateRole(Request $request)
     {
         $rules = array(
@@ -58,12 +66,14 @@ class AdminRolesController extends AdminController {
                     return redirect('admin/roles/create')->with('success', "Insert successfully");
                 }
             } catch (Exception $e) {
-                dd($e->getMessage());
                 return redirect('admin/roles/create')->with('error', "operation failed");
             }
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function updateRole() {
         return view('admin.users.roles.edit');
     }
