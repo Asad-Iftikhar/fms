@@ -10,23 +10,40 @@
     <div class="card">
         <div class="card-header">Users list
             <span>
-                  <button type="button" class="btn btn-primary" style="float: right">Add User <span class="bi bi-plus" style="position: relative; top: 3px"></span></button>
+                  <a href="{{url('admin/roles/create')}}" type="button" class="btn btn-primary" style="float: right">Add User Roles <span class="bi bi-plus" style="position: relative; top: 3px"></span></a>
             </span>
         </div>
         <div class="card-body">
             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
                 <div class="dataTable-container">
                     <div class="table-responsive">
-                        <table class="table table-striped dataTable-table" id="userdatatable">
+                        <table class="table table-striped dataTable-table" id="RoleTable">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Actions</th>
+                                <th class="small-4">Role Name</th>
+                                <th class="small-2">Users</th>
+                                <th class="small-2">Permissions</th>
+                                <th class="small-2">Created At</th>
+                                <th class="small-2 text-center"><i class="fa fa-bolt"></i></th>
                             </tr>
                             </thead>
                             <tbody>
+                            @foreach ($roles as $role)
+                                <tr>
+                                    <td><span data-tip title="{!! $role->description !!}">{{{ $role->name }}}</span></td>
+                                    <td>{!! $role->users->count() !!}</td>
+                                    <td>@if ($role->name == 'super_admin') {!! 'ALL' !!} @else {!! $role->permissions_count !!} @endif</td>
+                                    <td><span class="hide">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $role->created_at )->toDateString() !!}</span></td>
+                                    <td>
+                                        @if ($role->name != 'super_admin')
+                                            <a href="{!! url('admin/users/roles/' . $role->id . '/edit') !!}" class="button btn btn-outline-info">Edit</a>
+                                            <a href="{!! url('admin/users/roles/' . $role->id . '/delete') !!}" class="button btn btn-outline-danger">Delete</a>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -45,26 +62,11 @@
         $(document).ready(function()
         {
             // DataTable
-            $('#userdatatable').DataTable
-            ({
-                processing: true,
-                serverSide: true,
-                order: [[0, "desc"]],
-                ajax: "{{ url('admin/users-roles/getuserroles') }}",
-                columns: [
-                    {data: 'id'},
-                    {data: 'name'},
-                    {data: 'description'},
-                    {
-                        defaultContent: '<input type="button" class="edit btn btn-outline-info" value="Edit"/>' + " " + " " + '<input type="button" class="delete btn btn-outline-danger fa fa-trash" value="Delete"/>'
-                    }
+            $('#RoleTable').DataTable({
+                "order": [[ 0, "asc" ]],
+                "columnDefs": [
+                    { 'orderable': false, 'targets': [ 4 ] }
                 ]
-            });
-            $('#userdatatable tbody').on('click', '.edit', function () {
-
-            });
-            $('#userdatatable tbody').on('click', '.delete', function () {
-
             });
         });
     </script>
