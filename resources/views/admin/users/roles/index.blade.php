@@ -36,7 +36,7 @@
                                     <td><span class="hide">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $role->created_at )->toDateString() !!}</span></td>
                                     <td>
                                         @if ($role->name != 'super_admin')
-                                            <a href="{!! url('admin/users/roles/' . $role->id . '/edit') !!}" class="button btn btn-outline-info">Edit</a>
+                                            <a href="{!! url('admin/roles/edit/' . $role->id) !!}" class="button btn btn-outline-info">Edit</a>
                                             <a href="{!! url('admin/users/roles/' . $role->id . '/delete') !!}" class="button btn btn-outline-danger">Delete</a>
                                         @else
                                             -

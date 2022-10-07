@@ -39,6 +39,7 @@ class AdminRolesController extends AdminController {
     }
 
     /**
+     * Create User Roles
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -72,10 +73,49 @@ class AdminRolesController extends AdminController {
     }
 
     /**
+     * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function updateRole() {
-        return view('admin.users.roles.edit');
+    public function getEditRole($id) {
+        $roles = Role::all();
+        $permissions = Permission::all();
+        if($role = Role::find($id)) {
+            $selected_permissions = $role->permissions->pluck('id')->toArray();
+            return view('admin.users.roles.edit',compact('roles','role','permissions', 'selected_permissions'));
+        }
+    }
+
+    /**
+     * Update User Roles
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function postEditRole($id) {
+
+        $rules = array(
+            'name' => 'required|alpha_dash|unique:roles,name',
+            'description' => 'max:255',
+            'level' => 'required|numeric',
+        );
+
+        $validator = Validator::make(request()->only(['name','description','level']), $rules);
+        if ($validator->fails()) {
+            return redirect('admin/roles/edit')->withInput()->withErrors($validator);
+        } else {
+            if($role = Role::find($id)) {
+                try {
+                    $role->name = request()->input('name');
+                    $role->description = request()->input('description');
+                    $role->level = request()->input('level');
+                    if ($role->update()) {
+                        $role->permissions()->sync(request()->input('permissions', array()));
+                        return redirect()->back()->with('success', 'Updated Successfully');
+                    }
+                } catch (Exception $e) {
+                    return redirect()->back()->with('error', "Something went wrong");
+                }
+            }
+        }
     }
 
 }
