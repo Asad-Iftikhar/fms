@@ -129,7 +129,7 @@
                             {!! $errors->first('gender', '<br><small class="text-danger">:message</small>') !!}
                             <div class='form-check'>
                                 <div class="checkbox mt-2">
-                                    <input type="radio" value="male" name="gender" id="gender-male"
+                                    <input type="radio" value="male" checked name="gender" id="gender-male"
                                            class='form-check-input' >
                                     <label for="remember-me-v">Male</label>
                                 </div>

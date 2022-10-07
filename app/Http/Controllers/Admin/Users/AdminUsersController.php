@@ -40,12 +40,10 @@ class AdminUsersController extends AdminController {
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function createUser() {
-        # Show Grid of All users
         // Show the page
-        $user = Auth::user();
         $roles = Role::all();
 
-        return view('admin.users.create', compact('user','roles'))->render();
+        return view('admin.users.create', compact('roles'))->render();
     }
 
 
@@ -56,7 +54,6 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postUser(Request $request) {
-        $user = Auth::user();
         //  Validate Form
         $rules = array (
             'first_name' => 'nullable|string',
@@ -73,10 +70,10 @@ class AdminUsersController extends AdminController {
         $validator = Validator::make( request()->all(), $rules );
         if ( $validator->passes() ) {
             $user = new User;
-            if(!empty(request()->file('image'))){
+            /*if(!empty(request()->file('image'))){
                 $avatar_id = $this->upload_file(request()->file('image'),'/users/avatars/','user_');
                 $user->avatar = $avatar_id;
-            }
+            }*/
             $user->first_name = $request->input('first_name');
             $user->last_name = $request->input('last_name');
             $user->username = $request->input('username');
@@ -85,8 +82,7 @@ class AdminUsersController extends AdminController {
             $user->dob = $request->input('dob');
             $user->gender = $request->input('gender');
             $user->password = bcrypt($request->input('password'));
-            $user->save();
-            if($user->id){
+            if($user->save()){
                 $user->roles()->sync( request()->input( 'roles', array() ) );
                 return redirect( 'admin/users/edit' )->with( 'success', 'Updated successfully !' );
             }else{
@@ -94,22 +90,7 @@ class AdminUsersController extends AdminController {
             }
         }
         // Return with errors
-        return redirect( 'admin/users/add' )->withInput()->withErrors( $validator );
-    }
-
-    /**
-     * @return string
-     * @param integer $length
-     * @throws \Throwable
-     */
-    function generatePasswordString($length = 10) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
+        return redirect( 'admin/users/create' )->withInput()->withErrors( $validator );
     }
 
     /**
