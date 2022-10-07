@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-header">Users list
             <span>
-                  <button type="button" class="btn btn-primary" style="float: right">Add User <span class="bi bi-plus" style="position: relative; top: 3px"></span></button>
+                  <a href="{{ url('admin/users/add') }}" class="btn btn-primary" style="float: right">Add User <span class="bi bi-plus" style="position: relative; top: 3px"></span></a>
             </span>
         </div>
         <div class="card-body">
