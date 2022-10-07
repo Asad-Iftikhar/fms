@@ -59,7 +59,7 @@
                 {data: 'username'},
                 {data: 'email'},
                 {
-                    defaultContent: '<input type="button" class="edit btn btn-outline-info" value="Edit"/>' + " " + " " + '<input type="button" class="delete btn btn-outline-danger fa fa-trash" value="Delete"/>'
+                    defaultContent: '<a href="{!! url('admin/users/edit') !!}" class="edit btn btn-outline-info">Edit</a>' + " " + " " + '<input type="button" class="delete btn btn-outline-danger fa fa-trash" value="Delete"/>'
                 }
             ]
         });
