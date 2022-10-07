@@ -50,6 +50,9 @@
             processing: true,
             serverSide: true,
             order: [[0, "desc"]],
+            "columnDefs": [
+                { 'orderable': false, 'targets': [ 3 ] }
+            ],
             ajax: "{{ url('admin/users/getuser') }}",
             columns: [
                 {data: 'id'},
