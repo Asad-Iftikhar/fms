@@ -89,6 +89,9 @@
                 </nav>
             </header>
             <div id="main-content">
+                {{--  Notifications  --}}
+                @include('site.layouts.notifications')
+                {{--  Notifications --}}
                 {{-- Load Content --}}
                 <div class="page-heading">
                     <section class="section">
