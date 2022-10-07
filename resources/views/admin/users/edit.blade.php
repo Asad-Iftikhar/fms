@@ -13,7 +13,7 @@
             </span>
         </div>
         <div class="card-body">
-            <form class="form form-vertical" method="post" action="{{ url('admin/users/create') }}">
+            <form class="form form-vertical" method="post" action="{{ url('admin/users/edit/'.$user->id) }}">
                 @csrf
                 <div class="form-body">
                     <div class="row">
@@ -41,7 +41,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Employee ID</label>
                                 {!! $errors->first('employee_id', '<small class="text-danger">:message</small>') !!}
-                                <input type="number" value="" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
+                                <input type="number" value="{{$user->employee_id}}" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
                                        placeholder="Employee Id" name="employee_id"
                                        id="employee-id-icon">
                             </div>
@@ -50,7 +50,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Username</label>
                                 {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
-                                <input type="text" value=""
+                                <input type="text" value="{{$user->username}}"
                                        class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
                                        placeholder="Username" name="username"
                                        id="basicInput">
@@ -60,7 +60,7 @@
                             <div class="form-group">
                                 <label for="basicInput">First Name</label>
                                 {!! $errors->first('first_name', '<small class="text-danger">:message</small>') !!}
-                                <input type="text" value=""
+                                <input type="text" value="{{$user->first_name}}"
                                        class="form-control {!! $errors->has('first_name') ? 'is-invalid' : '' !!} "
                                        placeholder="First Name" name="first_name"
                                        id="basicInput">
@@ -70,7 +70,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Last Name</label>
                                 {!! $errors->first('last_name', '<small class="text-danger">:message</small>') !!}
-                                <input type="text" value=""
+                                <input type="text" value="{{$user->last_name}}"
                                        class="form-control {!! $errors->has('last_name') ? 'is-invalid' : '' !!} "
                                        placeholder="Last Name" name="last_name"
                                        id="basicInput">
@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Email</label>
                                 {!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
-                                <input type="text" value=""
+                                <input type="text" value="{{ old('email', $user->email) }}"
                                        class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "
                                        placeholder="Email Address" name="email"
                                        id="basicInput">
@@ -90,7 +90,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Phone Number</label>
                                 {!! $errors->first('phone', '<small class="text-danger">:message</small>') !!}
-                                <input type="text" value=""
+                                <input type="text" value="{{$user->phone}}"
                                        class="form-control {!! $errors->has('phone') ? 'is-invalid' : '' !!} "
                                        placeholder="Phone Number" name="phone"
                                        id="basicInput">
@@ -100,7 +100,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Password</label>
                                 {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
-                                <input type="password" value=""
+                                <input type="password"
                                        class="form-control {!! $errors->has('password') ? 'is-invalid' : '' !!} "
                                        placeholder="Password" name="password"
                                        id="basicInput">
@@ -120,7 +120,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Date of Birth</label>
                                 {!! $errors->first('dob', '<small class="text-danger">:message</small>') !!}
-                                <input type="date" class="form-control {!! $errors->has('dob') ? 'is-invalid' : '' !!} "
+                                <input type="date" value="{{$user->dob}}" class="form-control {!! $errors->has('dob') ? 'is-invalid' : '' !!} "
                                        placeholder="Date of Birth" name="dob" id="dob-id-icon">
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Joining Date</label>
                                 {!! $errors->first('joining_date', '<small class="text-danger">:message</small>') !!}
-                                <input type="date" class="form-control {!! $errors->has('joining_date') ? 'is-invalid' : '' !!} "
+                                <input type="date" value="{{$user->joining_date}}" class="form-control {!! $errors->has('joining_date') ? 'is-invalid' : '' !!} "
                                        placeholder="Joining Date" name="joining_date" id="dob-id-icon">
                             </div>
                         </div>
@@ -137,25 +137,25 @@
                             {!! $errors->first('gender', '<br><small class="text-danger">:message</small>') !!}
                             <div class='form-check'>
                                 <div class="checkbox mt-2">
-                                    <input type="radio" value="male" checked name="gender" id="gender-male"
+                                    <input type="radio" value="male" {{ ($user->gender == 'male')?'checked':'' }} name="gender" id="gender-male"
                                            class='form-check-input' >
                                     <label for="remember-me-v">Male</label>
                                 </div>
                                 <div class="checkbox mt-2">
-                                    <input type="radio" value="female" name="gender" id="gender-female"
+                                    <input type="radio" value="female" {{ ($user->gender == 'female')?'checked':'' }} name="gender" id="gender-female"
                                            class='form-check-input '>
                                     <label for="remember-me-v">Female</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 mb-4">
+                        <div class="col-md-6 mb-4">
                             <h6>Roles</h6>
                             <p>Select multiple roles for this user</p>
                             <div class="form-group">
                                 <select name="roles[]" class="choices form-select multiple-remove"
                                         multiple="multiple">
                                     @foreach($roles as $role)
-                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                        <option {{ (in_array($role->id, old( 'roles', $selected_roles)))?'selected':'' }} value="{{$role->id}}">{{$role->name}}</option>
                                     @endforeach
                                 </select>
                             </div>

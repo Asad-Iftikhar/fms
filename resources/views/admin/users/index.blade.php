@@ -55,9 +55,7 @@
                 {data: 'id'},
                 {data: 'username'},
                 {data: 'email'},
-                {
-                    defaultContent: '<input type="button" class="edit btn btn-outline-info" value="Edit"/>' + " " + " " + '<input type="button" class="delete btn btn-outline-danger fa fa-trash" value="Delete"/>'
-                }
+                {data: 'action'}
             ]
         });
         $('#userdatatable tbody').on('click', '.edit', function () {
