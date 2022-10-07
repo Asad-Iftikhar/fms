@@ -57,29 +57,5 @@ class DatabaseSeeder extends Seeder
             array('name' => 'manage_settings', 'description' => 'Manage Site Settings. Change Site Logo', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
         ) );
 
-
-
-        for($i=1; $i<=100; $i++){
-            $username = 'admin'.$i;
-            $email = $username.'@fms.com';
-            $user_id = DB::table( 'users' )->insertGetId( array(
-                'username' => $username,
-                'password' => bcrypt( 'FMS12345' ),
-                'email' => $email,
-                'created_at' => date( 'Y-m-d H:i:s' ),
-                'updated_at' => date( 'Y-m-d H:i:s' ),
-                'activated' => 1,
-                'disabled' => 0
-            ) );
-
-            DB::table( 'role_user' )->insert( array(
-                'role_id' => $role_id,
-                'user_id' => $user_id,
-                'created_at' => date( 'Y-m-d H:i:s' ),
-                'updated_at' => date( 'Y-m-d H:i:s' )
-            ) );
-
-        }
-
     }
 }

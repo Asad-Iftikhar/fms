@@ -13,7 +13,8 @@
                 @csrf
                 <div class="form-body">
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-md-3"></div>
+                        <div class="col-12 col-md-6 mx-auto">
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title">Avatar Preview</h5>
@@ -31,6 +32,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-3"></div>
                         <div class="col-md-6">
                             <div class="form-group has-icon-left">
                                 <label for="first-name-icon">Employee ID</label>
@@ -133,27 +135,13 @@
                             <div class='form-check'>
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="male" name="gender" id="gender-male"
-                                           class='form-check-input' {{ ($user->gender == 'male')?'checked':'' }}>
+                                           class='form-check-input' {{ ($filled->gender == 'male')?'checked':'' }}>
                                     <label for="remember-me-v">Male</label>
                                 </div>
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="female" name="gender" id="gender-female"
-                                           class='form-check-input ' {{ ($user->gender == 'female')?'checked':'' }}>
+                                           class='form-check-input ' {{ ($filled->gender == 'female')?'checked':'' }}>
                                     <label for="remember-me-v">Female</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="first-name-icon">New Password</label>
-                                {!! $errors->first('new_password', '<br><small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="password"  class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!}"
-                                           placeholder="Enter New Password" name="new_password"
-                                           id="new-password-icon">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-lock"></i>
-                                    </div>
                                 </div>
                             </div>
                         </div>
