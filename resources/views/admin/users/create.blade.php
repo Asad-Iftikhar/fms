@@ -1,6 +1,10 @@
 @extends('admin.layouts.default')
 
 @section('title', 'Users')
+@section('styles')
+    @parent
+    <link rel="stylesheet" href="{!! asset("assets/vendors/choices.js/choices.min.css") !!}">
+@endsection
 @section('content')
     <div class="card">
         <div class="card-header">Add New User
@@ -9,11 +13,11 @@
             </span>
         </div>
         <div class="card-body">
-            <form class="form form-vertical" method="post" action="{{ url('account/setting/profile') }}">
+            <form class="form form-vertical" method="post" action="{{ url('admin/users/create') }}">
                 @csrf
                 <div class="form-body">
                     <div class="row">
-                        <div class="col-md-3"></div>
+                        {{--<div class="col-md-3"></div>
                         <div class="col-12 col-md-6 mx-auto">
                             <div class="card">
                                 <div class="card-header">
@@ -32,117 +36,120 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3"></div>
+                        <div class="col-md-3"></div>--}}
                         <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="first-name-icon">Employee ID</label>
+                            <div class="form-group">
+                                <label for="basicInput">Employee ID</label>
                                 {!! $errors->first('employee_id', '<small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="text" value="" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
-                                           placeholder="Employee Id" name="employee_id"
-                                           id="employee-id-icon">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-key"></i>
-                                    </div>
-                                </div>
+                                <input type="number" value="" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
+                                       placeholder="Employee Id" name="employee_id"
+                                       id="employee-id-icon">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="first-name-icon">Username</label>
+                            <div class="form-group">
+                                <label for="basicInput">Username</label>
                                 {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="text" value="" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
-                                           placeholder="Username" name="username"
-                                           id="first-name-icon">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-person"></i>
-                                    </div>
-                                </div>
+                                <input type="text" value=""
+                                       class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
+                                       placeholder="Username" name="username"
+                                       id="basicInput">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="first-name-icon">First Name</label>
-                                {!! $errors->first('first_name', '<br><small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="text" value="" class="form-control {!! $errors->has('first_name') ? 'is-invalid' : '' !!} "
-                                           placeholder="First Name" name="first_name"
-                                           id="first-name-icon">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-person"></i>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="basicInput">First Name</label>
+                                {!! $errors->first('first_name', '<small class="text-danger">:message</small>') !!}
+                                <input type="text" value=""
+                                       class="form-control {!! $errors->has('first_name') ? 'is-invalid' : '' !!} "
+                                       placeholder="First Name" name="first_name"
+                                       id="basicInput">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="first-name-icon">Last Name</label>
-                                {!! $errors->first('last_name', '<br><small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="text" value="" class="form-control {!! $errors->has('last_name') ? 'is-invalid' : '' !!} "
-                                           placeholder="Last Name" name="last_name"
-                                           id="first-name-icon">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-person"></i>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="basicInput">Last Name</label>
+                                {!! $errors->first('last_name', '<small class="text-danger">:message</small>') !!}
+                                <input type="text" value=""
+                                       class="form-control {!! $errors->has('last_name') ? 'is-invalid' : '' !!} "
+                                       placeholder="Last Name" name="last_name"
+                                       id="basicInput">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="email-id-icon">Email</label>
-                                {!! $errors->first('email', '<br><small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="text" class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "
-                                           placeholder="Email" value=""
-                                           id="email-id-icon" name="email">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-envelope"></i>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="basicInput">Email</label>
+                                {!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
+                                <input type="text" value=""
+                                       class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "
+                                       placeholder="Email Address" name="email"
+                                       id="basicInput">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="mobile-id-icon">Phone Number</label>
-                                {!! $errors->first('phone', '<br><small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="text" name="phone" class="form-control {!! $errors->has('phone') ? 'is-invalid' : '' !!} "
-                                           placeholder="Phone Number" id="mobile-id-icon">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-phone"></i>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="basicInput">Phone Number</label>
+                                {!! $errors->first('phone', '<small class="text-danger">:message</small>') !!}
+                                <input type="text" value=""
+                                       class="form-control {!! $errors->has('phone') ? 'is-invalid' : '' !!} "
+                                       placeholder="Phone Number" name="phone"
+                                       id="basicInput">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group has-icon-left">
-                                <label for="dob-id-icon">Date of Birth</label>
-                                {!! $errors->first('dob', '<br><small class="text-danger">:message</small>') !!}
-                                <div class="position-relative">
-                                    <input type="date" class="form-control {!! $errors->has('dob') ? 'is-invalid' : '' !!} "
-                                           placeholder="Date of Birth" name="dob" id="dob-id-icon">
-                                    <div class="form-control-icon">
-                                        <i class="bi bi-calendar-date"></i>
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label for="basicInput">Password</label>
+                                {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
+                                <input type="password" value=""
+                                       class="form-control {!! $errors->has('password') ? 'is-invalid' : '' !!} "
+                                       placeholder="Password" name="password"
+                                       id="basicInput">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="first-name-icon">Gender</label>
+                            <div class="form-group">
+                                <label for="basicInput">Confirm Password</label>
+                                {!! $errors->first('confirm_password', '<small class="text-danger">:message</small>') !!}
+                                <input type="password" value=""
+                                       class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!} "
+                                       placeholder="Confirm Password" name="confirm_password"
+                                       id="basicInput">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="basicInput">Date of Birth</label>
+                                {!! $errors->first('dob', '<small class="text-danger">:message</small>') !!}
+                                <input type="date" class="form-control {!! $errors->has('dob') ? 'is-invalid' : '' !!} "
+                                       placeholder="Date of Birth" name="dob" id="dob-id-icon">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="basicInput">Gender</label>
                             {!! $errors->first('gender', '<br><small class="text-danger">:message</small>') !!}
                             <div class='form-check'>
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="male" name="gender" id="gender-male"
-                                           class='form-check-input' {{ ($filled->gender == 'male')?'checked':'' }}>
+                                           class='form-check-input' >
                                     <label for="remember-me-v">Male</label>
                                 </div>
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="female" name="gender" id="gender-female"
-                                           class='form-check-input ' {{ ($filled->gender == 'female')?'checked':'' }}>
+                                           class='form-check-input '>
                                     <label for="remember-me-v">Female</label>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-4">
+                            <h6>Roles</h6>
+                            <p>Select multiple roles for this user</p>
+                            <div class="form-group">
+                                <select name="roles[]" class="choices form-select multiple-remove"
+                                        multiple="multiple">
+                                    @foreach($roles as $role)
+                                        <option value="{{$role->id}}">{{$role->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-12 d-flex justify-content-end">
@@ -154,4 +161,8 @@
         </div>
     </div>
 
+@endsection
+@section('javascript')
+    @parent
+    <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
 @endsection

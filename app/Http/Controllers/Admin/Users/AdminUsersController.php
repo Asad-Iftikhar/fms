@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Users;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use App\Models\Users\User;
+use App\Models\Users\Roles\Role;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -38,11 +39,13 @@ class AdminUsersController extends AdminController {
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function addUser() {
+    public function createUser() {
         # Show Grid of All users
         // Show the page
         $user = Auth::user();
-        return view('admin.users.create', compact('user'))->render();
+        $roles = Role::all();
+
+        return view('admin.users.create', compact('user','roles'))->render();
     }
 
 
@@ -58,34 +61,55 @@ class AdminUsersController extends AdminController {
         $rules = array (
             'first_name' => 'nullable|string',
             'last_name' => 'nullable|string',
-            'employee_id' => 'required|integer|unique:users',
+            'employee_id' => 'required|unique:users',
             'username' => 'required|unique:users',
             'email' => 'email|required|unique:users',
             'dob' => 'nullable|date',
             'phone' => 'nullable|min:11|unique:users',
-            'password' => 'required|min:8',
-            'image' => 'mimes:jpeg,png,jpg,svg|required|max:3072'
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password'
 
         );
         $validator = Validator::make( request()->all(), $rules );
         if ( $validator->passes() ) {
             $user = new User;
-            $avatar_id = $this->upload_file(request()->file('image'),'/users/avatars/','user_');
-
+            if(!empty(request()->file('image'))){
+                $avatar_id = $this->upload_file(request()->file('image'),'/users/avatars/','user_');
+                $user->avatar = $avatar_id;
+            }
             $user->first_name = $request->input('first_name');
-            $user->avatar = $avatar_id;
             $user->last_name = $request->input('last_name');
             $user->username = $request->input('username');
             $user->phone = $request->input('phone');
             $user->email = $request->input('email');
             $user->dob = $request->input('dob');
             $user->gender = $request->input('gender');
-            $user->password = bcrypt($request->input('gender'));
+            $user->password = bcrypt($request->input('password'));
             $user->save();
-            return redirect( 'account/setting/profile' )->with( 'success', 'Updated successfully !' );
+            if($user->id){
+                $user->roles()->sync( request()->input( 'roles', array() ) );
+                return redirect( 'admin/users/edit' )->with( 'success', 'Updated successfully !' );
+            }else{
+                return redirect( 'admin/users/edit' )->with( 'error', 'Something Went Wrong !' );
+            }
         }
         // Return with errors
-        return redirect( 'account/setting/profile' )->withInput()->withErrors( $validator );
+        return redirect( 'admin/users/add' )->withInput()->withErrors( $validator );
+    }
+
+    /**
+     * @return string
+     * @param integer $length
+     * @throws \Throwable
+     */
+    function generatePasswordString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 
     /**

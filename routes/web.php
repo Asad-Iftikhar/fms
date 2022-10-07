@@ -58,6 +58,6 @@ Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
 #Admin users
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
 Route::get('admin/users/getuser','Admin\Users\AdminUsersController@fetch_user');
-Route::get( 'admin/users/add', 'Admin\Users\AdminUsersController@addUser' );
-Route::post( 'admin/users/add', 'Admin\Users\AdminUsersController@postUser' );
+Route::get( 'admin/users/create', 'Admin\Users\AdminUsersController@createUser' );
+Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postUser' );
 
