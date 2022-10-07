@@ -4,13 +4,13 @@
 <link rel="stylesheet" href="{{ asset("assets/vendors/simple-datatables/style.css") }}">
 <link rel="stylesheet" type="text/css" href="{{ asset("assets/DataTables-1.12.1/datatables.min.css") }}"/>
 @stop
-@section('title', 'Users')
+@section('title', 'User Management')
 @section('content')
 {{-- Users Grid Datatable   --}}
     <div class="card">
-        <div class="card-header">Users list
+        <div class="card-header">Users
             <span>
-                  <button type="button" class="btn btn-primary" style="float: right">Add User <span class="bi bi-plus" style="position: relative; top: 3px"></span></button>
+                  <button type="button" class="btn btn-primary" style="float: right"><span class="bi bi-plus" style="position: relative; top: 3px"></span> Add User</button>
             </span>
         </div>
         <div class="card-body">
