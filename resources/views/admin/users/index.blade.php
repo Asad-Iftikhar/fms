@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-header">Users
             <span>
-                  <a href="{{ url('admin/users/create') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Create User</a>
+                  <a href="{{ url('admin/users/create') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Create</a>
             </span>
         </div>
         <div class="card-body">
