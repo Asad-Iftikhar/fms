@@ -87,7 +87,7 @@ class AdminUsersController extends AdminController {
             $user->password = bcrypt($request->input('password'));
             if($user->save()){
                 $user->roles()->sync( request()->input( 'roles', array() ) );
-                return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated successfully !' );
+                return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Created Successfully !' );
             }else{
                 return redirect( 'admin/users/edit/'.$user->id )->with( 'error', 'Something Went Wrong !' );
             }
@@ -104,6 +104,9 @@ class AdminUsersController extends AdminController {
      */
     public function getEditUser($user_id) {
         // Show the page
+        if($user_id == 1){
+            return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
+        }
         $roles = Role::all();
         $user = User::find($user_id);
         if($user = User::find($user_id)){
@@ -121,9 +124,12 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postEditUser($user_id) {
-        //  Validate Form
         if($user = User::find($user_id)){
+            if($user->id == 1){
+                return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
+            }
             $request = request();
+            //  Validate Form
             $rules = array (
                 'first_name' => 'nullable|string',
                 'last_name' => 'nullable|string',
@@ -157,7 +163,7 @@ class AdminUsersController extends AdminController {
                 }
                 if($user->save()){
                     $user->roles()->sync( request()->input( 'roles', array() ) );
-                    return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated successfully !' );
+                    return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated Successfully !' );
                 }else{
                     return redirect( 'admin/users/edit/'.$user->id )->with( 'error', 'Something Went Wrong !' );
                 }
@@ -213,7 +219,11 @@ class AdminUsersController extends AdminController {
 
         $arrData = $arrData->get();
         foreach ($arrData as $data){
-            $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
+            if($data->id != 1){
+                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
+            }else{
+                $data->action='<h6> Not Allowed </h6>';
+            }
         }
         $response = array(
           "draw" => intval($draw),
