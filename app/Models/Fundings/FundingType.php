@@ -3,7 +3,6 @@
 namespace App\Models\Fundings;
 
 /**
- * App\Models\Users\Roles\Role
  *
  * @property int $id
  * @property string $name
@@ -11,11 +10,9 @@ namespace App\Models\Fundings;
  * @property int $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Users\Roles\Permission[] $permissions
- * @property-read \Illuminate\Database\Eloquent\Collection|User[] $users
- * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Role query()
+ * @method static \Illuminate\Database\Eloquent\Builder|FundingType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FundingType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|FundingType query()
  * @mixin \Eloquent
  */
 

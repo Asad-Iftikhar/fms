@@ -1,7 +1,6 @@
 @extends('admin.layouts.default')
 @section('styles')
     @parent
-    <link rel="stylesheet" href="{{ asset("assets/vendors/simple-datatables/style.css") }}">
     <link rel="stylesheet" type="text/css" href="{{ asset("assets/DataTables-1.12.1/datatables.min.css") }}"/>
 @stop
 @section('title', 'Funding Types')
@@ -27,15 +26,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($fundingtypes as $fundingtype)
+                            @foreach ($fundingTypes as $fundingType)
                                 <tr>
-                                    <td>{!! $fundingtype->name !!}</td>
-                                    <td>{!! $fundingtype->description !!}</td>
-                                    <td>{!! $fundingtype->amount !!}</td>
-{{--                                    <td><span class="hide">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $fundingtype->created_at )->toDateString() !!}</span></td>--}}
+                                    <td>{!! $fundingType->name !!}</td>
+                                    <td>{!! $fundingType->description !!}</td>
+                                    <td>{!! $fundingType->amount !!}</td>
+{{--                                    <td><span class="hide">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $fundingType->created_at )->toDateString() !!}</span></td>--}}
                                     <td>
-                                            <a href="{!! url('admin/funding/types/edit/' . $fundingtype->id) !!}" class="button btn btn-outline-info">Edit</a>
-                                            <a href="{!! url('admin/users/roles/' . $fundingtype->id . '/delete') !!}" class="button btn btn-outline-danger">Delete</a>
+                                            <a href="{!! url('admin/funding/types/edit/' . $fundingType->id) !!}" class="button btn btn-outline-info">Edit</a>
+                                            <a href="{!! url('admin/users/roles/' . $fundingType->id . '/delete') !!}" class="button btn btn-outline-danger">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach

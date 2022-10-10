@@ -1,9 +1,6 @@
 @extends('admin.layouts.default')
-@section('styles')
-    @parent
-    <link rel="stylesheet" href="{!! asset("assets/vendors/choices.js/choices.min.css") !!}">
-@endsection
-@section('title', 'User Roles')
+
+@section('title', 'Funding Types')
 @section('content')
     <section class="section">
         <div class="card">
@@ -27,20 +24,20 @@
                         <div class="form-group">
                             <label for="name">Fund Type Name</label>
                             {!! $errors->first('name', '<small class="text-danger">:message</small>') !!}
-                            <input type="text" class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!}" value="{{ old('name', $fundtypeid->name) }}" id="name" name="name" required/>
+                            <input type="text" class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!}" value="{{ old('name', $fundTypeId->name) }}" id="name" name="name" required/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
                             <label for="description">Fund Type Description</label>
-                            <textarea type="text" class="form-control" rows="3"  id="description" name="description">{{ old('description', $fundtypeid->description) }}</textarea>
+                            <textarea type="text" class="form-control" rows="3"  id="description" name="description">{{ old('description', $fundTypeId->description) }}</textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
                                 <label for="amount">Amount</label>
                                 <div class="col-md-12 mb-4">
-                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" value="{{ old('amount', $fundtypeid->amount) }}" id="amount" name="amount" required/>
+                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" value="{{ old('amount', $fundTypeId->amount) }}" id="amount" name="amount" required/>
                                 </div>
                         </div>
                     </div>
@@ -51,8 +48,4 @@
             </div>
         </div>
     </section>
-@section('javascript')
-    @parent
-    <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
-@stop
 @stop
