@@ -56,13 +56,13 @@
                 {data: 'username'},
                 {data: 'email'},
                 {data: 'action'}
+            ],
+            columnDefs: [
+                {
+                    targets: -1,
+                    className: 'dt-body-right'
+                }
             ]
-        });
-        $('#userdatatable tbody').on('click', '.edit', function () {
-
-        });
-        $('#userdatatable tbody').on('click', '.delete', function () {
-
         });
     });
 </script>

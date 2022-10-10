@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\AdminController;
 use App\Models\Users\Roles\Role;
-use App\Models\Users\User;
 use App\Models\Users\Roles\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -39,7 +38,7 @@ class AdminRolesController extends AdminController {
     }
 
     /**
-     * Create User Roles
+     * Create User Role
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -57,16 +56,16 @@ class AdminRolesController extends AdminController {
         } else {
             $data = $request->input();
             try {
-                $roles = new Role();
-                $roles->name = $data['name'];
-                $roles->description = $data['description'];
-                $roles->level = $data['level'];
+                $role = new Role();
+                $role->name = $data['name'];
+                $role->description = $data['description'];
+                $role->level = $data['level'];
 
-                if( $roles->save() ){
-                    $roles->permissions()->sync(request()->input('permissions',array()));
-                    return redirect('admin/roles/edit/'. $roles->id)->with('success', "Created successfully");
+                if( $role->save() ){
+                    $role->permissions()->sync(request()->input('permissions',array()));
+                    return redirect('admin/roles/edit/'. $role->id)->with('success', "Created successfully");
                 }
-            } catch (Exception $e) {
+            } catch ( Exception $e ) {
                 return redirect('admin/roles/create')->with('error', "operation failed");
             }
         }
@@ -78,10 +77,9 @@ class AdminRolesController extends AdminController {
      */
     public function getEditRole($id) {
         if( $role = Role::find($id) ) {
-            $roles = Role::all();
             $permissions = Permission::all();
             $selected_permissions = $role->permissions->pluck('id')->toArray();
-            return view('admin.users.roles.edit',compact('roles','role','permissions', 'selected_permissions'));
+            return view('admin.users.roles.edit',compact('role','permissions', 'selected_permissions'));
         }
     }
 
@@ -100,7 +98,7 @@ class AdminRolesController extends AdminController {
 
             $validator = Validator::make(request()->only(['name', 'description', 'level']), $rules);
             if ( $validator->fails() ) {
-                return redirect('admin/roles/edit')->withInput()->withErrors($validator);
+                return redirect('admin/roles/edit/'.$id)->withInput()->withErrors($validator);
             } else {
                 try {
                     $role->name = request()->input('name');
@@ -110,12 +108,11 @@ class AdminRolesController extends AdminController {
                         $role->permissions()->sync(request()->input('permissions', array()));
                         return redirect()->back()->with('success', 'Updated Successfully');
                     }
-                } catch (Exception $e) {
+                } catch ( Exception $e ) {
                     return redirect()->back()->with('error', "Something went wrong");
                 }
             }
         }
         return redirect()->with('error', "Role not exists");
     }
-
 }

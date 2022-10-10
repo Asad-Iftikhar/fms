@@ -28,9 +28,7 @@ class AdminUsersController extends AdminController {
      */
     public function getIndex() {
         # Show Grid of All users
-        // Show the page
-        $data = User::all();
-        return view('admin.users.index', compact('data'))->render();
+        return view('admin.users.index')->render();
     }
 
     /**
