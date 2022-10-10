@@ -73,4 +73,6 @@ Route::post('admin/roles/create', 'Admin\Users\AdminRolesController@postCreateRo
 #Admin Update roles
 Route::get('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@getEditRole');
 Route::post('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@postEditRole');
+#Delete Role
+Route::get('admin/roles/delete/{id}', 'Admin\Users\AdminRolesController@deleteRole');
 

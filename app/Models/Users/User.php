@@ -7,11 +7,12 @@ use App\Models\Media\Media;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class User extends Base implements AuthenticatableContract, HasLocalePreference
 {
-    use \Illuminate\Auth\Authenticatable;
+    use \Illuminate\Auth\Authenticatable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

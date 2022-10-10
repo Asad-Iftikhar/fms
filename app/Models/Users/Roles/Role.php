@@ -21,8 +21,10 @@ namespace App\Models\Users\Roles;
 
 use App\Models\Base;
 use App\Models\Users\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Base {
+    use SoftDeletes;
 
     /**
      * The table associated with the model.

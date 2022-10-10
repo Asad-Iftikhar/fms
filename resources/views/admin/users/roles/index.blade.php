@@ -37,7 +37,7 @@
                                     <td>
                                         @if ($role->name != 'super_admin')
                                             <a href="{!! url('admin/roles/edit/' . $role->id) !!}" class="button btn btn-outline-info">Edit</a>
-                                            <a href="{!! url('admin/users/roles/' . $role->id . '/delete') !!}" class="button btn btn-outline-danger">Delete</a>
+                                            <a href="{!! url('admin/roles/delete/' . $role->id) !!}" class="button btn btn-outline-danger">Delete</a>
                                         @else
                                             -
                                         @endif
