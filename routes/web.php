@@ -59,7 +59,7 @@ Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
 Route::get('admin/users/getuser','Admin\Users\AdminUsersController@fetch_user');
 Route::get( 'admin/users/create', 'Admin\Users\AdminUsersController@getCreateUser' );
-Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postCreteUser' );
+Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postCreateUser' );
 Route::get( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@getEditUser' );
 Route::post( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@postEditUser' );
 
@@ -70,5 +70,7 @@ Route::get( 'admin/roles', 'Admin\Users\AdminRolesController@getIndex' );
 Route::get('admin/roles/create', 'Admin\Users\AdminRolesController@getCreateRole');
 Route::post('admin/roles/create', 'Admin\Users\AdminRolesController@postCreateRole');
 
-Route::get('admin/roles/update', 'Admin\Users\AdminRolesController@updateRole');
+#Admin Update roles
+Route::get('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@getEditRole');
+Route::post('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@postEditRole');
 
