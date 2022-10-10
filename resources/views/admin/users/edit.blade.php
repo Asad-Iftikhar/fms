@@ -72,8 +72,8 @@
                                 <label for="basicInput">Confirm Password</label>
                                 {!! $errors->first('confirm_password', '<small class="text-danger">:message</small>') !!}
                                 <input type="password" value=""
-                                       class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!} "
-                                       placeholder="Confirm Password" name="confirm_password"
+                                       class="form-control {!! $errors->has('password_confirmation') ? 'is-invalid' : '' !!} "
+                                       placeholder="Confirm Password" name="password_confirmation"
                                        id="basicInput">
                             </div>
                         </div>

@@ -123,7 +123,7 @@ class AdminUsersController extends AdminController {
      */
     public function postEditUser($user_id) {
         if( $user = User::find($user_id) ){
-            if( $user->id == 1 ){
+            if( $user->id == 1 ) {
                 return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
             }
             $request = request();
@@ -137,8 +137,7 @@ class AdminUsersController extends AdminController {
                 'dob' => 'nullable|date',
                 'joining_date' => 'nullable|date',
                 'phone' => 'nullable|min:11|unique:users,phone,'.$user->id,
-                'password' => 'nullable|min:6',
-                'confirm_password' => 'nullable|same:password'
+                'password' => 'nullable|required_with:password_confirmation|min:6|confirmed',
 
             );
             $validator = Validator::make( request()->all(), $rules );
@@ -156,13 +155,13 @@ class AdminUsersController extends AdminController {
                 $user->dob = $request->input('dob');
                 $user->joining_date = $request->input('joining_date');
                 $user->gender = $request->input('gender');
-                if($request->input('password')){
+                if ( $request->input('password') != '' ) {
                     $user->password = bcrypt($request->input('password'));
                 }
-                if($user->save()){
+                if ($user->save()) {
                     $user->roles()->sync( request()->input( 'roles', array() ) );
                     return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated Successfully !' );
-                }else{
+                } else {
                     return redirect( 'admin/users/edit/'.$user->id )->with( 'error', 'Something Went Wrong !' );
                 }
             }
@@ -176,7 +175,7 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function fetch_user(Request $request) {
+    public function fetchUsers(Request $request) {
         # Read value
         $draw = $request->get('draw');
         $start = $request->get("start");

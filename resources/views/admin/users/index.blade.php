@@ -50,7 +50,7 @@
             processing: true,
             serverSide: true,
             order: [[0, "desc"]],
-            ajax: "{{ url('admin/users/getuser') }}",
+            ajax: "{{ url('admin/users/getUsers') }}",
             columns: [
                 {data: 'id'},
                 {data: 'username'},
@@ -58,6 +58,10 @@
                 {data: 'action'}
             ],
             columnDefs: [
+                {
+                    'orderable': false,
+                    'targets': [ 3 ]
+                },
                 {
                     targets: -1,
                     className: 'dt-body-right'
