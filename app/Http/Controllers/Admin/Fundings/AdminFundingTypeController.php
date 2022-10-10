@@ -10,21 +10,32 @@ use Illuminate\Support\Facades\Validator;
 class AdminFundingTypeController extends AdminController {
 
     public function __construct() {
-//        parent::__construct();
-//        $this->middleware('permission:manage_funding'); //manage funding type
+        parent::__construct();
+        $this->middleware('permission:manage_fundingtype');
     }
 
-    public function getIndex(){
+    /**
+     * Show a list of fund types.
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function getIndex() {
         $fundingtypes = FundingType::all();
         return view('admin.fundings.index',['fundingtypes'=>$fundingtypes]);
     }
 
-    public function getCreateFundingType(){
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function getCreateFundingType() {
         $fundingtypes = FundingType::all();
         return view('admin.fundings.create',compact('fundingtypes'));
     }
 
-    public function  postCreateFundingType(){
+    /**
+     * Create Fund Type
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function  postCreateFundingType() {
 
         $rules = array(
             'name' => 'required|unique:fundingtype,name,',
@@ -50,13 +61,22 @@ class AdminFundingTypeController extends AdminController {
         }
     }
 
-    public function getEditFundType($id){
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function getEditFundType($id) {
         if( $fundtypeid = FundingType::find($id) ) {
             return view('admin.fundings.edit',compact('fundtypeid'));
         }
     }
 
-    public function postEditFundType($id){
+    /**
+     * Update Fund Type
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function postEditFundType($id) {
         if( $fundtypeid = FundingType::find($id) ) {
             $rules = array(
                 'name' => 'required|unique:fundingtype,name',
