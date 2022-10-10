@@ -9,7 +9,7 @@
     <div class="card">
         <div class="card-header">Create User
             <span>
-                  <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right">Back</a>
+                <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2"></i> Back</a>
             </span>
         </div>
         <div class="card-body">

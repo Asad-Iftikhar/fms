@@ -102,7 +102,7 @@ class AdminUsersController extends AdminController {
      */
     public function getEditUser($user_id) {
         // Show the page
-        if($user_id == 1){
+        if( $user_id == 1 ){
             return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
         }
         $roles = Role::all();
@@ -122,8 +122,8 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postEditUser($user_id) {
-        if($user = User::find($user_id)){
-            if($user->id == 1){
+        if( $user = User::find($user_id) ){
+            if( $user->id == 1 ){
                 return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
             }
             $request = request();
@@ -220,7 +220,7 @@ class AdminUsersController extends AdminController {
             if($data->id != 1){
                 $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
             }else{
-                $data->action='<h6> Not Allowed </h6>';
+                $data->action='<span> --N/A-- </span>';
             }
         }
         $response = array(
