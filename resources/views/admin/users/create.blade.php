@@ -7,9 +7,9 @@
 @endsection
 @section('content')
     <div class="card">
-        <div class="card-header">Add New User
+        <div class="card-header">Create User
             <span>
-                  <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
+                <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2"></i> Back</a>
             </span>
         </div>
         <div class="card-body">
