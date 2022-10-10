@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin\Users;
 use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use App\Models\Users\User;
+use App\Models\Users\Roles\Role;
 use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 /**
  * Class AdminUsersController
@@ -28,6 +31,141 @@ class AdminUsersController extends AdminController {
         // Show the page
         $data = User::all();
         return view('admin.users.index', compact('data'))->render();
+    }
+
+    /**
+     * Show add user form.
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function getCreateUser() {
+        // Show the page
+        $roles = Role::all();
+
+        return view('admin.users.create', compact('roles'))->render();
+    }
+
+
+    /**
+     * Users create form post
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function postCreateUser(Request $request) {
+        //  Validate Form
+        $rules = array (
+            'first_name' => 'nullable|string',
+            'last_name' => 'nullable|string',
+            'employee_id' => 'required|unique:users',
+            'username' => 'required|unique:users',
+            'email' => 'email|required|unique:users',
+            'dob' => 'nullable|date',
+            'joining_date' => 'nullable|date',
+            'phone' => 'nullable|min:11|unique:users',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password'
+
+        );
+        $validator = Validator::make( request()->all(), $rules );
+        if ( $validator->passes() ) {
+            $user = new User;
+            /*if(!empty(request()->file('image'))){
+                $avatar_id = $this->upload_file(request()->file('image'),'/users/avatars/','user_');
+                $user->avatar = $avatar_id;
+            }*/
+            $user->employee_id = $request->input('employee_id');
+            $user->first_name = $request->input('first_name');
+            $user->last_name = $request->input('last_name');
+            $user->username = $request->input('username');
+            $user->phone = $request->input('phone');
+            $user->email = $request->input('email');
+            $user->dob = $request->input('dob');
+            $user->joining_date = $request->input('joining_date');
+            $user->gender = $request->input('gender');
+            $user->password = bcrypt($request->input('password'));
+            if($user->save()){
+                $user->roles()->sync( request()->input( 'roles', array() ) );
+                return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated successfully !' );
+            }else{
+                return redirect( 'admin/users/edit/'.$user->id )->with( 'error', 'Something Went Wrong !' );
+            }
+        }
+        // Return with errors
+        return redirect( 'admin/users/create' )->withInput()->withErrors( $validator );
+    }
+
+    /**
+     * Show add user form.
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function getEditUser($user_id) {
+        // Show the page
+        $roles = Role::all();
+        $user = User::find($user_id);
+        if($user = User::find($user_id)){
+            $selected_roles = $user->roles()->pluck('id')->toArray();
+            return view('admin.users.edit', compact('user','roles','selected_roles'))->render();
+        }
+        return redirect('admin/users');
+    }
+
+
+    /**
+     * Users create form post
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function postEditUser($user_id) {
+        //  Validate Form
+        if($user = User::find($user_id)){
+            $request = request();
+            $rules = array (
+                'first_name' => 'nullable|string',
+                'last_name' => 'nullable|string',
+                'employee_id' => 'required|unique:users,employee_id,'.$user->id,
+                'username' => 'required|unique:users,username,'.$user->id,
+                'email' => 'email|required|unique:users,email,'.$user->id,
+                'dob' => 'nullable|date',
+                'joining_date' => 'nullable|date',
+                'phone' => 'nullable|min:11|unique:users,phone,'.$user->id,
+                'password' => 'nullable|min:6',
+                'confirm_password' => 'nullable|same:password'
+
+            );
+            $validator = Validator::make( request()->all(), $rules );
+            if ( $validator->passes() ) {
+                /*if(!empty(request()->file('image'))){
+                    $avatar_id = $this->upload_file(request()->file('image'),'/users/avatars/','user_');
+                    $user->avatar = $avatar_id;
+                }*/
+                $user->employee_id = $request->input('employee_id');
+                $user->first_name = $request->input('first_name');
+                $user->last_name = $request->input('last_name');
+                $user->username = $request->input('username');
+                $user->phone = $request->input('phone');
+                $user->email = $request->input('email');
+                $user->dob = $request->input('dob');
+                $user->joining_date = $request->input('joining_date');
+                $user->gender = $request->input('gender');
+                if($request->input('password')){
+                    $user->password = bcrypt($request->input('password'));
+                }
+                if($user->save()){
+                    $user->roles()->sync( request()->input( 'roles', array() ) );
+                    return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated successfully !' );
+                }else{
+                    return redirect( 'admin/users/edit/'.$user->id )->with( 'error', 'Something Went Wrong !' );
+                }
+            }
+            // Return with errors
+            return redirect( 'admin/users/edit/'.$user->id )->withInput()->withErrors( $validator );
+        }
+        return redirect('admin/users');
     }
 
     /**
@@ -74,7 +212,9 @@ class AdminUsersController extends AdminController {
         }
 
         $arrData = $arrData->get();
-
+        foreach ($arrData as $data){
+            $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
+        }
         $response = array(
           "draw" => intval($draw),
             "recordsTotal" => $total,

@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-header">Users
             <span>
-                  <button type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Add User</button>
+                  <a href="{{ url('admin/users/create') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Create</a>
             </span>
         </div>
         <div class="card-body">
@@ -50,17 +50,12 @@
             processing: true,
             serverSide: true,
             order: [[0, "desc"]],
-            "columnDefs": [
-                { 'orderable': false, 'targets': [ 3 ] }
-            ],
             ajax: "{{ url('admin/users/getuser') }}",
             columns: [
                 {data: 'id'},
                 {data: 'username'},
                 {data: 'email'},
-                {
-                    defaultContent: '<a href="{!! url('admin/users/edit') !!}" class="edit btn btn-outline-info">Edit</a>' + " " + " " + '<input type="button" class="delete btn btn-outline-danger fa fa-trash" value="Delete"/>'
-                }
+                {data: 'action'}
             ]
         });
         $('#userdatatable tbody').on('click', '.edit', function () {

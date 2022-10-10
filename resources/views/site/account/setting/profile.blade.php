@@ -1,4 +1,5 @@
 <div class="col-md-6 col-12 mx-auto">
+<div class="col-md-6 col-12 mx-auto">
     <div class="card">
         <div class="card-header">
             <h4 class="card-title">Edit Profile</h4>
