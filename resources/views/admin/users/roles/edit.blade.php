@@ -44,14 +44,14 @@
                                 <div class="form-group">
                                     <select name="permissions[]" class="choices form-select multiple-remove" multiple="multiple">
                                         @foreach($permissions as $permission)
-                                            <option value="{{$permission->id}}">{{$permission->name}}</option>
+                                            <option value="{{$permission->id}}" {{ in_array($permission->id, old('permissions', $selected_permissions)) ? 'selected' : '' }}>{{$permission->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Edit</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
         </div>
