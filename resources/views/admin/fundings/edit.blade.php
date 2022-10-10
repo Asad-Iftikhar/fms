@@ -38,7 +38,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
-                                <label>Amount</label>
+                                <label for="amount">Amount</label>
                                 <div class="col-md-12 mb-4">
                                     <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" value="{{ old('amount', $fundtypeid->amount) }}" id="amount" name="amount" required/>
                                 </div>

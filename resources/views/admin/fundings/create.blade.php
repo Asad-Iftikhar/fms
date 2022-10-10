@@ -25,20 +25,20 @@
                     @csrf
                     <div class="row">
                         <div class="form-group">
-                            <label>Fund Type Name</label>
+                            <label for="name">Fund Type Name</label>
                             {!! $errors->first('name', '<small class="text-danger">:message</small>') !!}
                             <input type="text" class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!}" id="basicInput" name="name" required/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
-                            <label>Fund Type Description</label>
+                            <label for="description">Fund Type Description</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
-                            <label>Amount</label>
+                            <label for="amount">Amount</label>
                             <div class="col-md-12 mb-4">
                                 <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" id="basicInput" name="amount" required/>
                             </div>
