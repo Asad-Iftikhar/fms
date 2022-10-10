@@ -89,9 +89,15 @@
                 </nav>
             </header>
             <div id="main-content">
-                {{-- Load Content --}}
+
+
                 <div class="page-heading">
                     <section class="section">
+                        {{--  Notifications  --}}
+                        @include('site.layouts.notifications')
+                        {{--  Notifications --}}
+
+                        {{-- Load Content --}}
                         @yield('content')
                     </section>
                 </div>

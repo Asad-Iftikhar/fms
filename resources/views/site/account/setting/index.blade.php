@@ -23,8 +23,6 @@
                             <div class="card-body">
                                 @include('site.account.setting.sidebar')
                             </div>
-                        </div>
-                        <div class="">
                             @if (\Request::is('account/setting/profile'))
                                 @include('site.account.setting.profile')
                             @elseif (\Request::is('account/setting/avatar'))

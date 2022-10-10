@@ -67,5 +67,10 @@ Route::post( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@postEdit
 Route::get( 'admin/roles', 'Admin\Users\AdminRolesController@getIndex' );
 
 #Admin Create roles
-Route::get('admin/roles/create', 'Admin\Users\AdminRolesController@createRoles');
+Route::get('admin/roles/create', 'Admin\Users\AdminRolesController@getCreateRole');
+Route::post('admin/roles/create', 'Admin\Users\AdminRolesController@postCreateRole');
+
+#Admin Update roles
+Route::get('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@getEditRole');
+Route::post('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@postEditRole');
 
