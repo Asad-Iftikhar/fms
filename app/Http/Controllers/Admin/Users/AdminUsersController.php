@@ -40,7 +40,6 @@ class AdminUsersController extends AdminController {
     public function getCreateUser() {
         // Show the page
         $roles = Role::all();
-
         return view('admin.users.create', compact('roles'))->render();
     }
 

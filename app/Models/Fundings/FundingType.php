@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Users\Roles;
+namespace App\Models\Fundings;
 
 /**
  * App\Models\Users\Roles\Role
@@ -8,7 +8,7 @@ namespace App\Models\Users\Roles;
  * @property int $id
  * @property string $name
  * @property string|null $description
- * @property int $level
+ * @property int $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Users\Roles\Permission[] $permissions
@@ -20,35 +20,21 @@ namespace App\Models\Users\Roles;
  */
 
 use App\Models\Base;
-use App\Models\Users\User;
 
-class Role extends Base {
-
+class FundingType extends Base {
+    public $timestamps = false;
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'roles';
+    protected $table = 'fundingtype';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = array('name', 'description', 'level');
+    protected $fillable = array('name', 'description', 'amount');
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function users() {
-        return $this->belongsToMany( User::class, 'role_user' )->withTimestamps();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function permissions() {
-        return $this->belongsToMany( Permission::class, 'permission_role' )->withTimestamps();
-    }
 }

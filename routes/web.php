@@ -74,3 +74,14 @@ Route::post('admin/roles/create', 'Admin\Users\AdminRolesController@postCreateRo
 Route::get('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@getEditRole');
 Route::post('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@postEditRole');
 
+#Admin Funding Types
+Route::get( 'admin/funding/types', 'Admin\Fundings\AdminFundingTypeController@getIndex' );
+
+#Admin Create Funding Types
+Route::get('admin/funding/types/create', 'Admin\Fundings\AdminFundingTypeController@getCreateFundingType');
+Route::post('admin/funding/types/create', 'Admin\Fundings\AdminFundingTypeController@postCreateFundingType');
+
+#Admin Update Funding Types
+Route::get('admin/funding/types/edit/{id}', 'Admin\Fundings\AdminFundingTypeController@getEditFundType');
+Route::post('admin/funding/types/edit/{id}', 'Admin\Fundings\AdminFundingTypeController@postEditFundType');
+
