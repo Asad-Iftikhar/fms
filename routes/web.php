@@ -74,3 +74,11 @@ Route::post('admin/roles/create', 'Admin\Users\AdminRolesController@postCreateRo
 Route::get('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@getEditRole');
 Route::post('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@postEditRole');
 
+#Admin Events
+Route::get( 'admin/events', 'Admin\Users\AdminEventsController@getIndex' );
+Route::get('admin/events/getEvents','Admin\Events\AdminEventsController@fetchEvents');
+Route::get( 'admin/events/create', 'Admin\Events\AdminEventsController@getCreateEvent' );
+Route::post( 'admin/events/create', 'Admin\Events\AdminEventsController@postCreateEvent' );
+Route::get( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@getEditEvent' );
+Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postEditEvent' );
+

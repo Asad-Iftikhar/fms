@@ -51,6 +51,12 @@
                         </li>
                     </ul>
                 </li>
+                <li @class(["sidebar-item", "active" => \Request::is('admin/events') || \Request::is('admin/events/*') ])>
+                    <a href="{{ url('admin/events') }}" class='sidebar-link'>
+                        <i class="bi bi-calendar-event"></i>
+                        <span>Events</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
