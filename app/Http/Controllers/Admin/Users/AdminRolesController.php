@@ -52,7 +52,7 @@ class AdminRolesController extends AdminController {
         );
 
         $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
+        if ( $validator->fails() ) {
             return redirect('admin/roles/create')->withInput()->withErrors($validator);
         } else {
             $data = $request->input();
@@ -62,9 +62,9 @@ class AdminRolesController extends AdminController {
                 $roles->description = $data['description'];
                 $roles->level = $data['level'];
 
-                if($roles->save()){
+                if( $roles->save() ){
                     $roles->permissions()->sync(request()->input('permissions',array()));
-                    return redirect('admin/roles/create')->with('success', "Insert successfully");
+                    return redirect('admin/roles/edit/'. $roles->id)->with('success', "Created successfully");
                 }
             } catch (Exception $e) {
                 return redirect('admin/roles/create')->with('error', "operation failed");
