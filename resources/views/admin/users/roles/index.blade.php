@@ -34,10 +34,10 @@
                                     <td>{!! $role->users->count() !!}</td>
                                     <td>@if ($role->name == 'super_admin') {!! 'ALL' !!} @else {!! $role->permissions_count !!} @endif</td>
                                     <td><span class="hide">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $role->created_at )->toDateString() !!}</span></td>
-                                    <td>
+                                    <td class="d-flex justify-content-end">
                                         @if ($role->name != 'super_admin')
-                                            <a href="{!! url('admin/users/roles/' . $role->id . '/edit') !!}" class="button btn btn-outline-info">Edit</a>
-                                            <a href="{!! url('admin/users/roles/' . $role->id . '/delete') !!}" class="button btn btn-outline-danger">Delete</a>
+                                            <a href="{!! url('admin/users/roles/' . $role->id . '/edit') !!}" class="button btn btn-outline-info me-1 mb-1">Edit</a>
+                                            <a href="{!! url('admin/users/roles/' . $role->id . '/delete') !!}" class="button btn btn-outline-danger me-1 mb-1">Delete</a>
                                         @else
                                             -
                                         @endif
@@ -63,9 +63,15 @@
         {
             // DataTable
             $('#RoleTable').DataTable({
-                "order": [[ 0, "asc" ]],
-                "columnDefs": [
-                    { 'orderable': false, 'targets': [ 4 ] }
+                order : [[ 0, "asc" ]],
+                columnDefs : [
+                    {
+                        'orderable': false,
+                        'targets': [ 4 ] },
+                    {
+                        targets: -1,
+                        className: 'dt-body-right'
+                    }
                 ]
             });
         });
