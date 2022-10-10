@@ -59,6 +59,7 @@
          </div>
     </section>
 @section('javascript')
+    @parent
     <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
 @stop
 @stop
