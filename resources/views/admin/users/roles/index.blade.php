@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-header">Users Roles
             <span>
-                  <a href="{{url('admin/roles/create')}}" type="button" class="btn btn-primary" style="float: right"><span class="bi bi-plus" style="position: relative; top: 3px"></span> Create</a>
+                  <a href="{{url('admin/roles/create')}}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldShield-Done" style="position: relative; top: 3px"></i> Create</a>
             </span>
         </div>
         <div class="card-body">

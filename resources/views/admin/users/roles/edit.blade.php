@@ -10,7 +10,7 @@
                     </div>
                     <div class="col-6">
                         <span>
-                            <a href="{{url('admin/roles')}}" type="button" class="btn btn-primary" style="float: right"><span class="bi bi-arrow-left" style="position: relative; top: 3px"></span> Back</a>
+                            <a href="{{url('admin/roles')}}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
                         </span>
                     </div>
                 </div>
