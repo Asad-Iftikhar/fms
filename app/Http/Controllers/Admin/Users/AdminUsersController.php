@@ -55,7 +55,7 @@ class AdminUsersController extends AdminController {
         $rules = array (
             'first_name' => 'nullable|string',
             'last_name' => 'nullable|string',
-            'employee_id' => 'required|unique:users',
+            'employee_id' => 'nullable|unique:users',
             'username' => 'required|unique:users',
             'email' => 'email|required|unique:users',
             'dob' => 'nullable|date',
@@ -84,7 +84,7 @@ class AdminUsersController extends AdminController {
             $user->password = bcrypt($request->input('password'));
             if($user->save()){
                 $user->roles()->sync( request()->input( 'roles', array() ) );
-                return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated successfully !' );
+                return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Created Successfully !' );
             }else{
                 return redirect( 'admin/users/edit/'.$user->id )->with( 'error', 'Something Went Wrong !' );
             }
@@ -101,6 +101,9 @@ class AdminUsersController extends AdminController {
      */
     public function getEditUser($user_id) {
         // Show the page
+        if( $user_id == 1 ){
+            return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
+        }
         $roles = Role::all();
         $user = User::find($user_id);
         if($user = User::find($user_id)){
@@ -118,20 +121,22 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postEditUser($user_id) {
-        //  Validate Form
-        if($user = User::find($user_id)){
+        if( $user = User::find($user_id) ){
+            if( $user->id == 1 ) {
+                return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
+            }
             $request = request();
+            //  Validate Form
             $rules = array (
                 'first_name' => 'nullable|string',
                 'last_name' => 'nullable|string',
-                'employee_id' => 'required|unique:users,employee_id,'.$user->id,
+                'employee_id' => 'nullable|unique:users,employee_id,'.$user->id,
                 'username' => 'required|unique:users,username,'.$user->id,
                 'email' => 'email|required|unique:users,email,'.$user->id,
                 'dob' => 'nullable|date',
                 'joining_date' => 'nullable|date',
                 'phone' => 'nullable|min:11|unique:users,phone,'.$user->id,
-                'password' => 'nullable|min:6',
-                'confirm_password' => 'nullable|same:password'
+                'password' => 'nullable|required_with:password_confirmation|min:6|confirmed',
 
             );
             $validator = Validator::make( request()->all(), $rules );
@@ -149,13 +154,13 @@ class AdminUsersController extends AdminController {
                 $user->dob = $request->input('dob');
                 $user->joining_date = $request->input('joining_date');
                 $user->gender = $request->input('gender');
-                if($request->input('password')){
+                if ( $request->input('password') != '' ) {
                     $user->password = bcrypt($request->input('password'));
                 }
-                if($user->save()){
+                if ($user->save()) {
                     $user->roles()->sync( request()->input( 'roles', array() ) );
-                    return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated successfully !' );
-                }else{
+                    return redirect( 'admin/users/edit/'.$user->id )->with( 'success', 'Updated Successfully !' );
+                } else {
                     return redirect( 'admin/users/edit/'.$user->id )->with( 'error', 'Something Went Wrong !' );
                 }
             }
@@ -169,7 +174,7 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function fetch_user(Request $request) {
+    public function fetchUsers(Request $request) {
         # Read value
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -210,7 +215,11 @@ class AdminUsersController extends AdminController {
 
         $arrData = $arrData->get();
         foreach ($arrData as $data){
-            $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
+            if($data->id != 1){
+                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
+            }else{
+                $data->action='<span> --N/A-- </span>';
+            }
         }
         $response = array(
           "draw" => intval($draw),

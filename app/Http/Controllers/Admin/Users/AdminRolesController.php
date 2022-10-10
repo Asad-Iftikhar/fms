@@ -115,4 +115,18 @@ class AdminRolesController extends AdminController {
         }
         return redirect()->with('error', "Role not exists");
     }
+
+    /**
+     * Update User Role
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function deleteRole($RoleId) {
+        if( $role = Role::find($RoleId) ) {
+            $role->delete();
+            return redirect()->back()->with('success', 'Deleted Successfully');
+        } else {
+            return redirect()->with('error', "Role not exists");
+        }
+    }
 }

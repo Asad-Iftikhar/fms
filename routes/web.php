@@ -57,7 +57,7 @@ Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
 
 #Admin users
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
-Route::get('admin/users/getuser','Admin\Users\AdminUsersController@fetch_user');
+Route::get('admin/users/getUsers','Admin\Users\AdminUsersController@fetchUsers');
 Route::get( 'admin/users/create', 'Admin\Users\AdminUsersController@getCreateUser' );
 Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postCreateUser' );
 Route::get( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@getEditUser' );
@@ -73,6 +73,8 @@ Route::post('admin/roles/create', 'Admin\Users\AdminRolesController@postCreateRo
 #Admin Update roles
 Route::get('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@getEditRole');
 Route::post('admin/roles/edit/{id}', 'Admin\Users\AdminRolesController@postEditRole');
+#Delete Role
+Route::get('admin/roles/delete/{id}', 'Admin\Users\AdminRolesController@deleteRole');
 
 #Admin Funding Types
 Route::get( 'admin/funding/types', 'Admin\Fundings\AdminFundingTypeController@getIndex' );

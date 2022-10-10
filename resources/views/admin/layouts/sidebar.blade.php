@@ -19,19 +19,16 @@
                     </a>
                 </li>
 
-                <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/users') || \Request::is('admin/users/*')
-                    || \Request::is('admin/roles') || \Request::is('admin/roles/*')])>
+                <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/users/*') || \Request::is('admin/users') || \Request::is('admin/roles/*') || \Request::is('admin/roles')])>
                     <a href="#" class='sidebar-link'>
                         <i class="iconly-boldProfile"></i>
                         <span>Manage Users</span>
                     </a>
-                    <ul @class(["submenu", "active" => \Request::is('admin/users') || \Request::is('admin/roles')
-                        || \Request::is('admin/roles/*') || \Request::is('admin/users/*')])>
+                    <ul @class(["submenu", "active" => \Request::is('admin/users/*') || \Request::is('admin/users') || \Request::is('admin/roles/*') || \Request::is('admin/roles')])>
                         <li @class(["submenu-item", "active" => \Request::is('admin/users') || \Request::is('admin/users/*')])>
                             <a href="{!! url('admin/users') !!}">Users</a>
                         </li>
-                        <li @class(["submenu-item", "active" => \Request::is('admin/roles')
-                            || \Request::is('admin/roles/*')])>
+                        <li @class(["submenu-item", "active" => \Request::is('admin/roles') || \Request::is('admin/roles/*')])>
                             <a href="{{url('admin/roles')}}">User Roles</a>
                         </li>
                     </ul>
