@@ -59,6 +59,10 @@
             ],
             columnDefs: [
                 {
+                    'orderable': false,
+                    'targets': [ 3 ]
+                },
+                {
                     targets: -1,
                     className: 'dt-body-right'
                 }

@@ -139,18 +139,18 @@
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="male" {{ ($user->gender == 'male')?'checked':'' }} name="gender" id="gender-male"
                                            class='form-check-input' >
-                                    <label for="remember-me-v">Male</label>
+                                    <label for="gender-male">Male</label>
                                 </div>
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="female" {{ ($user->gender == 'female')?'checked':'' }} name="gender" id="gender-female"
                                            class='form-check-input '>
-                                    <label for="remember-me-v">Female</label>
+                                    <label for="gender-female">Female</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-4">
                             <h6>Roles</h6>
-                            <p>Select multiple roles for this user</p>
+                            <p>Select Roles</p>
                             <div class="form-group">
                                 <select name="roles[]" class="choices form-select multiple-remove"
                                         multiple="multiple">
