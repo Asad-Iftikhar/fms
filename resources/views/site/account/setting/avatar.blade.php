@@ -1,9 +1,5 @@
-
-<div class="col-md-6 col-12 mx-auto">
+<div class="col-md-12 col-12 mx-auto">
     <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Change Avatar</h4>
-        </div>
         <div class="card-content">
             <div class="card-body">
                 <form class="form form-vertical" enctype="multipart/form-data" method="post" action="{{ url('account/setting/avatar') }}">
@@ -13,9 +9,6 @@
 
                             <div class="col-12 col-md-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Avatar Preview</h5>
-                                    </div>
                                     <div class="card-content">
                                         <div class="card-body">
                                             <p class="card-text text-info">

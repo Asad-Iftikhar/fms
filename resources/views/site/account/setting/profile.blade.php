@@ -1,9 +1,5 @@
-<div class="col-md-6 col-12 mx-auto">
-<div class="col-md-6 col-12 mx-auto">
+<div class="col-md-12 col-12 mx-auto">
     <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Edit Profile</h4>
-        </div>
         <div class="card-content">
             <div class="card-body">
                 <form class="form form-vertical" method="post" action="{{ url('account/setting/profile') }}">

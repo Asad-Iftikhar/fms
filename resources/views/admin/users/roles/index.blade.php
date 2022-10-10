@@ -10,7 +10,7 @@
     <div class="card">
         <div class="card-header">Users Roles
             <span>
-                  <a href="{{url('admin/roles/create')}}" type="button" class="btn btn-primary" style="float: right"><span class="bi bi-plus" style="position: relative; top: 3px"></span> Create</a>
+                  <a href="{{url('admin/roles/create')}}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldShield-Done"></i> Create</a>
             </span>
         </div>
         <div class="card-body">
@@ -63,9 +63,15 @@
         {
             // DataTable
             $('#RoleTable').DataTable({
-                "order": [[ 0, "asc" ]],
-                "columnDefs": [
-                    { 'orderable': false, 'targets': [ 4 ] }
+                order : [[ 0, "asc" ]],
+                columnDefs : [
+                    {
+                        'orderable': false,
+                        'targets': [ 4 ] },
+                    {
+                        targets: -1,
+                        className: 'dt-body-right'
+                    }
                 ]
             });
         });
