@@ -56,7 +56,7 @@ class AdminUsersController extends AdminController {
         $rules = array (
             'first_name' => 'nullable|string',
             'last_name' => 'nullable|string',
-            'employee_id' => 'required|unique:users',
+            'employee_id' => 'nullable|unique:users',
             'username' => 'required|unique:users',
             'email' => 'email|required|unique:users',
             'dob' => 'nullable|date',
@@ -131,7 +131,7 @@ class AdminUsersController extends AdminController {
             $rules = array (
                 'first_name' => 'nullable|string',
                 'last_name' => 'nullable|string',
-                'employee_id' => 'required|unique:users,employee_id,'.$user->id,
+                'employee_id' => 'nullable|unique:users,employee_id,'.$user->id,
                 'username' => 'required|unique:users,username,'.$user->id,
                 'email' => 'email|required|unique:users,email,'.$user->id,
                 'dob' => 'nullable|date',

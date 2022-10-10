@@ -39,20 +39,41 @@
                         <div class="col-md-3"></div>--}}
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Employee ID &nbsp;&nbsp;<small class="text-danger"> Required *</small></label>
-                                {!! $errors->first('employee_id', '<small class="text-danger">:message</small>') !!}
-                                <input type="number" value="{{ old('employee_id', $user->employee_id) }}" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
-                                       placeholder="Employee Id" name="employee_id"
-                                       id="employee-id-icon">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="basicInput">Username &nbsp;&nbsp;<small class="text-danger"> Required *</small></label>
+                                <label for="basicInput">Username &nbsp;&nbsp;<small class="text-danger">*</small></label>
                                 {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
                                 <input type="text" value="{{ old('username', $user->username) }}"
                                        class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
                                        placeholder="Username" name="username"
+                                       id="basicInput">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="basicInput">Email &nbsp;&nbsp;<small class="text-danger">*</small></label>
+                                {!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
+                                <input type="text" value="{{ old('email', $user->email) }}"
+                                       class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "
+                                       placeholder="Email Address" name="email"
+                                       id="basicInput">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="basicInput">Password</label>
+                                {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
+                                <input type="password"
+                                       class="form-control {!! $errors->has('password') ? 'is-invalid' : '' !!} "
+                                       placeholder="Password" name="password"
+                                       id="basicInput">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="basicInput">Confirm Password</label>
+                                {!! $errors->first('confirm_password', '<small class="text-danger">:message</small>') !!}
+                                <input type="password" value=""
+                                       class="form-control {!! $errors->has('password_confirmation') ? 'is-invalid' : '' !!} "
+                                       placeholder="Confirm Password" name="password_confirmation"
                                        id="basicInput">
                             </div>
                         </div>
@@ -78,12 +99,11 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Email &nbsp;&nbsp;<small class="text-danger"> Required *</small></label>
-                                {!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
-                                <input type="text" value="{{ old('email', $user->email) }}"
-                                       class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "
-                                       placeholder="Email Address" name="email"
-                                       id="basicInput">
+                                <label for="basicInput">Employee ID </label>
+                                {!! $errors->first('employee_id', '<small class="text-danger">:message</small>') !!}
+                                <input type="number" value="{{ old('employee_id', $user->employee_id) }}" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
+                                       placeholder="Employee Id" name="employee_id"
+                                       id="employee-id-icon">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -94,26 +114,6 @@
                                        class="form-control {!! $errors->has('phone') ? 'is-invalid' : '' !!} "
                                        placeholder="Phone Number" name="phone"
                                        id="basicInput">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="basicInput">Password</label>
-                                {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
-                                <input type="password"
-                                       class="form-control {!! $errors->has('password') ? 'is-invalid' : '' !!} "
-                                       placeholder="Password" name="password"
-                                       id="basicInput">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="password_confirmation">Confirm Password</label>
-                                {!! $errors->first('confirm_password', '<small class="text-danger">:message</small>') !!}
-                                <input type="password" value=""
-                                       class="form-control {!! $errors->has('password_confirmation') ? 'is-invalid' : '' !!} "
-                                       placeholder="Confirm Password" name="password_confirmation"
-                                       id="password_confirmation">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -144,13 +144,13 @@
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="female" {{ ($user->gender == 'female')?'checked':'' }} name="gender" id="gender-female"
                                            class='form-check-input '>
-                                    <label for="gender-female">Female</label>
+                                    <label for="gender-female">Male</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-4">
                             <h6>Roles</h6>
-                            <p>Select Roles</p>
+                            <p>Select multiple roles for this user</p>
                             <div class="form-group">
                                 <select name="roles[]" class="choices form-select multiple-remove"
                                         multiple="multiple">
