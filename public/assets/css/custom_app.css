@@ -1388,6 +1388,11 @@
     padding: 0
 }
 
+#main #main-content {
+    padding: 2rem;
+    background: #ffffff;
+}
+
 #main-content section > .card {
     border-radius: 0px;
     min-height: 400px;
