@@ -99,9 +99,9 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Employee ID </label>
+                                <label for="employee-id-icon">Employee ID </label>
                                 {!! $errors->first('employee_id', '<small class="text-danger">:message</small>') !!}
-                                <input type="number" value="{{ old('employee_id', $user->employee_id) }}" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
+                                <input type="number" value="{{ old('employee_id', $user->employee_id) }}" class="form-control {!! $errors->has('employee_id') ? 'is-invalid' : '' !!} "
                                        placeholder="Employee Id" name="employee_id"
                                        id="employee-id-icon">
                             </div>
@@ -144,7 +144,7 @@
                                 <div class="checkbox mt-2">
                                     <input type="radio" value="female" {{ ($user->gender == 'female')?'checked':'' }} name="gender" id="gender-female"
                                            class='form-check-input '>
-                                    <label for="gender-female">Male</label>
+                                    <label for="gender-female">Female</label>
                                 </div>
                             </div>
                         </div>

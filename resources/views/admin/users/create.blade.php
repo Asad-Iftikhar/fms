@@ -101,7 +101,7 @@
                             <div class="form-group">
                                 <label for="basicInput">Employee ID</label>
                                 {!! $errors->first('employee_id', '<small class="text-danger">:message</small>') !!}
-                                <input type="number" value="{{ old('employee_id') }}" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
+                                <input type="number" value="{{ old('employee_id') }}" class="form-control {!! $errors->has('employee_id') ? 'is-invalid' : '' !!} "
                                        placeholder="Employee Id" name="employee_id"
                                        id="employee-id-icon">
                             </div>
