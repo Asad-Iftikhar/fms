@@ -108,12 +108,12 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Confirm Password</label>
+                                <label for="password_confirmation">Confirm Password</label>
                                 {!! $errors->first('confirm_password', '<small class="text-danger">:message</small>') !!}
                                 <input type="password" value=""
-                                       class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!} "
-                                       placeholder="Confirm Password" name="confirm_password"
-                                       id="basicInput">
+                                       class="form-control {!! $errors->has('password_confirmation') ? 'is-invalid' : '' !!} "
+                                       placeholder="Confirm Password" name="password_confirmation"
+                                       id="password_confirmation">
                             </div>
                         </div>
                         <div class="col-md-12">
