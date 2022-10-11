@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('event_date')->nullable();
             $table->integer('event_cost')->nullable();
             $table->integer('cash_by_funds')->nullable();
-            $table->enum('status',['draft','created','finished'])->default('draft');
+            $table->enum('status',['draft','active','finished'])->default('draft');
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+
     }
 };

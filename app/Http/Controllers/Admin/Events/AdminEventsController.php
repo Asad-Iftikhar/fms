@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin\Events;
 
 use App\Http\Controllers\AdminController;
 use App\Models\Events\Event;
-use App\Models\Users\Roles\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,7 +15,7 @@ class AdminRolesController extends AdminController {
     }
 
     /**
-     * Show a list of users roles.
+     * Show a list of events.
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
@@ -37,7 +36,7 @@ class AdminRolesController extends AdminController {
     }
 
     /**
-     * Create User Role
+     * Create Event
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -67,7 +66,7 @@ class AdminRolesController extends AdminController {
      * @return \Illuminate\Http\JsonResponse
      * @throws \Throwable
      */
-    public function fetchUsers ( Request $request ) {
+    public function fetchEvents ( Request $request ) {
 
     }
 
