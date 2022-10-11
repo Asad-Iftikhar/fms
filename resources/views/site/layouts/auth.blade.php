@@ -14,10 +14,11 @@
 
 </head>
 <body>
-<div id="auth">
-
-    @yield('content')
-
-</div>
+    <div id="auth">
+        @yield('content')
+    </div>
+@section('javascript')
+    <script src="{!! asset("assets/js/bootstrap.bundle.min.js") !!}"></script>
+@show
 </body>
 </html>

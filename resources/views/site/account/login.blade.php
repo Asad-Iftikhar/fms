@@ -16,6 +16,13 @@
                     </div>
                 @endif
                 <p class="auth-subtitle">Log in with your data that you entered during registration.</p>
+                @if ($errors->has('error'))
+                    <div class="alert alert-danger alert-dismissible show fade">
+                        {{ $errors->first('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                    </div>
+                @endif
                 <form action="{!! url('account/login') !!}" method="post">
                     <!-- CSRF Token -->
                     <input type="hidden" name="_token" id="_token" value="{!! csrf_token() !!}" />
@@ -47,9 +54,6 @@
                             Keep me logged in
                         </label>
                     </div>
-                    @if ($errors->has('error'))
-                        <span class="text-danger">{{ $errors->first('error') }}</span>
-                    @endif
                     <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Log in</button>
                 </form>
                 <div class="text-center mt-5 text-lg fs-4">

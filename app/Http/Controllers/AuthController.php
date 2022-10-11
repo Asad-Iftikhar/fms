@@ -61,6 +61,7 @@ class AuthController extends Controller
                 Auth::logoutOtherDevices(request()->input('password'));
                 return redirect()->intended('account')->with('success', 'You have successfully logged in.');
             }
+            return redirect()->back()->withErrors(['error' => 'Incorrect Email or Password!']);
         }
         // Something went wrong
         return redirect('account/login')->withInput()->withErrors($validator);
