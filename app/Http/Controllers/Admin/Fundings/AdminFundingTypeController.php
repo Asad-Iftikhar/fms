@@ -20,7 +20,7 @@ class AdminFundingTypeController extends AdminController {
      */
     public function getIndex() {
         $fundingTypes = FundingType::all();
-        return view('admin.fundings.index',['fundingtypes'=>$fundingTypes]);
+        return view('admin.fundings.index',compact('fundingTypes'));
     }
 
     /**
@@ -66,8 +66,8 @@ class AdminFundingTypeController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getEditFundType($id) {
-        if( $fundTypeId = FundingType::find($id) ) {
-            return view('admin.fundings.edit',compact('fundTypeId'));
+        if( $fundType = FundingType::find($id) ) {
+            return view('admin.fundings.edit',compact('fundType'));
         }
     }
 
@@ -77,9 +77,9 @@ class AdminFundingTypeController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postEditFundType($id) {
-        if( $fundTypeId = FundingType::find($id) ) {
+        if( $fundType = FundingType::find($id) ) {
             $rules = array(
-                'name' => 'required|unique:fundingtype,name' . $fundTypeId,
+                'name' => 'required|unique:fundingtype,name' . $id,
                 'description' => 'max:255',
                 'amount' => 'required|numeric',
             );
@@ -89,10 +89,10 @@ class AdminFundingTypeController extends AdminController {
                 return redirect('admin/funding/types/edit/'.$id)->withInput()->withErrors($validator);
             } else {
                 try {
-                    $fundTypeId->name = request()->input('name');
-                    $fundTypeId->description = request()->input('description');
-                    $fundTypeId->amount = request()->input('amount');
-                    if ( $fundTypeId->save() ) {
+                    $fundType->name = request()->input('name');
+                    $fundType->description = request()->input('description');
+                    $fundType->amount = request()->input('amount');
+                    if ( $fundType->save() ) {
                         return redirect()->back()->with('success', 'Updated Successfully');
                     }
                 } catch ( Exception $e ) {
