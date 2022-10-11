@@ -37,9 +37,9 @@
                                     <td>
                                         @if ($role->name != 'super_admin')
                                             <a href="{!! url('admin/roles/edit/' . $role->id) !!}" class="button btn btn-outline-info">Edit</a>
-                                            <a href="{!! url('admin/roles/delete/' . $role->id) !!}" class="button btn btn-outline-danger">Delete</a>
+                                            <button onClick="confirmDelete('{{ url( 'admin/roles/delete' ).'/'. $role->id }}')" class="button btn btn-outline-danger">Delete</button>
                                         @else
-                                            -
+                                            -- N/A --
                                         @endif
                                     </td>
                                 </tr>
@@ -55,6 +55,7 @@
 @section('javascript')
     @parent
     <script type="text/javascript" src="{{ asset('assets/DataTables-1.12.1/datatables.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script type="text/javascript">
 
@@ -76,6 +77,20 @@
                 ]
             });
         });
+        function confirmDelete(delUrl){
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, You will not be able to recover the role !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = delUrl;
+                } else {
+                }
+            });
+        };
     </script>
 @stop
 @stop
