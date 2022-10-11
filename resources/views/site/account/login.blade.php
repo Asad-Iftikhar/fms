@@ -20,7 +20,7 @@
                     <!-- CSRF Token -->
                     <input type="hidden" name="_token" id="_token" value="{!! csrf_token() !!}" />
 
-                    <div class="form-group position-relative has-icon-left mb-4">
+                    <div class="form-group position-relative has-icon-left mb-4 username-container">
                         <input type="text" class="form-control form-control-xl @error('username') is-invalid @enderror" name="username" id="username" value="{{{ old('username') }}}" placeholder="Username/E-Mail" />
                         @if ($errors->has('username'))
                             <span class="text-danger">{{ $errors->first('username') }}</span>
@@ -28,13 +28,13 @@
                         @if ($errors->has('email'))
                             <span class="text-danger">{{ $errors->first('email') }}</span>
                         @endif
-                        <div class="form-control-icon">
+                        <div class="form-control-icon {{ ( $errors->has('username') || $errors->has('email')  ) ? 'has-error' : '' }} ">
                             <i class="bi bi-person-fill"></i>
                         </div>
                     </div>
-                    <div class="form-group position-relative has-icon-left mb-4">
+                    <div class="form-group position-relative has-icon-left mb-4 password-container">
                         <input type="password" class="form-control form-control-xl @error('password') is-invalid @enderror" name="password" id="password" value="{{{ old('password') }}}"  placeholder="Password"/>
-                        <div class="form-control-icon">
+                        <div class="form-control-icon {{ ( $errors->has('password') ) ? 'has-error' : '' }}">
                             <i class="bi bi-shield-lock"></i>
                         </div>
                         @if ($errors->has('password'))

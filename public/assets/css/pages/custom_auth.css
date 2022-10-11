@@ -35,7 +35,7 @@ body {
     }
 }
 
-#username .has-error, #password .has-error {
-    top: 35%;
+.username-container .has-error, .password-container .has-error {
+    top: 35% !important;
 }
 
