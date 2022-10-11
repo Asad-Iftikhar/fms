@@ -26,7 +26,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($fundingTypes as $fundingType)
+                            @foreach ($fundingtypes as $fundingType)
                                 <tr>
                                     <td>{!! $fundingType->name !!}</td>
                                     <td>{!! $fundingType->description !!}</td>

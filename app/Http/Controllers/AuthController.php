@@ -14,11 +14,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use DB;
 use Mail;
+use Symfony\Component\Console\Input\Input;
 
 class AuthController extends Controller
 {
-    protected $maxattempts = 3;
-
     /**
      * Get Login Page View
      * @return \Illuminate\View\View
@@ -39,21 +38,24 @@ class AuthController extends Controller
     public function postLogin(Request $request) {
         // Declare the rules for the form validation
         $rules = array(
-            'username' => 'string|required',
-            'password' => 'string|required'
+            'username' => 'required|string',
+            'password' => 'required|string'
         );
         // Validate the inputs
         $validator = Validator::make(request()->all(), $rules);
         // Check if the form validates with success
-        if ($validator->passes()) {
+        if ( $validator->passes() ) {
+            if(empty(User::where('email',$request->input('username'))->first())){
+                return redirect()->back()->withErrors(['email' => 'User does not exist']);
+            }
             $throttler = Throttle::get(RequestInstance::instance(), 5, 5);
-            if (!$throttler->attempt()) {
-                return redirect('account/login')->with('error', 'Too many incorrect attempts. Please try again later.');
+            if ( !$throttler->attempt() ) {
+                return redirect()->back()->withErrors(['error' => 'Too many incorrect attempts. Please try again later.']);
             }
             $RememberMe = request()->filled('remember-me');
             $field = filter_var(request()->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
             // Try to log the user in
-            if (Auth::attempt(array($field => request()->input('username'), 'password' => request()->input('password'), 'activated' => 1, 'disabled' => 0), $RememberMe)) {
+            if ( Auth::attempt(array($field => request()->input('username'), 'password' => request()->input('password'), 'activated' => 1, 'disabled' => 0), $RememberMe)) {
                 $request->session()->regenerate();
                 $throttler->clear($request);
                 Auth::logoutOtherDevices(request()->input('password'));

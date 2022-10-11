@@ -15,7 +15,7 @@
 </head>
 <body>
 <div id="auth">
-    @include('site.layouts.notifications')
+
     @yield('content')
 
 </div>
