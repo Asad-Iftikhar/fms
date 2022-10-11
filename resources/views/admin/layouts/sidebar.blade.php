@@ -29,7 +29,7 @@
                             <a href="{!! url('admin/users') !!}">Users</a>
                         </li>
                         <li @class(["submenu-item", "active" => \Request::is('admin/roles') || \Request::is('admin/roles/*')])>
-                            <a href="{{url('admin/roles')}}">User Roles</a>
+                            <a href="{{ url('admin/roles') }}">User Roles</a>
                         </li>
                     </ul>
                 </li>
@@ -40,15 +40,15 @@
                         <span>Manage Funds</span>
                     </a>
                     <ul @class(["submenu", "active" => \Request::is('admin/funding') || \Request::is('admin/funding/types')])>
+                        <li class="submenu-item ">
+                            <a href="{{ url('admin/collections') }}">Funds Collections</a>
+                        </li>
+                        <li class="submenu-item ">
+                            <a href="{{ url('admin/spendings') }}">Funds Spending</a>
+                        </li>
                         <li @class(["submenu-item", "active" => \Request::is('admin/funding')
                             || \Request::is('admin/funding/*')])>
-                            <a href="{{url('admin/funding/types')}}">Funding Types</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="{{url('admin/collections')}}">Funds Collections</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="{{url('admin/spendings')}}">Funds Spending</a>
+                            <a href="{{ url('admin/funding/types') }}">Funding Types</a>
                         </li>
                     </ul>
                 </li>
