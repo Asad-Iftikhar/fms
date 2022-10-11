@@ -21,14 +21,14 @@
                     @csrf
                     <div class="row">
                         <div class="form-group">
-                            <label for="name">Fund Type Name</label>
+                            <label for="name">Name</label>
                             {!! $errors->first('name', '<small class="text-danger">:message</small>') !!}
                             <input type="text" class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!}" id="name" name="name" required/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
-                            <label for="description">Fund Type Description</label>
+                            <label for="description">Description</label>
                             <textarea class="form-control" id="description" rows="3" name="description"></textarea>
                         </div>
                     </div>
@@ -47,8 +47,4 @@
             </div>
         </div>
     </section>
-@section('javascript')
-    @parent
-    <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
-@stop
 @stop

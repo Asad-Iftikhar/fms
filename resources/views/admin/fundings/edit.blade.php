@@ -1,5 +1,4 @@
 @extends('admin.layouts.default')
-
 @section('title', 'Funding Types')
 @section('content')
     <section class="section">
@@ -22,14 +21,14 @@
                     @csrf
                     <div class="row">
                         <div class="form-group">
-                            <label for="name">Fund Type Name</label>
+                            <label for="name">Name</label>
                             {!! $errors->first('name', '<small class="text-danger">:message</small>') !!}
                             <input type="text" class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!}" value="{{ old('name', $fundTypeId->name) }}" id="name" name="name" required/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
-                            <label for="description">Fund Type Description</label>
+                            <label for="description">Description</label>
                             <textarea type="text" class="form-control" rows="3"  id="description" name="description">{{ old('description', $fundTypeId->description) }}</textarea>
                         </div>
                     </div>

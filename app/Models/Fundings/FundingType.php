@@ -3,6 +3,7 @@
 namespace App\Models\Fundings;
 
 /**
+ * App\Models\Fundings\FundingType
  *
  * @property int $id
  * @property string $name
@@ -19,13 +20,12 @@ namespace App\Models\Fundings;
 use App\Models\Base;
 
 class FundingType extends Base {
-    public $timestamps = false;
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'fundingtype';
+    protected $table = 'funding_types';
 
     /**
      * The attributes that are mass assignable.

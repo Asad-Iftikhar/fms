@@ -19,22 +19,21 @@
                         <table class="table table-striped dataTable-table" id="fundTypeTable">
                             <thead>
                             <tr>
-                                <th class="small-4">Fund Name</th>
+                                <th class="small-4">Name</th>
                                 <th class="small-2">Description</th>
                                 <th class="small-2">Amount</th>
                                 <th class="small-2">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($fundingtypes as $fundingType)
+                            @foreach ($fundingTypes as $fundingType)
                                 <tr>
                                     <td>{!! $fundingType->name !!}</td>
                                     <td>{!! $fundingType->description !!}</td>
                                     <td>{!! $fundingType->amount !!}</td>
-{{--                                    <td><span class="hide">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $fundingType->created_at )->toDateString() !!}</span></td>--}}
                                     <td>
-                                            <a href="{!! url('admin/funding/types/edit/' . $fundingType->id) !!}" class="button btn btn-outline-info">Edit</a>
-                                            <a href="{!! url('admin/users/roles/' . $fundingType->id . '/delete') !!}" class="button btn btn-outline-danger">Delete</a>
+                                            <a href="{!! url( 'admin/funding/types/edit/' . $fundingType->id ) !!}" class="button btn btn-outline-info">Edit</a>
+                                            <a href="{!! url( 'admin/users/roles/delete/' . $fundingType->id ) !!}" class="button btn btn-outline-danger">Delete</a>
                                     </td>
                                 </tr>
                             @endforeach

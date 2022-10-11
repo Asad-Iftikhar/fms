@@ -11,7 +11,7 @@ class AdminFundingTypeController extends AdminController {
 
     public function __construct() {
         parent::__construct();
-        $this->middleware('permission:manage_funding_type');
+        $this->middleware('permission:manage_funding_types');
     }
 
     /**
