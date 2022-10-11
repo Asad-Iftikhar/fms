@@ -217,7 +217,7 @@ class AdminUsersController extends AdminController {
         $arrData = $arrData->get();
         foreach ($arrData as $data){
             if($data->id != 1){
-                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button data-url="'.url('admin/users/delete').'/'. $data->id .'" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/users/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
             }else{
                 $data->action='<span> --N/A-- </span>';
             }
@@ -231,6 +231,22 @@ class AdminUsersController extends AdminController {
 
         return response()->json($response);
     }
+
+
+    /**
+     * Update User Role
+     * @param $userId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function deleteUser($userId) {
+        if( $role = User::find($userId) ) {
+            $role->delete();
+            return redirect()->back()->with('success', 'Deleted Successfully');
+        } else {
+            return redirect()->with('error', "User doesn't exists");
+        }
+    }
+
 
     # Create User
     # Update User profiles

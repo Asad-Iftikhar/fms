@@ -62,6 +62,7 @@ Route::get( 'admin/users/create', 'Admin\Users\AdminUsersController@getCreateUse
 Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postCreateUser' );
 Route::get( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@getEditUser' );
 Route::post( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@postEditUser' );
+Route::post( 'admin/users/delete/{id}', 'Admin\Users\AdminUsersController@deleteUser' );
 
 #Admin roles
 Route::get( 'admin/roles', 'Admin\Users\AdminRolesController@getIndex' );

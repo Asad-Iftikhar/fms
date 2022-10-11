@@ -11,7 +11,6 @@
         <div class="card-header">Users
             <span>
                   <a href="{{ url('admin/users/create') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Create</a>
-                  <button class="delete-btn btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Alert</button>
             </span>
         </div>
         <div class="card-body">
@@ -74,15 +73,21 @@
 
     });
 
-    $('.delete-btn').on('click',function(){
-        alert('x');
+    function confirmDelete(delUrl){
         swal({
-            title: "Delete User",
-            text: "Are you sure you want to delete this user ?",
-            icon: "error",
-            button: "Delete",
+            title: "Are you sure?",
+            text: "Once deleted, You will not be able to recover the user !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                window.location.href = delUrl;
+            } else {
+
+            }
         });
-    });
+    };
 
 </script>
 @stop
