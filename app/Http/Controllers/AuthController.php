@@ -11,13 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as RequestInstance;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use DB;
 use Mail;
-use Symfony\Component\Console\Input\Input;
 
 class AuthController extends Controller
 {
+    protected $maxAttempts = 5;
+
     /**
      * Get Login Page View
      * @return \Illuminate\View\View
@@ -45,15 +44,16 @@ class AuthController extends Controller
         $validator = Validator::make(request()->all(), $rules);
         // Check if the form validates with success
         if ( $validator->passes() ) {
-            if(empty(User::where('email',$request->input('username'))->first())){
+            $field = filter_var(request()->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+            if( empty(User::where($field, $request->input('username'))->first()) ) {
                 return redirect()->back()->withErrors(['email' => 'User does not exist']);
             }
-            $throttler = Throttle::get(RequestInstance::instance(), 5, 5);
+            $throttler = Throttle::get(RequestInstance::instance(), $this->maxAttempts, 5);
             if ( !$throttler->attempt() ) {
                 return redirect()->back()->withErrors(['error' => 'Too many incorrect attempts. Please try again later.']);
             }
             $RememberMe = request()->filled('remember-me');
-            $field = filter_var(request()->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
             // Try to log the user in
             if ( Auth::attempt(array($field => request()->input('username'), 'password' => request()->input('password'), 'activated' => 1, 'disabled' => 0), $RememberMe)) {
                 $request->session()->regenerate();
@@ -61,7 +61,6 @@ class AuthController extends Controller
                 Auth::logoutOtherDevices(request()->input('password'));
                 return redirect()->intended('account')->with('success', 'You have successfully logged in.');
             }
-            // Login User And Redirect to Last URI OR User Dashboard
         }
         // Something went wrong
         return redirect('account/login')->withInput()->withErrors($validator);
