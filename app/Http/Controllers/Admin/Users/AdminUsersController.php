@@ -217,7 +217,7 @@ class AdminUsersController extends AdminController {
         $arrData = $arrData->get();
         foreach ($arrData as $data){
             if($data->id != 1){
-                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
+                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button data-url="'.url('admin/users/delete').'/'. $data->id .'" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
             }else{
                 $data->action='<span> --N/A-- </span>';
             }

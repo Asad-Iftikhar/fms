@@ -11,6 +11,7 @@
         <div class="card-header">Users
             <span>
                   <a href="{{ url('admin/users/create') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Create</a>
+                  <button class="delete-btn btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Alert</button>
             </span>
         </div>
         <div class="card-body">
@@ -38,6 +39,7 @@
 @section('javascript')
     @parent
     <script type="text/javascript" src="{{ asset('assets/DataTables-1.12.1/datatables.min.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
 
@@ -68,7 +70,20 @@
                 }
             ]
         });
+
+
     });
+
+    $('.delete-btn').on('click',function(){
+        alert('x');
+        swal({
+            title: "Delete User",
+            text: "Are you sure you want to delete this user ?",
+            icon: "error",
+            button: "Delete",
+        });
+    });
+
 </script>
 @stop
 @stop
