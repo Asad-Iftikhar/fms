@@ -5,7 +5,7 @@ namespace App\Models\Events;
 use App\Models\Base;
 
 /**
- * App\Models\Media\Media
+ * App\Models\Events\Event
  *
  * @property int $id
  * @property string $name
@@ -15,9 +15,9 @@ use App\Models\Base;
  * @property int $event_cost
  * @property int $cash_by_funds
  * @property enum $status
- * @method static \Illuminate\Database\Eloquent\Builder|Media newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Media newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Media query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event query()
  * @mixin \Eloquent
  */
 class Event extends Base {
