@@ -192,17 +192,17 @@ class AdminUsersController extends AdminController {
         $columnSortOrder = $orderArray[0]['dir']; //this will get us order direction
         $searchValue = $searchArray['value']; //This is search value
 
-        $user = DB::table('users');
+        $user = User::query()->where('deleted_at', NULL);
         $total = $user->count();
 
-        $totalFilter = DB::table('users');
+        $totalFilter = User::query()->where('deleted_at', NULL);
         if (!empty($searchValue)){
             $totalFilter = $totalFilter->where('username', 'like', '%'.$searchValue.'%');
             $totalFilter = $totalFilter->orwhere('email', 'like', '%'.$searchValue.'%');
         }
         $totalFilter = $totalFilter->count();
 
-        $arrData = DB::table('users');
+        $arrData = User::query()->where('deleted_at', NULL);
         $arrData = $arrData->skip($start)->take($rowperpage);
 
         //sorting
@@ -239,11 +239,15 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function deleteUser($userId) {
-        if( $role = User::find($userId) ) {
-            $role->delete();
-            return redirect()->back()->with('success', 'Deleted Successfully');
-        } else {
-            return redirect()->with('error', "User doesn't exists");
+        if( $userId == 1 ){
+            return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
+        }else{
+            if( $role = User::find($userId) ) {
+                $role->delete();
+                return redirect()->back()->with('success', 'Deleted Successfully');
+            } else {
+                return redirect()->back()->with('error', "User doesn't exists");
+            }
         }
     }
 
