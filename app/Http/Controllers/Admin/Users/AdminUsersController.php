@@ -40,8 +40,7 @@ class AdminUsersController extends AdminController {
     public function getCreateUser() {
         // Show the page
         $roles = Role::all();
-
-        return view('admin.users.create', compact('roles'))->render();
+        return view('admin.users.create', compact('roles'));
     }
 
 
@@ -109,7 +108,7 @@ class AdminUsersController extends AdminController {
         $user = User::find($user_id);
         if($user = User::find($user_id)){
             $selected_roles = $user->roles()->pluck('id')->toArray();
-            return view('admin.users.edit', compact('user','roles','selected_roles'))->render();
+            return view('admin.users.edit', compact('user','roles','selected_roles'));
         }
         return redirect('admin/users');
     }

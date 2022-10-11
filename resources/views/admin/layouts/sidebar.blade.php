@@ -34,14 +34,15 @@
                     </ul>
                 </li>
 
-                <li class="sidebar-item  has-sub">
+                <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/funding') || \Request::is('admin/funding/*')])>
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-cash-stack"></i>
                         <span>Manage Funds</span>
                     </a>
-                    <ul class="submenu ">
-                        <li class="submenu-item ">
-                            <a href="{{url('admin/categories')}}">Collections Categories</a>
+                    <ul @class(["submenu", "active" => \Request::is('admin/funding') || \Request::is('admin/funding/types')])>
+                        <li @class(["submenu-item", "active" => \Request::is('admin/funding')
+                            || \Request::is('admin/funding/*')])>
+                            <a href="{{url('admin/funding/types')}}">Funding Types</a>
                         </li>
                         <li class="submenu-item ">
                             <a href="{{url('admin/collections')}}">Funds Collections</a>

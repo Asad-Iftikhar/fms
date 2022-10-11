@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $email = 'admin@fms.com';
         $user_id = DB::table( 'users' )->insertGetId( array(
             'username' => 'fms_admin',
-            'password' => bcrypt( 'FMS12345' ),
+            'password' => bcrypt( 'fms12345' ),
             'email' => $email,
             'created_at' => date( 'Y-m-d H:i:s' ),
             'updated_at' => date( 'Y-m-d H:i:s' ),
@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
             array('name' => 'admin', 'description' => 'Can Access Admin Section', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
             array('name' => 'manage_users', 'description' => 'Manage Users. Create, Edit,  and Delete Members', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
             array('name' => 'manage_roles', 'description' => 'Manage Member Roles', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
+            array('name' => 'manage_funding_types', 'description' => 'Manage Funding Types', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
             array('name' => 'manage_permissions', 'description' => 'Manage Permissions & Assign Permissions to User Roles', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
             array('name' => 'manage_menus', 'description' => 'Can Manage Site Menus', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
             array('name' => 'manage_settings', 'description' => 'Manage Site Settings. Change Site Logo', 'created_at' => date( 'Y-m-d H:i:s' ), 'updated_at' => date( 'Y-m-d H:i:s' )),
