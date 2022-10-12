@@ -46,7 +46,7 @@ class AuthController extends Controller
         if ( $validator->passes() ) {
             $field = filter_var(request()->input('username'), FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
             if( empty(User::where($field, $request->input('username'))->first()) ) {
-                return redirect()->back()->withErrors(['email' => 'User does not exist']);
+                return redirect()->back()->withErrors(['username' => 'User does not exist']);
             }
             $throttler = Throttle::get(RequestInstance::instance(), $this->maxAttempts, 5);
             if ( !$throttler->attempt() ) {

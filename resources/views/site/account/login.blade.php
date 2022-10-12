@@ -32,10 +32,7 @@
                         @if ($errors->has('username'))
                             <span class="text-danger">{{ $errors->first('username') }}</span>
                         @endif
-                        @if ($errors->has('email'))
-                            <span class="text-danger">{{ $errors->first('email') }}</span>
-                        @endif
-                        <div class="form-control-icon {{ ( $errors->has('username') || $errors->has('email')  ) ? 'has-error' : '' }} ">
+                        <div @class(['form-control-icon', 'has-error' => $errors->has('username')])>
                             <i class="bi bi-person-fill"></i>
                         </div>
                     </div>
