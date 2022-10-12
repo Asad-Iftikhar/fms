@@ -19,7 +19,7 @@ class AdminDashboardController extends AdminController {
      */
     public function getIndex() {
         //Total Members
-        $UsersWithRoles = DB::table( 'role_user' )->pluck( 'user_id' )->all();
+        $UsersWithRoles = User::has('Roles')->get()->pluck('id');
         if ( is_array( $UsersWithRoles ) && !empty( $UsersWithRoles ) ) {
             $TotalUsers = User::where( 'activated', '=', true )->whereIntegerNotInRaw( 'id', $UsersWithRoles )->where( 'disabled', '=', false )->count();
         } else {

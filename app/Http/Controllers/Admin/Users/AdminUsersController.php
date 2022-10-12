@@ -191,17 +191,17 @@ class AdminUsersController extends AdminController {
         $columnSortOrder = $orderArray[0]['dir']; //this will get us order direction
         $searchValue = $searchArray['value']; //This is search value
 
-        $user = DB::table('users');
+        $user = User::query()->where('deleted_at', NULL);
         $total = $user->count();
 
-        $totalFilter = DB::table('users');
+        $totalFilter = User::query()->where('deleted_at', NULL);
         if (!empty($searchValue)){
             $totalFilter = $totalFilter->where('username', 'like', '%'.$searchValue.'%');
             $totalFilter = $totalFilter->orwhere('email', 'like', '%'.$searchValue.'%');
         }
         $totalFilter = $totalFilter->count();
 
-        $arrData = DB::table('users');
+        $arrData = User::query()->where('deleted_at', NULL);
         $arrData = $arrData->skip($start)->take($rowperpage);
 
         //sorting
@@ -216,7 +216,7 @@ class AdminUsersController extends AdminController {
         $arrData = $arrData->get();
         foreach ($arrData as $data){
             if($data->id != 1){
-                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<a href="'.url('admin/users/delete').'/'. $data->id .'" class="delete btn btn-outline-danger fa fa-trash">Delete</a>';
+                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/users/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
             }else{
                 $data->action='<span> --N/A-- </span>';
             }
@@ -230,6 +230,26 @@ class AdminUsersController extends AdminController {
 
         return response()->json($response);
     }
+
+
+    /**
+     * Soft Delete User
+     * @param $userId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function deleteUser($userId) {
+        if( $userId == 1 ){
+            return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
+        }else{
+            if( $role = User::find($userId) ) {
+                $role->delete();
+                return redirect()->back()->with('success', 'Deleted Successfully');
+            } else {
+                return redirect()->back()->with('error', "User doesn't exists");
+            }
+        }
+    }
+
 
     # Create User
     # Update User profiles
