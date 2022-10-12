@@ -7,10 +7,17 @@
 @endsection
 @section('content')
     <div class="card">
-        <div class="card-header">Edit User
-            <span>
-                  <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
-            </span>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Edit User :: <b>{{ $user->username }}</b></h4>
+                </div>
+                <div class="col-6">
+                    <span>
+                        <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
+                    </span>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <form class="form form-vertical" method="post" action="{{ url('admin/users/edit/'.$user->id) }}">
@@ -39,7 +46,7 @@
                         <div class="col-md-3"></div>--}}
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Username &nbsp;&nbsp;<small class="text-danger">*</small></label>
+                                <label for="basicInput">Username<small class="text-danger">*</small></label>
                                 {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
                                 <input type="text" value="{{ old('username', $user->username) }}"
                                        class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
@@ -49,7 +56,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Email &nbsp;&nbsp;<small class="text-danger">*</small></label>
+                                <label for="basicInput">Email<small class="text-danger">*</small></label>
                                 {!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
                                 <input type="text" value="{{ old('email', $user->email) }}"
                                        class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "

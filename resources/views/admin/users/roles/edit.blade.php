@@ -10,7 +10,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-6">
-                        Edit Role
+                        <h4>Edit Role :: <b>{{$role->name}}</b></h4>
                     </div>
                     <div class="col-6">
                         <span>

@@ -51,6 +51,7 @@ class AdminUsersController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postCreateUser(Request $request) {
+
         //  Validate Form
         $rules = array (
             'first_name' => 'nullable|string',

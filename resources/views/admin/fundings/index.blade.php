@@ -5,12 +5,19 @@
 @stop
 @section('title', 'Funding Types')
 @section('content')
-    {{-- Users Grid Datatable   --}}
+    {{-- Funding Grid Datatable   --}}
     <div class="card">
-        <div class="card-header"><h4>Funding Types</h4>
-            <span>
-                  <a href="{{url('admin/funding/types/create')}}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldShield-Done"></i> Create</a>
-            </span>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Funding Types</h4>
+                </div>
+                <div class="col-6">
+                    <span>
+                        <a href="{{url('admin/funding/types/create')}}" type="button" class="btn btn-primary" style="float: right"><i class="bi bi-cash-stack" style="position: relative; top: 3px"></i> Create</a>
+                    </span>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">

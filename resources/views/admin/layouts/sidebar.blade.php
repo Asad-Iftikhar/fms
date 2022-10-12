@@ -39,7 +39,7 @@
                         <i class="bi bi-cash-stack"></i>
                         <span>Manage Funds</span>
                     </a>
-                    <ul @class(["submenu", "active" => \Request::is('admin/funding') || \Request::is('admin/funding/types')])>
+                    <ul @class(["submenu", "active" => \Request::is('admin/funding/types/*') || \Request::is('admin/funding/types')])>
                         <li class="submenu-item ">
                             <a href="{{ url('admin/funding/collections') }}">Collections</a>
                         </li>

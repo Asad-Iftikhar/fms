@@ -7,10 +7,17 @@
 @endsection
 @section('content')
     <div class="card">
-        <div class="card-header">Create User
-            <span>
-                <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2"></i> Back</a>
-            </span>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Create User</h4>
+                </div>
+                <div class="col-6">
+                    <span>
+                        <a href="{{ url('admin/users') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2"></i> Back</a>
+                    </span>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <form class="form form-vertical" method="post" action="{{ url('admin/users/create') }}">
@@ -39,7 +46,7 @@
                         <div class="col-md-3"></div>--}}
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Username &nbsp;&nbsp;<small class="text-danger">*</small></label>
+                                <label for="basicInput">Username<small class="text-danger">*</small></label>
                                 {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
                                 <input type="text" value="{{ old('username') }}"
                                        class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
@@ -49,7 +56,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Email &nbsp;&nbsp;<small class="text-danger">*</small></label>
+                                <label for="basicInput">Email<small class="text-danger">*</small></label>
                                 {!! $errors->first('email', '<small class="text-danger">:message</small>') !!}
                                 <input type="text" value="{{ old('email') }}"
                                        class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "
@@ -59,7 +66,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Password &nbsp;&nbsp;<small class="text-danger">*</small></label>
+                                <label for="basicInput">Password<small class="text-danger">*</small></label>
                                 {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
                                 <input type="password" value=""
                                        class="form-control {!! $errors->has('password') ? 'is-invalid' : '' !!} "
@@ -69,7 +76,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="basicInput">Confirm Password &nbsp;&nbsp;<small class="text-danger">*</small></label>
+                                <label for="basicInput">Confirm Password<small class="text-danger">*</small></label>
                                 {!! $errors->first('confirm_password', '<small class="text-danger">:message</small>') !!}
                                 <input type="password" value=""
                                        class="form-control {!! $errors->has('confirm_password') ? 'is-invalid' : '' !!} "
