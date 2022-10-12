@@ -234,7 +234,7 @@ class AdminUsersController extends AdminController {
 
 
     /**
-     * Update User Role
+     * Soft Delete User
      * @param $userId
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
