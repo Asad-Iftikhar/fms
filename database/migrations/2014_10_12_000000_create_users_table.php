@@ -33,7 +33,7 @@ return new class extends Migration
             $table->date( 'joining_date' )->nullable();
             $table->date( 'dob' )->nullable();
             $table->dateTime( 'last_login' )->nullable()->index();
-            $table->boolean( 'activated' )->default( 0 );
+            $table->boolean( 'activated' )->default( 1 );
             $table->boolean( 'disabled' )->default( 0 );
             $table->rememberToken();
             $table->timestamps();

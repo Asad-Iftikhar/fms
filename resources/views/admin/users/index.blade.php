@@ -8,10 +8,17 @@
 @section('content')
 {{-- Users Grid Datatable   --}}
     <div class="card">
-        <div class="card-header">Users
-            <span>
-                  <a href="{{ url('admin/users/create') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Create</a>
-            </span>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Users</h4>
+                </div>
+                <div class="col-6">
+                    <span>
+                      <a href="{{ url('admin/users/create') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldAdd-User" style="position: relative; top: 3px"></i> Create</a>
+                    </span>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
