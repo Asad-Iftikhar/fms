@@ -6,7 +6,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-6">
-                        Edit Role
+                        <h4>Edit Funding Type :: <b>{{ $fundingType->name }}</b></h4>
                     </div>
                     <div class="col-6">
                         <span>
@@ -23,20 +23,20 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             {!! $errors->first('name', '<small class="text-danger">:message</small>') !!}
-                            <input type="text" class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!}" value="{{ old('name', $fundTypeId->name) }}" id="name" name="name" required/>
+                            <input type="text" class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!}" value="{{ old('name', $fundingType->name) }}" id="name" name="name" required/>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
-                            <textarea type="text" class="form-control" rows="3"  id="description" name="description">{{ old('description', $fundTypeId->description) }}</textarea>
+                            <textarea type="text" class="form-control" rows="3"  id="description" name="description">{{ old('description', $fundingType->description) }}</textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
                                 <label for="amount">Amount</label>
                                 <div class="col-md-12 mb-4">
-                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" value="{{ old('amount', $fundTypeId->amount) }}" id="amount" name="amount" required/>
+                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" value="{{ old('amount', $fundingType->amount) }}" id="amount" name="amount" required/>
                                 </div>
                         </div>
                     </div>

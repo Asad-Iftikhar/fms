@@ -7,7 +7,7 @@ use App\Models\Events\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class AdminRolesController extends AdminController {
+class AdminEventsController extends AdminController {
     //
     public function __construct() {
         parent::__construct();

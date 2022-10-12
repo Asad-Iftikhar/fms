@@ -7,7 +7,7 @@
 @section('content')
     {{-- Users Grid Datatable   --}}
     <div class="card">
-        <div class="card-header">Funding Types
+        <div class="card-header"><h4>Funding Types</h4>
             <span>
                   <a href="{{url('admin/funding/types/create')}}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldShield-Done"></i> Create</a>
             </span>
