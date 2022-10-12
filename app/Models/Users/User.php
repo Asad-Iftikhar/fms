@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\Base;
+use App\Models\Fundings\FundingCollection;
 use App\Models\Media\Media;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -65,6 +66,10 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
 
     public function avatarImage() {
         return $this->belongsTo(Media::class,'avatar');
+    }
+
+    public function fundingCollectionsUser() {
+        return $this->hasMany(FundingCollection::class,'funding_collections')->withTimestamps();
     }
 
     /**
