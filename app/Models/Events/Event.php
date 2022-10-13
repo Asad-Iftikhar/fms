@@ -3,6 +3,7 @@
 namespace App\Models\Events;
 
 use App\Models\Base;
+use App\Models\Fundings\FundingCollection;
 
 /**
  * App\Models\Events\Event
@@ -36,6 +37,9 @@ class Event extends Base {
      */
     protected $fillable = array('name', 'description', 'created_by', 'event_date', 'event_cost', 'cash_by_funds', 'status');
 
+    public function fundingCollectionEvent() {
+        return $this->hasMany(FundingCollection::class,'funding_collections')->withTimestamps();
+    }
 
 
 }

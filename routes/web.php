@@ -88,6 +88,17 @@ Route::post('admin/funding/types/create', 'Admin\Fundings\AdminFundingTypeContro
 Route::get('admin/funding/types/edit/{id}', 'Admin\Fundings\AdminFundingTypeController@getEditFundingType');
 Route::post('admin/funding/types/edit/{id}', 'Admin\Fundings\AdminFundingTypeController@postEditFundingType');
 
+#Admin Funding Collection
+Route::get('admin/funding/collections','Admin\Fundings\AdminFundingCollectionController@getIndex');
+
+#Admin Create Funding Collection
+Route::get('admin/funding/collections/create','Admin\Fundings\AdminFundingCollectionController@getCreateFundingCollection');
+Route::post('admin/funding/collections/create','Admin\Fundings\AdminFundingCollectionController@postCreateFundingCollection');
+
+#Admin Update Funding Collection
+Route::get('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@getEditFundingCollection');
+Route::post('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@postEditFundingCollection');
+
 #Admin Events
 Route::get( 'admin/events', 'Admin\Events\AdminEventsController@getIndex' );
 Route::get('admin/events/getEvents','Admin\Events\AdminEventsController@fetchEvents');
