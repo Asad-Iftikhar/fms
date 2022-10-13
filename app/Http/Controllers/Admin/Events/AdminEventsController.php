@@ -33,7 +33,8 @@ class AdminEventsController extends AdminController {
      */
     public function getCreateEvent () {
         $users = User::all();
-        return view('admin.events.create',compact('users'));
+        $total_funds = 12000;
+        return view('admin.events.create',compact('users','total_funds'));
     }
 
     /**
