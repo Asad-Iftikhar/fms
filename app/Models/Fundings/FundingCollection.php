@@ -34,20 +34,26 @@ class FundingCollection extends Base {
      *
      * @var array
      */
-    protected $fillable = array('amount', 'is_recieved');
+    protected $fillable = array('user_id', 'fund_type_id', 'amount', 'event_id' ,'is_recieved');
 
+    /**
+     * @return mixed
+     */
     public function users() {
         return $this->belongsTo(User::class, 'user_id')->withTimestamps();
     }
 
-    public function fundingtypes() {
+    /**
+     * @return mixed
+     */
+    public function fundingtype() {
         return $this->belongsTo(FundingType::class,'fund_type_id')->withTimestamps();
     }
 
+    /**
+     * @return mixed
+     */
     public function events() {
         return $this->belongsTo(Event::class,'event_id')->withTimestamps();
     }
-
-
-
 }

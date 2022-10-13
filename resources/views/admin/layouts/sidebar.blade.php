@@ -34,17 +34,18 @@
                     </ul>
                 </li>
 
-                <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/funding') || \Request::is('admin/funding/*')])>
+                <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')
+                        || \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*') ])>
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-cash-stack"></i>
                         <span>Manage Funds</span>
                     </a>
-                    <ul @class(["submenu", "active" => \Request::is('admin/funding/types/*') || \Request::is('admin/funding/types')])>
-                        <li class="submenu-item ">
+                    <ul @class(["submenu", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')
+                        || \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*')])>
+                        <li @class(["submenu-item", "active" => \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*')])>
                             <a href="{{ url('admin/funding/collections') }}">Collections</a>
                         </li>
-                        <li @class(["submenu-item", "active" => \Request::is('admin/funding')
-                            || \Request::is('admin/funding/*')])>
+                        <li @class(["submenu-item", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')])>
                             <a href="{{ url('admin/funding/types') }}">Types</a>
                         </li>
                     </ul>

@@ -31,7 +31,7 @@
                                 <th class="small-2">Users</th>
                                 <th class="small-2">Permissions</th>
                                 <th class="small-2">Created At</th>
-                                <th class="small-2 text-center"><i class="fa fa-bolt"></i></th>
+                                <th class="small-2">Action</th>
                             </tr>
                             </thead>
                             <tbody>
