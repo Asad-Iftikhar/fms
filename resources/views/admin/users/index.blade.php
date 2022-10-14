@@ -30,7 +30,7 @@
                                   <th>ID</th>
                                   <th>Username</th>
                                   <th>Email</th>
-                                  <th>Actions</th>
+                                  <th class="dt-right">Actions</th>
                                 </tr>
                              </thead>
                             <tbody>
