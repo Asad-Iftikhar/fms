@@ -37,10 +37,11 @@ class AdminFundingCollectionController extends AdminController {
         $rules = array(
           'users' => 'required|array',
             'type' => 'max:255',
-            'description' => 'numeric',
-            'is_active' => 'required|in:0,1',
+            'amount' => 'numeric',
+            'description' => 'max:255',
+            'is_received' => 'required|in:0,1',
         );
-        $validator = Validator::make(request()->only(['users', 'type', 'description', 'is_active']), $rules);
+        $validator = Validator::make(request()->only(['users', 'type', 'description', 'is_received']), $rules);
         if ( $validator->fails() ) {
             dd($validator->messages());
             exit;
@@ -57,14 +58,13 @@ class AdminFundingCollectionController extends AdminController {
                     $fundingCollection->user_id = $user_id;
                     $fundingCollection->funding_type_id = request()->input('funding_type');
                     //$fundingCollection->fundingtype($selectedFundtype);
-                    $fundingCollection->amount = request()->input('description');
+                    $fundingCollection->amount = request()->input('amount');
                     //$fundingCollection->events($selectedEvent);
-                    $fundingCollection->is_received = request()->input('is_active');
+                    $fundingCollection->is_received = request()->input('is_received');
                     if ( $fundingCollection->save() ) {
                         dd('saved');
                     }
                 }
-                dd($selectedUser);
 
             }
             catch (Exception ) {
@@ -73,12 +73,4 @@ class AdminFundingCollectionController extends AdminController {
         }
     }
 
-
-    public function getEditFundingCollection() {
-
-    }
-
-    public function postEditFundingCollection() {
-
-    }
 }

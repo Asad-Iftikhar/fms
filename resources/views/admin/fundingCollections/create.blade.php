@@ -41,7 +41,9 @@
                                 <option>Select Funding Type</option>
                                 @foreach($availableFundingTypes as $availableFundingType)
                                     <option value="{{ $availableFundingType->id }}">{{ $availableFundingType->name }}</option>
+
                                 @endforeach
+                                <input type="hidden" name="amount" value="{{$availableFundingType->amount}}"/>
                             </select>
                         </div>
                     </div>
@@ -54,9 +56,9 @@
                     <div class="row">
                         <div class="form-group mb-3">
                             <div class="btn-group">
-                                <input type="radio" class="btn-check" name="is_active" id="pending" value="0" autocomplete="off" checked />
+                                <input type="radio" class="btn-check" name="is_received" id="pending" value="0" autocomplete="off" checked />
                                 <label class="btn btn-secondary" for="pending">Pending</label>
-                                <input type="radio" class="btn-check" name="is_active" id="received" value="1" autocomplete="off" />
+                                <input type="radio" class="btn-check" name="is_received" id="received" value="1" autocomplete="off" />
                                 <label class="btn btn-secondary" for="received">Received</label>
                             </div>
                         </div>
@@ -72,13 +74,5 @@
     @parent
     <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
     <script src="{!! asset('assets/js/multiselect-dropdown.js') !!}" ></script>
-    <script>
-    fetch("/options").then(d=>d.json()).then(d=>{
-        sel1.innerHTML =
-            d.map(t=>'<option value="'+t.value+'">'+t.text+'</option>');
-
-        sel1.loadOptions();
-    })
-    </script>
 @stop
 @stop
