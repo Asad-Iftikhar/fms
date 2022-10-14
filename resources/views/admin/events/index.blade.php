@@ -35,7 +35,7 @@
                                     <th>Event Status</th>
                                     <th>Event Date</th>
                                     <th>Created at</th>
-                                    <th>Actions</th>
+                                    <th class="dt-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>

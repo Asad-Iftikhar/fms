@@ -5,6 +5,7 @@ style.innerHTML = `
   display: inline-block;
   padding: 2px 5px 0px 5px;
   border-radius: 4px;
+  width: 100%;
   border: solid 1px #ced4da;
   background-color: white;
   position: relative;
@@ -179,7 +180,7 @@ function MultiselectDropdown(options){
                     sels.map(x=>{
                         var c=newEl('span',{class:'optext',text:x.text, srcOption: x});
                         if((el.attributes['multiselect-hide-x']?.value !== 'true'))
-                            c.appendChild(newEl('span',{class:'optdel',text:'🗙',title:config.txtRemove, onclick:(ev)=>{c.srcOption.listitemEl.dispatchEvent(new Event('click'));div.refresh();ev.stopPropagation();}}));
+                            c.appendChild(newEl('span',{class:'optdel',text:'x',title:config.txtRemove, onclick:(ev)=>{c.srcOption.listitemEl.dispatchEvent(new Event('click'));div.refresh();ev.stopPropagation();}}));
 
                         div.appendChild(c);
                     });

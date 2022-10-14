@@ -20,57 +20,63 @@ class AdminFundingCollectionController extends AdminController {
         $this->middleware( 'permission:manage_funding_collections' );
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function getIndex() {
         # Show Grid of All users
-        return view('admin.fundingCollections.index');
+        $fundingCollections = FundingCollection::with('fundingType')->get();
+        return view('admin.fundingCollections.index',compact('fundingCollections'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function getCreateFundingCollection() {
         // Show the page
         $fundingCollections = FundingCollection::all();
         $availableUsers = User::all();
         $availableFundingTypes = FundingType::all();
+        //$availableEvents = Event::all();
         return view('admin.fundingCollections.create',compact('fundingCollections', 'availableUsers', 'availableFundingTypes'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function postCreateFundingCollection() {
         $rules = array(
-          'users' => 'required|array',
-            'type' => 'max:255',
-            'amount' => 'numeric',
+            'users' => 'required|array',
+            'funding_type_id' => 'required|exists:funding_types,id',
             'description' => 'max:255',
             'is_received' => 'required|in:0,1',
         );
-        $validator = Validator::make(request()->only(['users', 'type', 'description', 'is_received']), $rules);
+        $validator = Validator::make(request()->only(['users', 'funding_type_id', 'description', 'is_received']), $rules);
         if ( $validator->fails() ) {
-            dd($validator->messages());
-            exit;
             return redirect('admin/funding/collections/create')->withInput()->withErrors($validator);
-        } else {
-            try {
-                //$selectedUser = User::WhereIn('id',\request()->input('users'))->get();
-                //echo request()->input('funding_type'); exit;
-                //$selectedFundtype = FundingType::where('id',\request()->input('funding_type'))->get();
-               // $selectedEvent = Event::find('id',\request()->input('events'))->get();
-                foreach ( request()->input('users') as $user_id ) {
-                    $fundingCollection = new FundingCollection();
-                    //$fundingCollection->users($user);
-                    $fundingCollection->user_id = $user_id;
-                    $fundingCollection->funding_type_id = request()->input('funding_type');
-                    //$fundingCollection->fundingtype($selectedFundtype);
-                    $fundingCollection->amount = request()->input('amount');
-                    //$fundingCollection->events($selectedEvent);
-                    $fundingCollection->is_received = request()->input('is_received');
-                    if ( $fundingCollection->save() ) {
-                        dd('saved');
-                    }
-                }
-
-            }
-            catch (Exception ) {
-
-            }
         }
+        try {
+            $selectedUser = User::WhereIn('id',\request()->input('users'))->get();
+            $selectedFundingType = request()->input('funding_type_id');
+            // Create funding collection of each user
+            foreach ( $selectedUser as $user ) {
+                $fundingCollection = new FundingCollection();
+                $fundingCollection->user_id = $user->id;
+                $fundingCollection->funding_type_id = $selectedFundingType;
+                $fundingCollection->is_received = request()->input('is_received', 0);
+                if ( ! $fundingCollection->save() ) {
+                    return redirect('admin/funding/collections/create')->with('error', "operation failed");
+                }
+            }
+        } catch (Exception ) {
+            return redirect('admin/funding/collections/create')->with('error', "operation failed");
+        }
+        return redirect('admin/funding/collections/create')->with('success', "Created successfully");
     }
 
+    public function fetchData() {
+        $fundCollectionTable = FundingCollection::all();
+        $response['data'] = $fundCollectionTable;
+        return response()->json($response);
+    }
 }

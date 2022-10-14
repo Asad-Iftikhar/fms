@@ -23,24 +23,24 @@
             <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
                 <div class="dataTable-container">
                     <div class="table-responsive">
-                        <table class="table table-striped dataTable-table" id="fundTypeTable">
+                        <table class="table table-striped dataTable-table" id="fundcollectionTable">
                             <thead>
                             <tr>
                                 <th class="small-4">Name</th>
-                                <th class="small-2">Description</th>
+{{--                                <th class="small-2">Description</th>--}}
                                 <th class="small-2">Amount</th>
                                 <th class="small-2">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-{{--                            @foreach ($fundingTypes as $fundingType)--}}
+{{--                            @foreach ($fundingCollections as $fundingCollection)--}}
 {{--                                <tr>--}}
-{{--                                    <td>{!! $fundingType->name !!}</td>--}}
+{{--                                    <td>{!! $fundingCollection->user->username!!}</td>--}}
 {{--                                    <td>{!! $fundingType->description !!}</td>--}}
-{{--                                    <td>{!! $fundingType->amount !!}</td>--}}
+{{--                                    <td>{!! $fundingCollection->amount !!}</td>--}}
 {{--                                    <td>--}}
-{{--                                        <a href="{!! url( 'admin/funding/types/edit/' . $fundingType->id ) !!}" class="button btn btn-outline-info">Edit</a>--}}
-{{--                                        <a href="{!! url( 'admin/users/roles/delete/' . $fundingType->id ) !!}" class="button btn btn-outline-danger">Delete</a>--}}
+{{--                                        <a href="{!! url( 'admin/funding/collections/' . $fundingCollection->id ) !!}" class="button btn btn-outline-info">Edit</a>--}}
+{{--                                        <a href="{!! url( 'admin/funding/collections/' . $fundingCollection->id ) !!}" class="button btn btn-outline-danger">Delete</a>--}}
 {{--                                    </td>--}}
 {{--                                </tr>--}}
 {{--                            @endforeach--}}
@@ -61,12 +61,22 @@
         $(document).ready(function()
         {
             // DataTable
-            $('#fundTypeTable').DataTable({
+            $('#fundcollectionTable').DataTable({
+                processing: true,
+                serverSide: true,
                 order : [[ 0, "asc" ]],
+                ajax: "{{ url('admin/funding/getcollections') }}",
+                columns: [
+                    {data: 'id'},
+                    {data: 'name'},
+                    {data: 'amount'},
+                    {data: 'action'}
+                ],
                 columnDefs : [
                     {
                         'orderable': false,
-                        'targets': [ 3 ] },
+                        'targets': [ 3 ]
+                    },
                     {
                         targets: -1,
                         className: 'dt-body-right'

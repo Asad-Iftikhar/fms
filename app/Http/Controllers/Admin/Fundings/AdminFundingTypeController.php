@@ -20,7 +20,7 @@ class AdminFundingTypeController extends AdminController {
      */
     public function getIndex() {
         $fundingTypes = FundingType::all();
-        return view('admin.fundings.index',compact('fundingTypes'));
+        return view('admin.fundings.types.index',compact('fundingTypes'));
     }
 
     /**
@@ -28,7 +28,7 @@ class AdminFundingTypeController extends AdminController {
      */
     public function getCreateFundingType() {
         $fundingTypes = FundingType::all();
-        return view('admin.fundings.create',compact('fundingTypes'));
+        return view('admin.fundings.types.create',compact('fundingTypes'));
     }
 
     /**
@@ -66,7 +66,7 @@ class AdminFundingTypeController extends AdminController {
      */
     public function getEditFundingType($id) {
         if( $fundingType = FundingType::find($id) ) {
-            return view('admin.fundings.edit',compact('fundingType'));
+            return view('admin.fundings.types.edit',compact('fundingType'));
         }
     }
 

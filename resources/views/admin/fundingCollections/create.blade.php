@@ -24,43 +24,49 @@
                 <form action="{{ url('admin/funding/collections/create') }}" method="post">
                     @csrf
                     <div class="row">
+                        <div class="col-6">
                             <div class="form-group">
                                 <label for="users">Users</label>
-                                <select name="users[]" multiple id="users" class="multiple-remove form-control" multiselect-search="true" multiselect-select-all="true" multiselect-max-items="3" multiselect-hide-x = "false">
+                                <select name="users[]" multiple id="users" class="multiple-remove form-select" multiselect-search="true" multiselect-select-all="true" multiselect-max-items="100" multiselect-hide-x = "false" style="width: 100%;">
                                     @foreach($availableUsers as $user)
                                         <option value="{{ $user->id }}">{{ $user->username }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
                     </div>
                     <div class="row">
+                        <div class="col-6">
                         <div class="form-group">
-                            <label>Collection Type</label>
-                            {!! $errors->first('type', '<small class="text-danger">:message</small>') !!}
-                            <select class="form-select" name="funding_type">
+                            <label for="funding_type_id">Collection Type</label>
+                            {!! $errors->first('funding_type_id', '<small class="text-danger">:message</small>') !!}
+                            <select class="form-select" name="funding_type_id" id="funding_type_id" style="width: 558px;">
                                 <option>Select Funding Type</option>
                                 @foreach($availableFundingTypes as $availableFundingType)
                                     <option value="{{ $availableFundingType->id }}">{{ $availableFundingType->name }}</option>
-
                                 @endforeach
-                                <input type="hidden" name="amount" value="{{$availableFundingType->amount}}"/>
                             </select>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group mb-3">
-                            <label>Description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-6">
+                        <div class="form-group mb-3">
+                            <label>Description</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" style="width: 558px;"></textarea>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
                         <div class="form-group mb-3">
                             <div class="btn-group">
                                 <input type="radio" class="btn-check" name="is_received" id="pending" value="0" autocomplete="off" checked />
-                                <label class="btn btn-secondary" for="pending">Pending</label>
+                                <label class="btn btn-outline-success" for="pending">Pending</label>
                                 <input type="radio" class="btn-check" name="is_received" id="received" value="1" autocomplete="off" />
-                                <label class="btn btn-secondary" for="received">Received</label>
+                                <label class="btn btn-outline-success" for="received">Received</label>
                             </div>
+                        </div>
                         </div>
                     </div>
                     <div class="col-12 d-flex justify-content-end">

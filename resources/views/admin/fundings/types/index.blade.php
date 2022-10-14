@@ -26,10 +26,10 @@
                         <table class="table table-striped dataTable-table" id="fundTypeTable">
                             <thead>
                             <tr>
-                                <th class="small-4">Name</th>
-                                <th class="small-2">Description</th>
-                                <th class="small-2">Amount</th>
-                                <th class="small-2">Actions</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th class="dt-right">Actions</th>
                             </tr>
                             </thead>
                             <tbody>

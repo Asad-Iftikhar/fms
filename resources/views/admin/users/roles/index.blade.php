@@ -27,11 +27,11 @@
                         <table class="table table-striped dataTable-table" id="RoleTable">
                             <thead>
                             <tr>
-                                <th class="small-4">Role Name</th>
-                                <th class="small-2">Users</th>
-                                <th class="small-2">Permissions</th>
-                                <th class="small-2">Created At</th>
-                                <th class="small-2">Action</th>
+                                <th>Role Name</th>
+                                <th>Users</th>
+                                <th>Permissions</th>
+                                <th>Created At</th>
+                                <th class="dt-right">Actions</th>
                             </tr>
                             </thead>
                             <tbody>

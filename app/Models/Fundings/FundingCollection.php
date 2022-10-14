@@ -20,6 +20,7 @@ namespace App\Models\Fundings;
 use App\Models\Base;
 use App\Models\Events\Event;
 use App\Models\Users\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class FundingCollection extends Base {
     /**
@@ -34,26 +35,38 @@ class FundingCollection extends Base {
      *
      * @var array
      */
-    protected $fillable = array('user_id', 'fund_type_id', 'amount', 'event_id' ,'is_recieved');
+    protected $fillable = array('user_id', 'funding_type_id', 'amount', 'event_id' ,'is_recieved');
 
     /**
      * @return mixed
      */
-    public function users() {
-        return $this->belongsTo(User::class, 'user_id')->withTimestamps();
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
      * @return mixed
      */
-    public function fundingtype() {
-        return $this->belongsTo(FundingType::class,'fund_type_id')->withTimestamps();
+    public function fundingType() {
+        return $this->belongsTo(FundingType::class,'funding_type_id');
     }
 
     /**
      * @return mixed
      */
-    public function events() {
-        return $this->belongsTo(Event::class,'event_id')->withTimestamps();
+    public function event() {
+        return $this->belongsTo(Event::class,'event_id');
+    }
+
+    public function amount(): Attribute {
+        return new Attribute(
+            get: function ($amount) {
+                if (is_null($this->event_id)) {
+                    return $this->fundingType->amount;
+                } else {
+                    return $amount;
+                }
+        }
+        );
     }
 }

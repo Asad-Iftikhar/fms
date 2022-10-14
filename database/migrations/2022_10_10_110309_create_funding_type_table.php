@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('funding_types', function (Blueprint $table) {
             $table->id();
             $table->string( 'name', 100 )->index();
-            $table->string( 'description' )->nullable();
+            $table->text( 'description' );
             $table->integer( 'amount' );
             $table->timestamps();
             $table->softDeletes();
