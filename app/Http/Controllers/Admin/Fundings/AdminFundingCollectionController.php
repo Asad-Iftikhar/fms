@@ -7,6 +7,7 @@ use App\Models\Events\Event;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Fundings\FundingType;
 use App\Models\Users\User;
+use Illuminate\Http\Request;
 use PHPUnit\TextUI\Exception;
 use Illuminate\Support\Facades\Validator;
 
@@ -74,9 +75,59 @@ class AdminFundingCollectionController extends AdminController {
         return redirect('admin/funding/collections/create')->with('success', "Created successfully");
     }
 
-    public function fetchData() {
-        $fundCollectionTable = FundingCollection::all();
-        $response['data'] = $fundCollectionTable;
+    public function fetchData(Request $request) {
+
+        # Read value
+        $draw = $request->get('draw');
+
+        $total = \DB::table('funding_collections')->count();
+
+        $FilterQuery = FundingCollection::with('fundingType');
+        if(!empty($searchValue)) {
+            $FilterQuery->where('name','like','%'.$searchValue.'%');
+        }
+
+        $currentCount = $FilterQuery->count();
+
+        #Paging
+        if ( request()->has( 'start' ) && request()->input( 'length' ) != '-1' ) {
+            if ( request()->input( 'length' ) < $total ) {
+                $FilterQuery->take( request()->input( 'length' ) )->skip( request()->input( 'start' ) );
+            }
+        }
+
+
+        $arrData = $FilterQuery->get();
+        if(!empty($searchValue)) {
+            $arrData = $arrData->where('name','like','%'.$searchValue.'%');
+        }
+
+        foreach ($arrData as $collection) {
+            $collection->collectionTypeName = $collection->getCollectionTypeName();
+            $collection->collectionUserName = $collection->firstName();
+        }
+
+        foreach ($arrData as $data){
+                $data->action='<a href="'.url('admin/funding/collections/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/funding/collections/edit').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "recordsTotal" => $total,
+            "recordsFiltered" => $currentCount,
+            "data" => $arrData,
+        );
         return response()->json($response);
+
+
+
+
+
+
+
+//        $fundCollectionTable = FundingCollection::all();
+//        $response['data'] = $fundCollectionTable;
+//        //dd($response);
+//        return response()->json($response);
     }
 }

@@ -69,4 +69,17 @@ class FundingCollection extends Base {
         }
         );
     }
+
+    public function getCollectionTypeName() {
+        if (is_null($this->event_id)) {
+            return $this->fundingType->name;
+        } else {
+            return $this->event->name;
+        }
+    }
+
+    public function firstName()
+    {
+        return $this->user->username;
+    }
 }

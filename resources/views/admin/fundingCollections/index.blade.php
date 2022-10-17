@@ -2,6 +2,7 @@
 @section('styles')
     @parent
     <link rel="stylesheet" type="text/css" href="{{ asset("assets/DataTables-1.12.1/datatables.min.css") }}"/>
+    <link rel="stylesheet" href="{{ asset("assets/vendors/simple-datatables/style.css") }}">
 @stop
 @section('title', 'Funding Types')
 @section('content')
@@ -26,24 +27,15 @@
                         <table class="table table-striped dataTable-table" id="fundcollectionTable">
                             <thead>
                             <tr>
-                                <th class="small-4">Name</th>
-{{--                                <th class="small-2">Description</th>--}}
-                                <th class="small-2">Amount</th>
-                                <th class="small-2">Actions</th>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Fund Type</th>
+                                <th>Amount</th>
+                                <th>Event</th>
+                                <th class="dt-right">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-{{--                            @foreach ($fundingCollections as $fundingCollection)--}}
-{{--                                <tr>--}}
-{{--                                    <td>{!! $fundingCollection->user->username!!}</td>--}}
-{{--                                    <td>{!! $fundingType->description !!}</td>--}}
-{{--                                    <td>{!! $fundingCollection->amount !!}</td>--}}
-{{--                                    <td>--}}
-{{--                                        <a href="{!! url( 'admin/funding/collections/' . $fundingCollection->id ) !!}" class="button btn btn-outline-info">Edit</a>--}}
-{{--                                        <a href="{!! url( 'admin/funding/collections/' . $fundingCollection->id ) !!}" class="button btn btn-outline-danger">Delete</a>--}}
-{{--                                    </td>--}}
-{{--                                </tr>--}}
-{{--                            @endforeach--}}
                             </tbody>
                         </table>
                     </div>
@@ -60,22 +52,25 @@
         // Simple Datatable
         $(document).ready(function()
         {
+            console.log("here");
             // DataTable
             $('#fundcollectionTable').DataTable({
                 processing: true,
                 serverSide: true,
                 order : [[ 0, "asc" ]],
-                ajax: "{{ url('admin/funding/getcollections') }}",
+                ajax: "{{ url('admin/funding/collection/getcollections') }}",
                 columns: [
                     {data: 'id'},
-                    {data: 'name'},
+                    {data: 'collectionUserName'},
+                    {data: 'collectionTypeName'},
                     {data: 'amount'},
+                    {data: 'event_id'},
                     {data: 'action'}
                 ],
                 columnDefs : [
                     {
                         'orderable': false,
-                        'targets': [ 3 ]
+                        'targets': [ 4 ]
                     },
                     {
                         targets: -1,

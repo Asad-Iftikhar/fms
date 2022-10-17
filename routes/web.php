@@ -90,7 +90,7 @@ Route::post('admin/funding/types/edit/{id}', 'Admin\Fundings\AdminFundingTypeCon
 
 #Admin Funding Collection
 Route::get('admin/funding/collections','Admin\Fundings\AdminFundingCollectionController@getIndex');
-Route::get('admin/funding/getcollections','Admin\Fundings\AdminFundingCollectionController@fetchData');
+Route::get('admin/funding/collection/getcollections','Admin\Fundings\AdminFundingCollectionController@fetchData');
 
 #Admin Create Funding Collection
 Route::get('admin/funding/collections/create','Admin\Fundings\AdminFundingCollectionController@getCreateFundingCollection');
