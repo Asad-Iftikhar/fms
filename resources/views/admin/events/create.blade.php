@@ -14,7 +14,8 @@
                 </div>
                 <div class="col-6">
                     <span>
-                        <a href="{{ url('admin/events') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2"></i> Back</a>
+                        <a href="{{ url('admin/events') }}" class="btn btn-primary" style="float: right"><i
+                                class="iconly-boldArrow---Left-2"></i> Back</a>
                     </span>
                 </div>
             </div>
@@ -63,25 +64,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <h6>Payment Mode</h6>
-                            <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode" id="success-outlined"
-                                   autocomplete="off" checked>
-                            <label class="btn btn-outline-success" for="success-outlined">Existing Collections</label>
-                            <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode" id="danger-outlined"
-                                   autocomplete="off">
-                            <label class="btn btn-outline-success" for="danger-outlined">Existing & New Collections</label>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="total-funds-input">Total Funds Available</label>
-                                <input readonly type="number" value="{{ $total_funds }}"
-                                       class="form-control"
-                                       placeholder="Total Office Funds" name="total_funds"
-                                       id="total-funds-input">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-8 vr">
                             <div class="form-group">
                                 <label for="event-cost-input">Event Cost</label>
                                 {!! $errors->first('event_cost', '<small class="text-danger">:message</small>') !!}
@@ -91,7 +74,28 @@
                                        id="event-cost-input">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="total-funds-input">Total Funds Available</label>
+                                <input readonly type="number" value="{{ $total_funds }}"
+                                       class="form-control"
+                                       placeholder="Total Office Funds" name="total_funds"
+                                       id="total-funds-input">
+                            </div>
+                        </div>
+                        <div class="col-md-8 vr">
+                            <h6>Payment Mode</h6>
+                            <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
+                                   id="success-outlined"
+                                   autocomplete="off" checked>
+                            <label class="btn btn-outline-success" for="success-outlined">Existing Collections</label>
+                            <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode"
+                                   id="danger-outlined"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-success" for="danger-outlined">Existing & New
+                                Collections</label>
+                        </div>
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="cash-by-funds-input">Cash By Office Funds</label>
                                 {!! $errors->first('cash_by_funds', '<small class="text-danger">:message</small>') !!}
@@ -101,9 +105,9 @@
                                        id="cash-by-funds-input">
                             </div>
                         </div>
-                        <div class="col-md-3" id="cash-by-collections-div" style="display: none">
+                        <div class="col-md-2" id="cash-by-collections-div" style="display: none">
                             <div class="form-group">
-                                <label for="cash-by-collections-input">Cash By User Collections</label>
+                                <label for="cash-by-collections-input">Cash By Collections</label>
                                 {!! $errors->first('cash_by_collections', '<small class="text-danger">:message</small>') !!}
                                 <input type="number" readonly value="{{ old('cash_by_collections') }}"
                                        class="form-control {!! $errors->has('cash_by_collections') ? 'is-invalid' : '' !!} "
@@ -111,28 +115,49 @@
                                        id="cash-by-collections-input">
                             </div>
                         </div>
-                        <h6>Collections from users</h6>
-                        <div class="col-md-8 mb-4">
-                            <div class="form-group">
-                                <label for="amount-input">Select multiple users for collection</label>
-                                <select name="users[]" class="choices form-select multiple-remove"
-                                        multiple="multiple">
-                                    @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->username}}</option>
-                                    @endforeach
-                                </select>
+                    </div>
+                    <div class="row collections-row" style="display: none">
+                        <div class="col-md-12 mt-3">
+                            <h6>Collections from users</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-8" id="participant_fieldset">
+                        <div class="row collections-row" style="display: none">
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label for="amount-input">Select multiple users for collection</label>
+                                    <select id="UserSelection0" name="collection_users[][]" class="choices form-select multiple-remove"
+                                            multiple="multiple">
+                                        @foreach($users as $user)
+                                            <option value="{{$user->id}}">{{$user->username}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="amount-input">Amount</label>
+                                    {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
+                                    <input type="number" data-id="UserSelection0" value="{{ old('amount') }}"
+                                           class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
+                                           placeholder="Amount" name="amount[]" id="amount-input">
+                                </div>
+                            </div>
+                            <div class="col-md-2 justify-content-end d-flex">
+                                <div class="form-group py-4">
+                                    <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> Delete</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="amount-input">Amount</label>
-                                {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                <input type="number" value="{{ old('amount') }}"
-                                       class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
-                                       placeholder="Amount" name="amount" id="amount-input">
-                            </div>
+                    </div>
+
+                    <div class="row collections-row" style="display: none">
+                        <div class="col-md-12">
+                            <button id="" class="btn-add btn btn-success"><i class="bi-plus-circle"></i> Add Row</button>
                         </div>
-                        <div class="col-md-12 text-right d-flex justify-content-end">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right d-flex justify-content-end mt-4">
                             <div class="form-group">
                                 <label for="status-input">Save Event as</label>
                                 <select name="users[]" id="status-input" style="max-width: 400px;" class="form-control">
@@ -156,14 +181,103 @@
     @parent
     <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
 
-    <script>
-        $('.payment_mode_radio').change(function() {
-            if (this.value == 2) {
-                $('#cash-by-collections-div').show();
+<script>
+    var users = {!! $users !!};
+    var selectedUser = [];
+    $('.payment_mode_radio').change(function () {
+        if (this.value == 2) {
+            $('#cash-by-collections-div').show();
+            $('.collections-row').show();
+        } else if (this.value == 1) {
+            $('#cash-by-collections-div').hide();
+            $('.collections-row').hide();
+        }
+    });
+    let Counter = 1;
+    // jquery.repeater
+    $(function () {
+        $(document).on('click', '.btn-add', function (e) {
+            e.preventDefault();
+            let currentEntry;
+            let choiceId = 'UserSelection' + Counter++;
+            currentEntry = '<div class="row collections-row"><div class="col-md-6 mb-4"><div class="form-group"><label for="amount-input">Select multiple users for collection</label> <select name="collection_users[][]" id="' + choiceId + '" class="choices form-select multiple-remove" multiple="multiple">' + availableUsers() + '</select></div></div><div class="col-md-4"><div class="form-group"><label>Amount</label><input type="number" value="" class="form-control" placeholder="Amount" name="amount[]" data-id="'+choiceId+'"></div></div><div class="col-md-2 justify-content-end d-flex"><div class="form-group py-4"> <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> Delete</button></div></div></div>';
+            $('#participant_fieldset').append(currentEntry);
+            let choiceDOM = document.getElementById( choiceId);
+            new Choices(choiceDOM,
+                {
+                    delimiter: ',',
+                    editItems: true,
+                    maxItemCount: 50,
+                    removeItemButton: true,
+                });
+        }).on('click', '.btn-remove', function (e) {
+            if ( $('#participant_fieldset>.collections-row').length > 1 ) {
+                $(this).closest('.collections-row').remove();
+            } else {
+                alert('deleting last row is not allowed');
             }
-            else if (this.value == 1) {
-                $('#cash-by-collections-div').hide();
+
+            return false;
+        }).on('change', filterMultiSelect).on('change', );
+    });
+
+    function availableUsers() {
+        let values = '';
+
+        $(users).each(function (index, user) {
+            if ( $.inArray( parseInt(user.id), selectedUser) == -1) {
+                values += '<option value="' + user.id + '">' + user.username + '</option>';
             }
         });
-    </script>
+        return values;
+    }
+    $('.choices').on('change', filterMultiSelect);
+
+    function filterMultiSelect() {
+        selectedUser=[];
+        let values = $('.choices option');
+        values.each(function (index, option) {
+            if ( $.inArray( parseInt($(option).val()), selectedUser ) == -1) {
+                selectedUser.push(parseInt($(option).val()));
+            }
+        });
+        /*let selectedValues = values.map(function (Option, Sec) {
+           return $(Sec).val();
+        });
+        console.log(selectedValues);*/
+        // alert('array ready');
+
+        $('.choices').find('.choices__item--choice').show();
+        if(selectedUser){
+            // alert('if ready');
+            $(selectedUser).each(function (index,value){
+                setTimeout(function(){
+                    $('.choices').find('.choices__item--choice[data-value="'+value+'"]').hide();
+                }, 100)
+            })
+        }
+    }
+
+    $('#participant_fieldset, #event-cost-input, .payment_mode_radio').on('change', resettingAmounts);
+
+    function resettingAmounts(){
+        let totalFunds = {!! $total_funds !!};
+        let totalCost = $('#event-cost-input').val();
+        if( $('.payment_mode_radio:checked').val() == 1 ){
+            $('#cash-by-funds-input').val(Math.min(totalFunds,totalCost));
+        } else {
+            let totalCollections = 0;
+            $('input[name="amount[]"]').each(function(index, Element) {
+
+                let selectUserFieldId =  $(Element).data('id');
+                totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
+
+            });
+            console.log(totalCollections);
+            $('#cash-by-collections-input').val(totalCollections);
+            $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
+        }
+
+    }
+</script>
 @endsection
