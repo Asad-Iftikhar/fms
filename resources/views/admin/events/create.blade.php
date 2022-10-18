@@ -41,6 +41,23 @@
                                        class="form-control {!! $errors->has('event_date') ? 'is-invalid' : '' !!} "
                                        placeholder="Event Date" name="event_date" id="event-date-input">
                             </div>
+                            <div class="form-group">
+                                <h6>Event Status</h6>
+                                <input type="radio" value="draft" class="btn-check event-status" name="status"
+                                       id="danger-outlined-status" {{ old('status')=="draft" ? 'checked' : '' }}
+                                       autocomplete="off" checked>
+                                <label class="btn btn-outline-danger" for="danger-outlined-status">Draft</label>
+                                <input type="radio" value="active" class="btn-check event-status" name="status"
+                                       id="warning-outlined-status" {{ old('status')=="active" ? 'checked' : '' }}
+                                       autocomplete="off">
+                                <label class="btn btn-outline-warning" for="warning-outlined-status">
+                                    Active</label>
+                                <input type="radio" value="finished" class="btn-check event-status" name="status"
+                                       id="success-outlined-status" {{ old('status')=="fnished" ? 'checked' : '' }}
+                                       autocomplete="off">
+                                <label class="btn btn-outline-success" for="success-outlined-status">
+                                    Finished</label>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -86,11 +103,11 @@
                         <div class="col-md-8 vr">
                             <h6>Payment Mode</h6>
                             <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="success-outlined"
+                                   id="success-outlined" {{ old('payment_mode')=="1" ? 'checked' : '' }}
                                    autocomplete="off" checked>
                             <label class="btn btn-outline-success" for="success-outlined">Existing Collections</label>
                             <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="danger-outlined"
+                                   id="danger-outlined" {{ old('payment_mode')=="2" ? 'checked' : '' }}
                                    autocomplete="off">
                             <label class="btn btn-outline-success" for="danger-outlined">Existing & New
                                 Collections</label>
@@ -125,7 +142,7 @@
                         <div class="row collections-row" style="display: none">
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
-                                    <label for="amount-input">Select multiple users for collection</label>
+                                    <label for="UserSelection0">Select multiple users for collection</label>
                                     <select id="UserSelection0" name="collection_users[][]" class="choices form-select multiple-remove"
                                             multiple="multiple">
                                         @foreach($users as $user)
@@ -138,14 +155,14 @@
                                 <div class="form-group">
                                     <label for="amount-input">Amount</label>
                                     {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="number" data-id="UserSelection0" value="{{ old('amount') }}"
+                                    <input type="number" data-id="UserSelection0" value="{{ old('amount[]') }}"
                                            class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
                                            placeholder="Amount" name="amount[]" id="amount-input">
                                 </div>
                             </div>
                             <div class="col-md-2 justify-content-end d-flex">
                                 <div class="form-group py-4">
-                                    <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> Delete</button>
+                                    <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -156,19 +173,10 @@
                             <button id="" class="btn-add btn btn-success"><i class="bi-plus-circle"></i> Add Row</button>
                         </div>
                     </div>
+                    <hr>
                     <div class="row">
-                        <div class="col-md-12 text-right d-flex justify-content-end mt-4">
-                            <div class="form-group">
-                                <label for="status-input">Save Event as</label>
-                                <select name="users[]" id="status-input" style="max-width: 400px;" class="form-control">
-                                    <option value="draft">Draft</option>
-                                    <option value="active">Active</option>
-                                    <option value="finished">Finished</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12 d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary me-1 mb-1">Create</button>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary mt-4 me-1 mb-1">Create</button>
                         </div>
                     </div>
                 </div>
@@ -200,7 +208,7 @@
             e.preventDefault();
             let currentEntry;
             let choiceId = 'UserSelection' + Counter++;
-            currentEntry = '<div class="row collections-row"><div class="col-md-6 mb-4"><div class="form-group"><label for="amount-input">Select multiple users for collection</label> <select name="collection_users[][]" id="' + choiceId + '" class="choices form-select multiple-remove" multiple="multiple">' + availableUsers() + '</select></div></div><div class="col-md-4"><div class="form-group"><label>Amount</label><input type="number" value="" class="form-control" placeholder="Amount" name="amount[]" data-id="'+choiceId+'"></div></div><div class="col-md-2 justify-content-end d-flex"><div class="form-group py-4"> <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> Delete</button></div></div></div>';
+            currentEntry = '<div class="row collections-row"><div class="col-md-6 mb-4"><div class="form-group"><label for="amount-input">Select multiple users for collection</label> <select name="collection_users[][]" id="' + choiceId + '" class="choices form-select multiple-remove" multiple="multiple">' + availableUsers() + '</select></div></div><div class="col-md-4"><div class="form-group"><label>Amount</label><input type="number" value="" class="form-control" placeholder="Amount" name="amount[]" data-id="'+choiceId+'"></div></div><div class="col-md-2 justify-content-end d-flex"><div class="form-group py-4"> <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> </button></div></div></div>';
             $('#participant_fieldset').append(currentEntry);
             let choiceDOM = document.getElementById( choiceId);
             new Choices(choiceDOM,
