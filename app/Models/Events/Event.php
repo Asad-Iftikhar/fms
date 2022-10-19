@@ -4,6 +4,7 @@ namespace App\Models\Events;
 
 use App\Models\Base;
 use App\Models\Fundings\FundingCollection;
+use App\Models\Users\User;
 
 /**
  * App\Models\Events\Event
@@ -16,6 +17,7 @@ use App\Models\Fundings\FundingCollection;
  * @property int $event_cost
  * @property int $cash_by_funds
  * @property enum $status
+ * @property enum $payment_mode
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
@@ -35,11 +37,31 @@ class Event extends Base {
      *
      * @var array
      */
-    protected $fillable = array('name', 'description', 'created_by', 'event_date', 'event_cost', 'cash_by_funds', 'status');
+    protected $fillable = array('name', 'description', 'created_by', 'event_date', 'event_cost', 'cash_by_funds', 'status', 'payment_mode');
+    /**
+     * @var mixed
+     */
+
+    /**
+     * @var mixed
+     */
 
     public function fundingCollectionEvent() {
         return $this->hasMany(FundingCollection::class,'funding_collections')->withTimestamps();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function guests(): object {
+        return $this->belongsToMany( User::class, 'event_guests' )->withTimestamps();
+    }
 
+    public function user() {
+        return $this->belongsTo( User::class, 'created_by' );
+    }
+
+    public function fundingCollections(): object {
+        return $this->hasMany( FundingCollection::class, 'event_id' );
+    }
 }
