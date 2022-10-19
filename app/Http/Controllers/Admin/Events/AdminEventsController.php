@@ -130,8 +130,19 @@ class AdminEventsController extends AdminController {
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getEditEvent ( $id ) {
-
+    public function getEditEvent ( $event_id ) {
+        // Show the page
+        $users = User::all();
+        $total_funds = 12000;
+        if($event = Event::find($event_id)){
+            $guest_ids = $event->guests()->pluck('user_id')->toArray();
+            $guests = User::whereIn('id',$guest_ids)->get();
+//            $collections = $event->fundingCollections()->pluck('amount')->toArray();
+//            dd($collections);
+            return view('admin.events.edit', compact('event','users', 'guest_ids', 'total_funds'));
+        } else {
+            return redirect('admin/events')->with( 'error', 'No Event Found !' );
+        }
     }
 
     /**
