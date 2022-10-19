@@ -54,5 +54,4 @@ class UsersTablesSeeder extends Seeder {
         ) );
 
     }
-
 }

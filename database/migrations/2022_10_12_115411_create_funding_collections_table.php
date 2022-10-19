@@ -20,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
             $table->foreignId('funding_type_id')->nullable()->constrained()->onDelete('CASCADE');
-            $table->float( 'amount' );
+            $table->float( 'amount' )->nullable();
             $table->foreignId('event_id')->nullable()->constrained('events')->onDelete('CASCADE');
             $table->boolean( 'is_received' )->default( 0 );
             $table->timestamps();
