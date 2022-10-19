@@ -37,7 +37,7 @@
                                 <label for="description">Collection</label>
                                     <select name="funding_type_id" class="choices form-select" >
                                         @foreach($fundingtypes as $fundingtype)
-                                            <option value="{{$fundingtype->id}}" {{ ($fundingtype->id == $selected_fundingtype) ? 'selected' : '' }}>{{$fundingtype->name}}</option>
+                                            <option value="{{ $fundingtype->id }}" {{ ($fundingtype->id == $fundingCollection->funding_type_id) ? 'selected' : '' }}>{{$fundingtype->name}}</option>
                                         @endforeach
                                     </select>
                             </div>
@@ -59,9 +59,9 @@
                         <div class="col-6">
                             <div class="form-group mb-3">
                                 <div class="btn-group" style="z-index: 0;">
-                                    <input type="radio" class="btn-check" name="is_received" id="pending" value="0" autocomplete="off" checked />
+                                    <input type="radio" class="btn-check" name="is_received" id="pending" value="0" autocomplete="off" {{ ($fundingCollection->is_received == 0) ? 'checked' : '' }} />
                                     <label class="btn btn-outline-success" for="pending">Pending</label>
-                                    <input type="radio" class="btn-check" name="is_received" id="received" value="1" autocomplete="off" />
+                                    <input type="radio" class="btn-check" name="is_received" id="received" value="1" autocomplete="off" {{ ($fundingCollection->is_received == 1) ? 'checked' : '' }} />
                                     <label class="btn btn-outline-success" for="received">Received</label>
                                 </div>
                             </div>

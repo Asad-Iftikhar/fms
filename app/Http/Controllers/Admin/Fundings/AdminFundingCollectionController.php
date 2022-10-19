@@ -102,7 +102,7 @@ class AdminFundingCollectionController extends AdminController {
     public function postEditFundingCollection($id) {
         if( $fundingCollection = FundingCollection::find($id) ) {
             $rules = array(
-                'funding_type_id' => 'required|exists:funding_collections,id',
+                'funding_type_id' => 'required|exists:funding_types,id',
                 'is_received' => 'required|in:0,1',
             );
 
