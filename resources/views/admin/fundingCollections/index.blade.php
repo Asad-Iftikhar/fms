@@ -32,6 +32,7 @@
                                 <th>Fund Type</th>
                                 <th>Amount</th>
                                 <th>Event</th>
+                                <th>Status</th>
                                 <th class="dt-right">Actions</th>
                             </tr>
                             </thead>
@@ -65,6 +66,7 @@
                     {data: 'collectionTypeName'},
                     {data: 'amount'},
                     {data: 'event_id'},
+                    {data: 'is_received'},
                     {data: 'action'}
                 ],
                 columnDefs : [

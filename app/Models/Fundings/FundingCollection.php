@@ -58,18 +58,6 @@ class FundingCollection extends Base {
         return $this->belongsTo(Event::class,'event_id');
     }
 
-    public function amount(): Attribute {
-        return new Attribute(
-            get: function ($amount) {
-                if (is_null($this->event_id)) {
-                    return $this->fundingType->amount;
-                } else {
-                    return $amount;
-                }
-        }
-        );
-    }
-
     public function getCollectionTypeName() {
         if (is_null($this->event_id)) {
             return $this->fundingType->name;
