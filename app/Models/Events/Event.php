@@ -17,6 +17,7 @@ use App\Models\Users\User;
  * @property int $event_cost
  * @property int $cash_by_funds
  * @property enum $status
+ * @property enum $payment_mode
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
@@ -37,6 +38,10 @@ class Event extends Base {
      * @var array
      */
     protected $fillable = array('name', 'description', 'created_by', 'event_date', 'event_cost', 'cash_by_funds', 'status', 'payment_mode');
+    /**
+     * @var mixed
+     */
+
     /**
      * @var mixed
      */

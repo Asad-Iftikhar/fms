@@ -34,7 +34,10 @@ class FundingCollection extends Base {
      *
      * @var array
      */
-    protected $fillable = array('amount', 'is_recieved');
+    protected $fillable = array('amount', 'user_id', 'event_id', 'is_recieved');
+    /**
+     * @var mixed
+     */
 
     public function users() {
         return $this->belongsTo(User::class, 'user_id')->withTimestamps();

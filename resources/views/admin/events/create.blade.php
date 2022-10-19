@@ -143,7 +143,7 @@
                             <div class="col-md-6 mb-4">
                                 <div class="form-group">
                                     <label for="UserSelection0">Select multiple users for collection</label>
-                                    <select id="UserSelection0" name="collection_users[][]" class="choices form-select multiple-remove"
+                                    <select id="UserSelection0" name="collection_users[0][]" class="choices form-select multiple-remove"
                                             multiple="multiple">
                                         @foreach($users as $user)
                                             <option value="{{$user->id}}">{{$user->username}}</option>
@@ -155,9 +155,9 @@
                                 <div class="form-group">
                                     <label for="amount-input">Amount</label>
                                     {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="number" data-id="UserSelection0" value="{{ old('amount[]') }}"
-                                           class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
-                                           placeholder="Amount" name="amount[]" id="amount-input">
+                                    <input type="number" data-id="UserSelection0" value="{{ old('amount[0]') }}"
+                                           class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
+                                           placeholder="Amount" name="amount[0]" id="amount-input">
                                 </div>
                             </div>
                             <div class="col-md-2 justify-content-end d-flex">
@@ -190,6 +190,19 @@
     <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
 
 <script>
+
+    $( document ).ready(function() {
+        if($('.payment_mode_radio:checked').val() == 1) {
+            console.log('hide');
+            $('#cash-by-collections-div').hide();
+            $('.collections-row').hide();
+        }else {
+            console.log('show');
+            $('#cash-by-collections-div').show();
+            $('.collections-row').show();
+        }
+    });
+
     var users = {!! $users !!};
     var selectedUser = [];
     $('.payment_mode_radio').change(function () {
@@ -208,7 +221,7 @@
             e.preventDefault();
             let currentEntry;
             let choiceId = 'UserSelection' + Counter++;
-            currentEntry = '<div class="row collections-row"><div class="col-md-6 mb-4"><div class="form-group"><label for="amount-input">Select multiple users for collection</label> <select name="collection_users[][]" id="' + choiceId + '" class="choices form-select multiple-remove" multiple="multiple">' + availableUsers() + '</select></div></div><div class="col-md-4"><div class="form-group"><label>Amount</label><input type="number" value="" class="form-control" placeholder="Amount" name="amount[]" data-id="'+choiceId+'"></div></div><div class="col-md-2 justify-content-end d-flex"><div class="form-group py-4"> <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> </button></div></div></div>';
+            currentEntry = '<div class="row collections-row"><div class="col-md-6 mb-4"><div class="form-group"><label for="amount-input">Select multiple users for collection</label> <select name="collection_users['+Counter+'][]" id="' + choiceId + '" class="choices form-select multiple-remove" multiple="multiple">' + availableUsers() + '</select></div></div><div class="col-md-4"><div class="form-group"><label>Amount</label><input type="number" value="" class="form-control quantity-inputs" placeholder="Amount" name="amount['+Counter+']" data-id="'+choiceId+'"></div></div><div class="col-md-2 justify-content-end d-flex"><div class="form-group py-4"> <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> </button></div></div></div>';
             $('#participant_fieldset').append(currentEntry);
             let choiceDOM = document.getElementById( choiceId);
             new Choices(choiceDOM,
@@ -275,7 +288,7 @@
             $('#cash-by-funds-input').val(Math.min(totalFunds,totalCost));
         } else {
             let totalCollections = 0;
-            $('input[name="amount[]"]').each(function(index, Element) {
+            $('.quantity-inputs').each(function(index, Element) {
 
                 let selectUserFieldId =  $(Element).data('id');
                 totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
