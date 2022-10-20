@@ -14,7 +14,7 @@
                     </div>
                     <div class="col-6">
                         <span>
-                            <a href="{{url('admin/funding/collections')}}" type="button" class="btn btn-primary"
+                            <a href="{{ url('admin/funding/collections') }}" type="button" class="btn btn-primary"
                                style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
                         </span>
                     </div>
@@ -35,43 +35,36 @@
                         </div>
                     </div>
                     <div class="row">
-                        @if (!empty($selected_fundingtype))
+                        @if (is_null($fundingCollection->event_id))
                             <div class="col-6">
                                 <div class="form-group mb-3">
                                     <label for="description" for="funding_type_id">Collection</label>
                                     <select name="funding_type_id" class="form-select" id="funding_type_id">
-                                        @foreach($fundingtypes as $fundingtype)
-                                            <option data-amount="{{ $fundingtype->amount }}"
-                                                    value="{{ $fundingtype->id }}" {{ ($fundingtype->id == $fundingCollection->funding_type_id) ? 'selected' : '' }}>{{$fundingtype->name}}</option>
+                                        @foreach($fundingTypes as $fundingType)
+                                            <option data-amount="{{ $fundingType->amount }}"
+                                                    value="{{ $fundingType->id }}" {{ ($fundingType->id == $fundingCollection->funding_type_id) ? 'selected' : '' }}>{{ $fundingType->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         @else
-                            <div class="col-6">
-                                <div class="form-group mb-3">
-                                    <label for="event">Event</label>
-                                    <select name="event_id" class="choices form-select" disabled>
-                                        @foreach($events as $event)
-                                            <option
-                                                value="{{$event->id}}" {{ ($event->id == $selected_event) ? 'selected' : '' }}>{{$event->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="col-6">
+                            <div class="form-group mb-3">
+                                <label for="event">Event</label>
+                                <select name="event_id" class="choices form-select" disabled>
+                                    <option value="{{ $fundingCollection->event_id }}" selected>{{ $fundingCollection->event->name }}</option>
+                                </select>
                             </div>
+                        </div>
                         @endif
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group mb-3">
                                 <lable>Amount</lable>
-                                @if(!empty($selected_fundingtype))
-                                    {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="text" name='amount' class="form-control" id="amount" value="{{ $fundingCollection->amount }}" />
-                                @else
-                                    {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" id="amount" name="amount" value="{{ $fundingCollection->amount }}"/>
-                                @endif
+                                {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
+                                <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" id="amount" name="amount" value="{{ $fundingCollection->amount }}"/>
+
                             </div>
                         </div>
                     </div>
