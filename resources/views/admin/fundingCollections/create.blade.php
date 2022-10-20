@@ -27,6 +27,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="users">Users</label>
+                                {!! $errors->first('users', '<small class="text-danger">:message</small>') !!}
                                 <select name="users[]" multiple id="users" class="multiple-remove form-select" multiselect-search="true" multiselect-select-all="true" multiselect-max-items="100" multiselect-hide-x = "false" style="width: 100%;">
                                     @foreach($availableUsers as $user)
                                         <option value="{{ $user->id }}">{{ $user->username }}</option>
@@ -40,7 +41,7 @@
                         <div class="form-group">
                             <label for="funding_type_id">Collection Type</label>
                             {!! $errors->first('funding_type_id', '<small class="text-danger">:message</small>') !!}
-                            <select class="form-select" name="funding_type_id" id="funding_type_id" style="width: 558px;">
+                            <select class="form-select" name="funding_type_id" id="funding_type_id">
                                 <option>Select Funding Type</option>
                                 @foreach($availableFundingTypes as $availableFundingType)
                                     <option value="{{ $availableFundingType->id }}">{{ $availableFundingType->name }}</option>
@@ -53,7 +54,7 @@
                         <div class="col-6">
                         <div class="form-group mb-3">
                             <label>Description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" style="width: 558px;"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
                         </div>
                         </div>
                     </div>

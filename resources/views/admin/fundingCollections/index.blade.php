@@ -15,7 +15,7 @@
                 </div>
                 <div class="col-6">
                     <span>
-                        <a href="{{url('admin/funding/collections/create')}}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldShield-Done"></i> Create</a>
+                        <a href="{{url('admin/funding/collections/create')}}" type="button" class="btn btn-primary" style="float: right"><i class="bi bi-cash-stack" style="position: relative; top: 3px"></i> Create</a>
                     </span>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>User</th>
                                 <th>Fund Type</th>
                                 <th>Amount</th>
                                 <th>Event</th>
@@ -65,7 +65,7 @@
                     {data: 'collectionUserName'},
                     {data: 'collectionTypeName'},
                     {data: 'amount'},
-                    {data: 'event_id'},
+                    {data: 'eventName'},
                     {data: 'is_received'},
                     {data: 'action'}
                 ],
