@@ -27,6 +27,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="users">Users</label>
+                                {!! $errors->first('users', '<small class="text-danger">:message</small>') !!}
                                 <select name="users[]" multiple id="users" class="multiple-remove form-select" multiselect-search="true" multiselect-select-all="true" multiselect-max-items="100" multiselect-hide-x = "false" style="width: 100%;">
                                     @foreach($availableUsers as $user)
                                         <option value="{{ $user->id }}">{{ $user->username }}</option>

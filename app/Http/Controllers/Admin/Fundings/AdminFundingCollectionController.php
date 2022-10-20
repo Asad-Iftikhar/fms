@@ -8,20 +8,22 @@ use App\Models\Fundings\FundingCollection;
 use App\Models\Fundings\FundingType;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use PHPUnit\TextUI\Exception;
 use Illuminate\Support\Facades\Validator;
 
 /**
  * Class AdminFundingCollectionController
  */
-class AdminFundingCollectionController extends AdminController {
+class AdminFundingCollectionController extends AdminController
+{
 
     /**
      * AdminFundingCollectionController constructor.
      */
     public function __construct() {
         parent::__construct();
-        $this->middleware( 'permission:manage_funding_collections' );
+        $this->middleware('permission:manage_funding_collections');
     }
 
     /**
@@ -30,7 +32,7 @@ class AdminFundingCollectionController extends AdminController {
     public function getIndex() {
         # Show Grid of All users
         $fundingCollections = FundingCollection::with('fundingType')->get();
-        return view('admin.fundingCollections.index',compact('fundingCollections'));
+        return view('admin.fundingCollections.index', compact('fundingCollections'));
     }
 
     /**
@@ -42,7 +44,7 @@ class AdminFundingCollectionController extends AdminController {
         $availableUsers = User::all();
         $availableFundingTypes = FundingType::all();
         $availableEvents = Event::all();
-        return view('admin.fundingCollections.create',compact('fundingCollections', 'availableUsers', 'availableFundingTypes', 'availableEvents'));
+        return view('admin.fundingCollections.create', compact('fundingCollections', 'availableUsers', 'availableFundingTypes', 'availableEvents'));
     }
 
     /**
@@ -56,30 +58,29 @@ class AdminFundingCollectionController extends AdminController {
             'is_received' => 'required|in:0,1',
         );
         $validator = Validator::make(request()->only(['users', 'funding_type_id', 'description', 'is_received']), $rules);
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return redirect('admin/funding/collections/create')->withInput()->withErrors($validator);
         }
         try {
-            $selectedUser = User::WhereIn('id',\request()->input('users'))->get();
+            $selectedUser = User::WhereIn('id', \request()->input('users'))->get();
             $selectedFundingTypeId = request()->input('funding_type_id');
             $selectedFundingType = FundingType::find($selectedFundingTypeId);
             // Create funding collection of each user
-            foreach ( $selectedUser as $user ) {
+            foreach ($selectedUser as $user) {
                 $fundingCollection = new FundingCollection();
                 $fundingCollection->user_id = $user->id;
                 $fundingCollection->funding_type_id = $selectedFundingTypeId;
                 $fundingCollection->amount = $selectedFundingType->amount;
                 $fundingCollection->is_received = request()->input('is_received', 0);
-                if ( ! $fundingCollection->save() ) {
+                if (!$fundingCollection->save()) {
                     return redirect('admin/funding/collections/create')->with('error', "operation failed");
                 }
             }
-        } catch (Exception ) {
+        } catch (Exception) {
             return redirect('admin/funding/collections/create')->with('error', "operation failed");
         }
         return redirect('admin/funding/collections')->with('success', "Created successfully");
     }
-
 
     /**
      * @param $id
@@ -88,10 +89,10 @@ class AdminFundingCollectionController extends AdminController {
     public function getEditFundingCollection($id) {
         $fundingtypes = FundingType::all();
         $events = Event::all();
-        if ( $fundingCollection = FundingCollection::find($id) ) {
+        if ($fundingCollection = FundingCollection::find($id)) {
             $selected_fundingtype = $fundingCollection->funding_type_id;
             $selected_event = $fundingCollection->event_id;
-            return view('admin.fundingCollections.edit',compact('fundingtypes','fundingCollection','selected_fundingtype','selected_event','events'));
+            return view('admin.fundingCollections.edit', compact('fundingtypes', 'fundingCollection', 'selected_fundingtype', 'selected_event', 'events'));
         }
     }
 
@@ -100,23 +101,31 @@ class AdminFundingCollectionController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postEditFundingCollection($id) {
-        if( $fundingCollection = FundingCollection::find($id) ) {
-            $rules = array(
-                'funding_type_id' => 'required|exists:funding_types,id',
-                'is_received' => 'required|in:0,1',
-            );
+        if ($fundingCollection = FundingCollection::find($id)) {
 
-            $validator = Validator::make(request()->only(['funding_type_id', 'is_received']), $rules);
-            if ( $validator->fails() ) {
-                return redirect('admin/funding/collections/edit/'.$id)->withInput()->withErrors($validator);
+            if (!empty($fundingCollection->funding_type_id)) {
+                $rules = array(
+                    'funding_type_id' => 'required|exists:funding_types,id',
+                    'is_received' => 'required|in:0,1'
+                );
+                $arr = ['funding_type_id','is_received'];
+            } else {
+                $rules = array(
+                    'amount' => 'required|numeric',
+                    'is_received' => 'required|in:0,1'
+                );
+                $arr = ['amount','is_received'];
+            }
+            $validator = Validator::make(request()->only($arr), $rules);
+            if ($validator->fails()) {
+                return redirect('admin/funding/collections/edit/' . $id)->withInput()->withErrors($validator);
             } else {
                 try {
-                    $fundingCollection->funding_type_id = request()->input('funding_type_id');
-                    $fundingCollection->is_received = request()->input('is_received');
-                    if ( $fundingCollection->save() ) {
+                    $updated = $fundingCollection->update(request()->input());
+                    if ($updated) {
                         return redirect()->back()->with('success', 'Updated Successfully');
                     }
-                } catch ( Exception $e ) {
+                } catch (Exception $e) {
                     return redirect()->back()->with('error', "Something went wrong");
                 }
             }
@@ -129,57 +138,55 @@ class AdminFundingCollectionController extends AdminController {
      * @return \Illuminate\Http\JsonResponse
      */
     public function fetchData(Request $request) {
-
-
         # Read value
         $draw = $request->get('draw');
 
         $total = \DB::table('funding_collections')->count();
 
         $FilterQuery = FundingCollection::with('fundingType');
-        if(!empty($searchValue)) {
-            $FilterQuery->where('name','like','%'.$searchValue.'%');
+        if (!empty($searchValue)) {
+            $FilterQuery->where('name', 'like', '%' . $searchValue . '%');
         }
 
+        # Available columns
         $aColumns = array(
             'id',
             'collectionUserName',
             'collectionTypeName',
             'amount',
-            'event_id',
+            'eventName',
             'is_received',
             'action'
         );
 
         #Ordering
-        if ( request()->has( 'columns' ) ) {
-            $Order = request()->input( 'order' );
-            $Columns = request()->input( 'columns' );
-            \Log::debug($Columns);
-            for ( $i = 0, $iMax = count( $Columns ); $i < $iMax; $i++ ) {
-                if ( $Columns[$i]['orderable'] == "true" ) {
-                    if ( $Order[0]['dir'] === 'asc' ) {
+        if (request()->has('columns')) {
+            $Order = request()->input('order');
+            $Columns = request()->input('columns');
+            for ($i = 0, $iMax = count($Columns); $i < $iMax; $i++) {
+                if ($Columns[$i]['orderable'] == "true") {
+                    if ($Order[0]['dir'] === 'asc') {
                         $OrderDirection = 'ASC';
                     } else {
                         $OrderDirection = 'DESC';
                     }
 
-                    if ( $Order[0]['column'] == $i ) {
+                    if ($Order[0]['column'] == $i) {
                         $OrderByColumn = $aColumns[$Order[0]['column']];
                         switch ($OrderByColumn) {
                             case 'id' :
-                                $FilterQuery->orderBy( 'id', $OrderDirection );
+                                $FilterQuery->orderBy('id', $OrderDirection);
                                 break;
                             case 'amount':
-                                $FilterQuery->orderBy( 'amount', $OrderDirection );
+                                $FilterQuery->orderBy('amount', $OrderDirection);
                                 break;
                             case 'collectionUserName' :
                                 //Not Sortable
                                 break;
                             case 'collectionTypeName':
-                            case 'event_id':
+                            case 'eventName':
                             case 'is_received':
-                                //Not Sortable
+                                $FilterQuery->orderBy('is_received', $OrderDirection);
                                 break;
                             case 'actions':
                                 //Not Sortable
@@ -190,38 +197,33 @@ class AdminFundingCollectionController extends AdminController {
             }
         }
 
+        # Searching
+        $searchValue = request()->input('search');
+        if (!empty($searchValue)) {
+            // Searching
+        }
 
-
-        \DB::enableQueryLog(); // Enable query log
-
-
+        # Count Filtered Data
         $currentCount = $FilterQuery->count();
 
         #Paging
-        if ( request()->has( 'start' ) && request()->input( 'length' ) != '-1' ) {
-            if ( request()->input( 'length' ) < $total ) {
-                $FilterQuery->take( request()->input( 'length' ) )->skip( request()->input( 'start' ) );
+        if (request()->has('start') && request()->input('length') != '-1') {
+            if (request()->input('length') < $total) {
+                $FilterQuery->take(request()->input('length'))->skip(request()->input('start'));
             }
         }
 
+        # Get Data
         $arrData = $FilterQuery->get();
-
-        \Log::debug(\DB::getQueryLog()); // Show results of log
-
-
-        if(!empty($searchValue)) {
-            $arrData = $arrData->where('name','like','%'.$searchValue.'%');
-        }
 
         foreach ($arrData as $collection) {
             $collection->collectionTypeName = $collection->getCollectionTypeName();
             $collection->collectionUserName = $collection->firstName();
+            $collection->eventName = $collection->getEventName();
+            $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/edit') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
 
-        foreach ($arrData as $data){
-                $data->action='<a href="'.url('admin/funding/collections/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/funding/collections/edit').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
-        }
-
+        # response
         $response = array(
             "draw" => intval($draw),
             "recordsTotal" => $total,
@@ -230,9 +232,5 @@ class AdminFundingCollectionController extends AdminController {
         );
         return response()->json($response);
 
-//        $fundCollectionTable = FundingCollection::all();
-//        $response['data'] = $fundCollectionTable;
-//        //dd($response);
-//        return response()->json($response);
     }
 }

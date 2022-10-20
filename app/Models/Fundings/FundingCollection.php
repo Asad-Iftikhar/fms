@@ -62,7 +62,15 @@ class FundingCollection extends Base {
         if (is_null($this->event_id)) {
             return $this->fundingType->name;
         } else {
-            return $this->event->name;
+            return 'Event';
+        }
+    }
+
+    public function getEventName() {
+        if (is_null($this->event_id)) {
+            return 'N/A';
+        } else {
+            return ucfirst($this->event->name);
         }
     }
 
