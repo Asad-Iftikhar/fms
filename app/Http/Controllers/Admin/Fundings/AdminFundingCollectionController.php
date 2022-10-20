@@ -88,12 +88,10 @@ class AdminFundingCollectionController extends AdminController
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getEditFundingCollection($id) {
-        $fundingtypes = FundingType::all();
+        $fundingTypes = FundingType::all();
         $events = Event::all();
         if ($fundingCollection = FundingCollection::find($id)) {
-            $selected_fundingtype = $fundingCollection->funding_type_id;
-            $selected_event = $fundingCollection->event_id;
-            return view('admin.fundingCollections.edit', compact('fundingtypes', 'fundingCollection', 'selected_fundingtype', 'selected_event', 'events'));
+            return view('admin.fundingCollections.edit', compact('fundingTypes', 'fundingCollection', 'events'));
         }
     }
 
