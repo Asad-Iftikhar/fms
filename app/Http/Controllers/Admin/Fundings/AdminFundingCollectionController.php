@@ -30,7 +30,7 @@ class AdminFundingCollectionController extends AdminController
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getIndex() {
-        # Show Grid of All users
+        # Show Grid of All funding collection
         $fundingCollections = FundingCollection::with('fundingType')->get();
         return view('admin.fundingCollections.index', compact('fundingCollections'));
     }
@@ -48,6 +48,7 @@ class AdminFundingCollectionController extends AdminController
     }
 
     /**
+     * Creating Funding Collection
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postCreateFundingCollection() {
@@ -97,6 +98,7 @@ class AdminFundingCollectionController extends AdminController
     }
 
     /**
+     * Edit Funding Collection
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */

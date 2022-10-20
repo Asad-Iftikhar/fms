@@ -66,6 +66,7 @@
                             <div class="form-group mb-3">
                                 <lable>Amount</lable>
                                 @if(!empty($selected_fundingtype))
+                                    {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
                                     <input type="text" class="form-control" id="amount" value="{{ $fundingCollection->amount }}" disabled/>
                                 @else
                                     {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
