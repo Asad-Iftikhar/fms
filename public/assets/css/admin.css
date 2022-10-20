@@ -1551,3 +1551,11 @@ a {
 header {
     border-bottom: 1px solid #00000021;
 }
+
+.btn-group > label.btn:focus, .btn-group > label.btn:hover, .btn-group > label.btn:active, .btn-group > label.btn {
+    box-shadow: none !important;
+}
+
+.btn-group > label.btn:hover {
+    opacity: 0.7;
+}
