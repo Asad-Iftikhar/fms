@@ -105,23 +105,23 @@ class AdminFundingCollectionController extends AdminController
     public function postEditFundingCollection($id) {
         if ($fundingCollection = FundingCollection::find($id)) {
 
+            $rules = array(
+                'is_received' => 'required|in:0,1',
+                'amount' => 'required|numeric'
+            );
+
             if (!empty($fundingCollection->funding_type_id)) {
-                $rules = array(
-                    'funding_type_id' => 'required|exists:funding_types,id',
-                    'is_received' => 'required|in:0,1'
-                );
-                $arr = ['funding_type_id','is_received'];
-            } else {
-                $rules = array(
-                    'amount' => 'required|numeric',
-                    'is_received' => 'required|in:0,1'
-                );
-                $arr = ['amount','is_received'];
+                $rules['funding_type_id'] = 'required|exists:funding_types,id';
             }
-            $validator = Validator::make(request()->only($arr), $rules);
+
+            $validator = Validator::make(request()->all(), $rules);
             if ($validator->fails()) {
                 return redirect('admin/funding/collections/edit/' . $id)->withInput()->withErrors($validator);
             } else {
+                $fundingCollection->is_received = request()->input('is_received');
+                $fundingCollection->funding_type_id = request()->input('funding_type_id');
+                $fundingCollection->amount = request()->input('amount');
+
                 try {
                     $updated = $fundingCollection->update(request()->input());
                     if ($updated) {
