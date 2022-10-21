@@ -237,12 +237,14 @@
         }).on('click', '.btn-remove', function (e) {
             if ( $('#participant_fieldset>.collections-row').length > 1 ) {
                 $(this).closest('.collections-row').remove();
+                filterMultiSelect();
+                resettingAmounts();
             } else {
                 alert('deleting last row is not allowed');
             }
 
             return false;
-        }).on('change', filterMultiSelect).on('change', );
+        }).on('change keyup', filterMultiSelect).on('change keyup', resettingAmounts);
     });
 
     function availableUsers() {
@@ -255,7 +257,7 @@
         });
         return values;
     }
-    $('.choices').on('change', filterMultiSelect);
+    $('.choices').on('change keyup', filterMultiSelect);
 
     function filterMultiSelect() {
         selectedUser=[];
@@ -282,7 +284,7 @@
         }
     }
 
-    $('#participant_fieldset, #event-cost-input, .payment_mode_radio').on('change', resettingAmounts);
+    $('#participant_fieldset, #event-cost-input, .payment_mode_radio').on('change keyup', resettingAmounts);
 
     function resettingAmounts(){
         let totalFunds = {!! $totalFunds !!};
@@ -297,7 +299,6 @@
                 totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
 
             });
-            console.log(totalCollections);
             $('#cash-by-collections-input').val(totalCollections);
             $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
         }

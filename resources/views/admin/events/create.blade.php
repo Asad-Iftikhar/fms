@@ -94,7 +94,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="total-funds-input">Total Funds Available</label>
-                                <input readonly type="number" value="{{ $total_funds }}"
+                                <input readonly type="number" value="{{ $totalFunds }}"
                                        class="form-control"
                                        placeholder="Total Office Funds" name="total_funds"
                                        id="total-funds-input">
@@ -234,6 +234,8 @@
         }).on('click', '.btn-remove', function (e) {
             if ( $('#participant_fieldset>.collections-row').length > 1 ) {
                 $(this).closest('.collections-row').remove();
+                filterMultiSelect();
+                resettingAmounts();
             } else {
                 alert('deleting last row is not allowed');
             }
@@ -252,7 +254,7 @@
         });
         return values;
     }
-    $('.choices').on('change', filterMultiSelect);
+    $('.choices').on('change keyup', filterMultiSelect);
 
     function filterMultiSelect() {
         selectedUser=[];
@@ -279,10 +281,10 @@
         }
     }
 
-    $('#participant_fieldset, #event-cost-input, .payment_mode_radio').on('change', resettingAmounts);
+    $('#participant_fieldset, #event-cost-input, .payment_mode_radio').on('change keyup', resettingAmounts);
 
     function resettingAmounts(){
-        let totalFunds = {!! $total_funds !!};
+        let totalFunds = {!! $totalFunds !!};
         let totalCost = $('#event-cost-input').val();
         if( $('.payment_mode_radio:checked').val() == 1 ){
             $('#cash-by-funds-input').val(Math.min(totalFunds,totalCost));

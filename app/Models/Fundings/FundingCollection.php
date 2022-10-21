@@ -51,6 +51,13 @@ class FundingCollection extends Base {
         return $this->belongsTo(Event::class,'event_id')->withTimestamps();
     }
 
+    public static function totalAvailableFunds() {
+        $collections = fundingCollection::where('is_received',1)->sum('amount');
+        $spendings = Event::where('status','finished')->sum('event_cost');
+        return intval($collections - $spendings);
+    }
+
+
 
 
 }

@@ -35,8 +35,8 @@ class AdminEventsController extends AdminController {
      */
     public function getCreateEvent () {
         $users = User::all();
-        $total_funds = 12000;
-        return view('admin.events.create',compact('users','total_funds'));
+        $totalFunds = FundingCollection::totalAvailableFunds();
+        return view('admin.events.create',compact('users','totalFunds'));
     }
 
     /**
@@ -134,7 +134,7 @@ class AdminEventsController extends AdminController {
     public function getEditEvent ( $event_id ) {
         // Show the page
         $users = User::all();
-        $totalFunds = 12000;
+        $totalFunds = FundingCollection::totalAvailableFunds();
         if($event = Event::find($event_id)){
             $guestIds = $event->guests()->pluck('user_id')->toArray();
             $selectedUsers = $guestIds;
@@ -186,21 +186,28 @@ class AdminEventsController extends AdminController {
             }
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->passes()) {
+                if(FundingCollection::where('event_id', $event_id)->where('is_received','1')->first()){
+                    $collectionPaid = 1;
+                }else{
+                    $collectionPaid = 0;
+                }
                 $event->name = $request->input('name');
                 $event->description = $request->input('description');
                 $event->event_date = $request->input('event_date');
-                $event->event_cost = $request->input('event_cost');
+                if(!($collectionPaid)){
+                    $event->event_cost = $request->input('event_cost');
+                    $event->payment_mode = $request->input('payment_mode');
+                    $event->cash_by_funds = $request->input('cash_by_funds');
+                }
                 $event->status = $request->input('status');
-                $event->payment_mode = $request->input('payment_mode');
-                $event->cash_by_funds = $request->input('cash_by_funds');
-                $event->created_by = Auth::user()->id;
+//              $event->created_by = Auth::user()->id;
                 if ( $event->status == 'active' ) {
-                    if ( $event->payment_mode == 2 ) {
+                    if ( $event->payment_mode == 2 && $collectionPaid == 0 ) {
                         if( ($event->cash_by_funds + $request->input('cash_by_collections'))  != $event->event_cost ) {
                             return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event Cost should be equal to collections and funds');
                         }
                     } else {
-                        if( $event->cash_by_funds < $event->event_cost ) {
+                        if( $event->cash_by_funds < $event->event_cost && $collectionPaid == 0 ) {
                             return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be active ');
                         }
                     }
@@ -220,6 +227,9 @@ class AdminEventsController extends AdminController {
                 }
                 if ($event->save()) {
                     $event->guests()->sync(request()->input('guests', array()));
+                    if( $collectionPaid ){
+                        return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !, Event Cost , Cash by Funds, Payment Mode and collections cannot be updated because someone has paid collection');
+                    }
                     fundingCollection::where('event_id',$event->id)->delete();
                     if ($event->payment_mode == 2) {
                         if ($amounts = request()->input('amount', array())) {
