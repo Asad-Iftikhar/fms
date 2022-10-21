@@ -21,7 +21,8 @@ class AdminFundingCollectionController extends AdminController
     /**
      * AdminFundingCollectionController constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->middleware('permission:manage_funding_collections');
     }
@@ -29,7 +30,8 @@ class AdminFundingCollectionController extends AdminController
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getIndex() {
+    public function getIndex()
+    {
         # Show Grid of All funding collection
         $fundingCollections = FundingCollection::with('fundingType')->get();
         return view('admin.fundingCollections.index', compact('fundingCollections'));
@@ -38,7 +40,8 @@ class AdminFundingCollectionController extends AdminController
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getCreateFundingCollection() {
+    public function getCreateFundingCollection()
+    {
         // Show the page
         $fundingCollections = FundingCollection::all();
         $availableUsers = User::all();
@@ -51,7 +54,8 @@ class AdminFundingCollectionController extends AdminController
      * Creating Funding Collection
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postCreateFundingCollection() {
+    public function postCreateFundingCollection()
+    {
         $rules = array(
             'users' => 'required|array',
             'funding_type_id' => 'required|exists:funding_types,id',
@@ -87,7 +91,8 @@ class AdminFundingCollectionController extends AdminController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getEditFundingCollection($id) {
+    public function getEditFundingCollection($id)
+    {
         $fundingtypes = FundingType::all();
         $events = Event::all();
         if ($fundingCollection = FundingCollection::find($id)) {
@@ -102,7 +107,8 @@ class AdminFundingCollectionController extends AdminController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postEditFundingCollection($id) {
+    public function postEditFundingCollection($id)
+    {
         if ($fundingCollection = FundingCollection::find($id)) {
 
             $rules = array(
@@ -118,13 +124,11 @@ class AdminFundingCollectionController extends AdminController
             if ($validator->fails()) {
                 return redirect('admin/funding/collections/edit/' . $id)->withInput()->withErrors($validator);
             } else {
-                $fundingCollection->is_received = request()->input('is_received');
-                $fundingCollection->funding_type_id = request()->input('funding_type_id');
-                $fundingCollection->amount = request()->input('amount');
-
                 try {
-                    $updated = $fundingCollection->update(request()->input());
-                    if ($updated) {
+                    $fundingCollection->is_received = request()->input('is_received');
+                    $fundingCollection->funding_type_id = request()->input('funding_type_id');
+                    $fundingCollection->amount = request()->input('amount');
+                    if ($fundingCollection->save()) {
                         return redirect()->back()->with('success', 'Updated Successfully');
                     }
                 } catch (Exception $e) {
@@ -136,10 +140,12 @@ class AdminFundingCollectionController extends AdminController
     }
 
     /**
+     * listing data
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function fetchData(Request $request) {
+    public function fetchData(Request $request)
+    {
         # Read value
         $draw = $request->get('draw');
 
@@ -222,6 +228,7 @@ class AdminFundingCollectionController extends AdminController
             $collection->collectionTypeName = $collection->getCollectionTypeName();
             $collection->collectionUserName = $collection->firstName();
             $collection->eventName = $collection->getEventName();
+            $collection->paymentStatus = $collection->getPaymentStatus();
             $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/edit') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
 

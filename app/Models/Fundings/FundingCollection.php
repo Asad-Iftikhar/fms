@@ -58,6 +58,10 @@ class FundingCollection extends Base {
         return $this->belongsTo(Event::class,'event_id');
     }
 
+    /**
+     * Collection Type Name
+     * @return string
+     */
     public function getCollectionTypeName() {
         if (is_null($this->event_id)) {
             return $this->fundingType->name;
@@ -66,6 +70,10 @@ class FundingCollection extends Base {
         }
     }
 
+    /**
+     * Event Name
+     * @return string
+     */
     public function getEventName() {
         if (is_null($this->event_id)) {
             return 'N/A';
@@ -74,8 +82,25 @@ class FundingCollection extends Base {
         }
     }
 
+    /**
+     * First Name
+     * @return mixed
+     */
     public function firstName()
     {
         return $this->user->username;
+    }
+
+    /**
+     * Payment Status
+     * @return string
+     */
+    public function getPaymentStatus() {
+        if ($this->is_received == 1) {
+            return '<span class="badge bg-success">Received</span>';
+        }
+        else {
+            return '<span class="badge bg-danger">Pending</span>';
+        }
     }
 }

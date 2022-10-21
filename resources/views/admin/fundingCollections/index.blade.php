@@ -66,7 +66,7 @@
                     {data: 'collectionTypeName'},
                     {data: 'amount'},
                     {data: 'eventName'},
-                    {data: 'is_received'},
+                    {data: 'paymentStatus'},
                     {data: 'action'}
                 ],
                 columnDefs : [
