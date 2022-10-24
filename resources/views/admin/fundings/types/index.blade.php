@@ -40,7 +40,7 @@
                                     <td>{!! $fundingType->amount !!}</td>
                                     <td>
                                             <a href="{!! url( 'admin/funding/types/edit/' . $fundingType->id ) !!}" class="button btn btn-outline-info">Edit</a>
-                                            <a href="{!! url( 'admin/users/roles/delete/' . $fundingType->id ) !!}" class="button btn btn-outline-danger">Delete</a>
+                                            <button onClick="confirmDelete('{{ url( 'admin/funding/types/delete' ).'/'. $fundingType->id }}')" class="button btn btn-outline-danger">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -55,8 +55,8 @@
 @section('javascript')
     @parent
     <script type="text/javascript" src="{{ asset('assets/DataTables-1.12.1/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert/sweetalert.min.js') }}"></script>
     <script type="text/javascript">
-
         // Simple Datatable
         $(document).ready(function()
         {
@@ -74,6 +74,23 @@
                 ]
             });
         });
+    </script>
+    <script>
+        function confirmDelete(delUrl){
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, You will not be able to recover the user !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = delUrl;
+                } else {
+
+                }
+            });
+        };
     </script>
 @stop
 @stop

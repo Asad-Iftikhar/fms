@@ -28,6 +28,7 @@ class AdminFundingCollectionController extends AdminController
     }
 
     /**
+     * Funding Collection Grid
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getIndex()
@@ -229,7 +230,7 @@ class AdminFundingCollectionController extends AdminController
             $collection->collectionUserName = $collection->firstName();
             $collection->eventName = $collection->getEventName();
             $collection->paymentStatus = $collection->getPaymentStatus();
-            $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/edit') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+            $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
 
         # response
@@ -241,5 +242,22 @@ class AdminFundingCollectionController extends AdminController
         );
         return response()->json($response);
 
+    }
+
+    /**
+     * Delete Funding Collection
+     * @param $fundingcollectionId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deleteFundingCollection($fundingcollectionId) {
+        $fundingcollection = FundingCollection::find($fundingcollectionId);
+        if ($fundingcollection != null) {
+            $fundingcollection->delete();
+            return redirect()->back()->with('success', 'Deleted Successfully');
+        }
+        else {
+            return redirect()->back()->with('error', "User doesn't exists");
+
+        }
     }
 }

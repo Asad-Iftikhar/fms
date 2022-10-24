@@ -48,8 +48,8 @@
 @section('javascript')
     @parent
     <script type="text/javascript" src="{{ asset('assets/DataTables-1.12.1/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/sweetalert/sweetalert.min.js') }}"></script>
     <script type="text/javascript">
-
         // Simple Datatable
         $(document).ready(function()
         {
@@ -81,6 +81,24 @@
                 ]
             });
         });
+    </script>
+
+    <script>
+        function confirmDelete(delUrl){
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, You will not be able to recover the user !",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = delUrl;
+                } else {
+
+                }
+            });
+        };
     </script>
 @stop
 @stop
