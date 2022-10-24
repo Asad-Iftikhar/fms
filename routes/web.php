@@ -107,5 +107,6 @@ Route::get( 'admin/events/create', 'Admin\Events\AdminEventsController@getCreate
 Route::post( 'admin/events/create', 'Admin\Events\AdminEventsController@postCreateEvent' );
 Route::get( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@getEditEvent' );
 Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postEditEvent' );
+Route::get( 'admin/events/delete/{id}', 'Admin\Events\AdminEventsController@deleteEvent' );
 
 
