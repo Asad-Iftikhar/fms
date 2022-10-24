@@ -35,14 +35,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        @if (!empty($selected_fundingtype))
+                        @if (!empty( $fundingCollection->funding_type_id) )
                             <div class="col-6">
                                 <div class="form-group mb-3">
                                     <label for="description" for="funding_type_id">Collection</label>
                                     <select name="funding_type_id" class="form-select" id="funding_type_id">
-                                        @foreach($fundingtypes as $fundingtype)
+                                        @foreach( $fundingTypes as $fundingtype )
                                             <option data-amount="{{ $fundingtype->amount }}"
-                                                    value="{{ $fundingtype->id }}" {{ ($fundingtype->id == $fundingCollection->funding_type_id) ? 'selected' : '' }}>{{$fundingtype->name}}</option>
+                                                    value="{{ old('funding_type_id',$fundingtype->id) }}" {{ ($fundingtype->id == $fundingCollection->funding_type_id) ? 'selected' : '' }}>{{ $fundingtype->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -52,9 +52,9 @@
                                 <div class="form-group mb-3">
                                     <label for="event">Event</label>
                                     <select name="event_id" class="choices form-select" disabled>
-                                        @foreach($events as $event)
+                                        @foreach( $events as $event )
                                             <option
-                                                value="{{$event->id}}" {{ ($event->id == $selected_event) ? 'selected' : '' }}>{{$event->name}}</option>
+                                                value="{{ old('event_id',$event->id) }}" {{ ($event->id == $fundingCollection->event_id ) ? 'selected' : '' }}>{{ $event->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -65,12 +65,12 @@
                         <div class="col-6">
                             <div class="form-group mb-3">
                                 <lable>Amount</lable>
-                                @if(!empty($selected_fundingtype))
+                                @if(!empty( $fundingCollection->funding_type_id ))
                                     {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="text" name='amount' class="form-control" id="amount" value="{{ $fundingCollection->amount }}" />
+                                    <input type="text" name='amount' class="form-control" id="amount" value="{{ old('amount', $fundingCollection->amount) }}" />
                                 @else
                                     {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" id="amount" name="amount" value="{{ $fundingCollection->amount }}"/>
+                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" id="amount" name="amount" value="{{ old('amount', $fundingCollection->amount) }}"/>
                                 @endif
                             </div>
                         </div>
@@ -89,8 +89,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary me-1 mb-1">Update</button>
+                    <div class="row">
+                        <div class="col-6 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-1 mb-1">Update</button>
+                        </div>
                     </div>
                 </form>
             </div>

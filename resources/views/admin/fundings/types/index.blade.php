@@ -86,8 +86,6 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     window.location.href = delUrl;
-                } else {
-
                 }
             });
         };

@@ -33,7 +33,7 @@
                                 <select name="users[]" multiple id="users" class="multiple-remove form-select"
                                         multiselect-search="true" multiselect-select-all="true"
                                         multiselect-max-items="100" multiselect-hide-x="false" style="width: 100%;">
-                                    @foreach($availableUsers as $user)
+                                    @foreach( $availableUsers as $user )
                                         <option value="{{ $user->id }}">{{ $user->username }}</option>
                                     @endforeach
                                 </select>
@@ -47,7 +47,7 @@
                                 {!! $errors->first('funding_type_id', '<small class="text-danger">:message</small>') !!}
                                 <select class="form-select" name="funding_type_id" id="funding_type_id">
                                     <option>Select Funding Type</option>
-                                    @foreach($availableFundingTypes as $availableFundingType)
+                                    @foreach( $availableFundingTypes as $availableFundingType)
                                         <option
                                             value="{{ $availableFundingType->id }}">{{ $availableFundingType->name }}</option>
                                     @endforeach
@@ -58,9 +58,8 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group mb-3">
-                                <label>Description</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
-                                          name="description"></textarea>
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" rows="3" name="description"></textarea>
                             </div>
                         </div>
                     </div>
@@ -79,11 +78,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-6">
-                            <div class="col-12 d-flex justify-content-end">
+                            <div class="col-6 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-primary me-1 mb-1">Create</button>
                             </div>
-                        </div>
                     </div>
                 </form>
             </div>

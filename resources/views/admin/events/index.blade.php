@@ -70,7 +70,7 @@
                 {data: 'event_cost'},
                 {data: 'participants'},
                 {data: 'payment_mode'},
-                {data: 'status'},
+                {data: 'statusname'},
                 {data: 'event_date'},
                 {data: 'created_by'},
                 {data: 'action'}

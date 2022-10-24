@@ -89,12 +89,10 @@ class AdminFundingCollectionController extends AdminController
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getEditFundingCollection($id) {
-        $fundingtypes = FundingType::all();
+        $fundingTypes = FundingType::all();
         $events = Event::all();
         if ($fundingCollection = FundingCollection::find($id)) {
-            $selected_fundingtype = $fundingCollection->funding_type_id;
-            $selected_event = $fundingCollection->event_id;
-            return view('admin.fundingCollections.edit', compact('fundingtypes', 'fundingCollection', 'selected_fundingtype', 'selected_event', 'events'));
+            return view('admin.fundingCollections.edit', compact('fundingTypes', 'fundingCollection', 'events'));
         }
     }
 
@@ -244,13 +242,16 @@ class AdminFundingCollectionController extends AdminController
      */
     public function deleteFundingCollection($fundingcollectionId) {
         $fundingcollection = FundingCollection::find($fundingcollectionId);
-        if ($fundingcollection != null) {
-            $fundingcollection->delete();
-            return redirect()->back()->with('success', 'Deleted Successfully');
-        }
-        else {
-            return redirect()->back()->with('error', "User doesn't exists");
-
+        if ( $fundingcollection != null ) {
+            if( $fundingcollection->event_id != null ) {
+                if( $fundingcollection->is_received == 1 ) {
+                    return redirect()->back()->with('error', "Cannot delete");
+                }
+            }
+            else {
+                $fundingcollection->delete();
+                return redirect()->back()->with('success', 'Deleted Successfully');
+            }
         }
     }
 }

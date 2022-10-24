@@ -78,7 +78,7 @@ class FundingCollection extends Base {
         if (is_null($this->event_id)) {
             return 'N/A';
         } else {
-            return ucfirst($this->event->name);
+            return '<a href="'.url("admin/events").'" type="button">' . $this->event->name . '</a>';
         }
     }
 

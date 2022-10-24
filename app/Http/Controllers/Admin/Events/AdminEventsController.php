@@ -198,6 +198,7 @@ class AdminEventsController extends AdminController {
             }else{
                 $data->payment_mode = 'Office Funds & Collections';
             }
+            $data->statusname = $data->getStatus();
             $data->participants = 2;
             $data->action='<a href="'.url('admin/events/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/events/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
