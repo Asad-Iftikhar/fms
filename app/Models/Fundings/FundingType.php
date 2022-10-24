@@ -32,10 +32,9 @@ class FundingType extends Base {
      *
      * @var array
      */
-    protected $fillable = array('name', 'description', 'amount');
+    protected $fillable = array('id', 'name', 'description', 'amount');
 
     public function fundingCollectionType() {
-        return $this->hasMany(FundingCollection::class,'funding_collections')->withTimestamps();
+        return $this->hasMany(FundingCollection::class,'funding_collections');
     }
-
 }

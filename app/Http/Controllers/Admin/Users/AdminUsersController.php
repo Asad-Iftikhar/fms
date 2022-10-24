@@ -232,7 +232,6 @@ class AdminUsersController extends AdminController {
         return response()->json($response);
     }
 
-
     /**
      * Soft Delete User
      * @param $userId
@@ -250,10 +249,4 @@ class AdminUsersController extends AdminController {
             }
         }
     }
-
-
-    # Create User
-    # Update User profiles
-    # Everything related to User Management
-
 }

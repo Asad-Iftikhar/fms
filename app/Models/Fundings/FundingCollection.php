@@ -20,6 +20,7 @@ namespace App\Models\Fundings;
 use App\Models\Base;
 use App\Models\Events\Event;
 use App\Models\Users\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class FundingCollection extends Base {
     /**
@@ -34,23 +35,44 @@ class FundingCollection extends Base {
      *
      * @var array
      */
-    protected $fillable = array('amount', 'user_id', 'event_id', 'is_recieved');
+    protected $fillable = array('user_id', 'funding_type_id', 'amount', 'event_id' ,'is_recieved');
+
     /**
-     * @var mixed
+     * @return mixed
      */
-
-    public function users() {
-        return $this->belongsTo(User::class, 'user_id')->withTimestamps();
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function fundingtypes() {
-        return $this->belongsTo(FundingType::class,'fund_type_id')->withTimestamps();
+    /**
+     * @return mixed
+     */
+    public function fundingType() {
+        return $this->belongsTo(FundingType::class,'funding_type_id');
     }
 
-    public function events() {
-        return $this->belongsTo(Event::class,'event_id')->withTimestamps();
+    /**
+     * @return mixed
+     */
+    public function event() {
+        return $this->belongsTo(Event::class,'event_id');
     }
 
+    public function getCollectionTypeName() {
+        if (is_null($this->event_id)) {
+            return $this->fundingType->name;
+        } else {
+            return 'Event';
+        }
+    }
+
+    public function getEventName() {
+        if (is_null($this->event_id)) {
+            return 'N/A';
+        } else {
+            return ucfirst($this->event->name);
+        }
+    }
     public static function totalAvailableFunds() {
         $collections = fundingCollection::where('is_received',1)->sum('amount');
         $spendings = Event::where('status','finished')->sum('event_cost');
@@ -59,5 +81,8 @@ class FundingCollection extends Base {
 
 
 
-
+    public function firstName()
+    {
+        return $this->user->username;
+    }
 }
