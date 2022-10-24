@@ -15,8 +15,7 @@
                     <div class="col-6">
                         <span>
                             <a href="{{url('admin/funding/collections')}}" type="button" class="btn btn-primary"
-                               style="float: right"><i class="iconly-boldArrow---Left-2"
-                                                       style="position: relative; top: 3px"></i> Back</a>
+                               style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
                         </span>
                     </div>
                 </div>
@@ -68,13 +67,10 @@
                                 <lable>Amount</lable>
                                 @if(!empty($selected_fundingtype))
                                     {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="text" name='amount' class="form-control" id="amount"
-                                           value="{{ $fundingCollection->amount }}"/>
+                                    <input type="text" name='amount' class="form-control" id="amount" value="{{ $fundingCollection->amount }}" />
                                 @else
                                     {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="text"
-                                           class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}"
-                                           id="amount" name="amount" value="{{ $fundingCollection->amount }}"/>
+                                    <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" id="amount" name="amount" value="{{ $fundingCollection->amount }}"/>
                                 @endif
                             </div>
                         </div>
@@ -93,12 +89,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="col-12 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary me-1 mb-1">Update</button>
-                            </div>
-                        </div>
+                    <div class="col-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary me-1 mb-1">Update</button>
                     </div>
                 </form>
             </div>

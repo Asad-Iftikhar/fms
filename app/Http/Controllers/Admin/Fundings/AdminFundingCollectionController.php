@@ -21,8 +21,7 @@ class AdminFundingCollectionController extends AdminController
     /**
      * AdminFundingCollectionController constructor.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->middleware('permission:manage_funding_collections');
     }
@@ -31,8 +30,7 @@ class AdminFundingCollectionController extends AdminController
      * Funding Collection Grid
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         # Show Grid of All funding collection
         $fundingCollections = FundingCollection::with('fundingType')->get();
         return view('admin.fundingCollections.index', compact('fundingCollections'));
@@ -41,8 +39,7 @@ class AdminFundingCollectionController extends AdminController
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getCreateFundingCollection()
-    {
+    public function getCreateFundingCollection() {
         // Show the page
         $fundingCollections = FundingCollection::all();
         $availableUsers = User::all();
@@ -55,8 +52,7 @@ class AdminFundingCollectionController extends AdminController
      * Creating Funding Collection
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postCreateFundingCollection()
-    {
+    public function postCreateFundingCollection() {
         $rules = array(
             'users' => 'required|array',
             'funding_type_id' => 'required|exists:funding_types,id',
@@ -92,8 +88,7 @@ class AdminFundingCollectionController extends AdminController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getEditFundingCollection($id)
-    {
+    public function getEditFundingCollection($id) {
         $fundingtypes = FundingType::all();
         $events = Event::all();
         if ($fundingCollection = FundingCollection::find($id)) {
@@ -108,8 +103,7 @@ class AdminFundingCollectionController extends AdminController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function postEditFundingCollection($id)
-    {
+    public function postEditFundingCollection($id) {
         if ($fundingCollection = FundingCollection::find($id)) {
 
             $rules = array(
@@ -145,8 +139,7 @@ class AdminFundingCollectionController extends AdminController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function fetchData(Request $request)
-    {
+    public function fetchData(Request $request) {
         # Read value
         $draw = $request->get('draw');
 
