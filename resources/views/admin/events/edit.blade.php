@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
-                    <h4>Create Event</h4>
+                    <h4>Update Event</h4>
                 </div>
                 <div class="col-6">
                     <span>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form class="form form-vertical" method="post" action="{{ url('admin/events/create') }}">
+            <form class="form form-vertical" method="post" action="{{ url('admin/events/edit/'.$event->id) }}">
                 @csrf
                 <div class="form-body">
                     <div class="row">
@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label for="name-input">Name<small class="text-danger">*</small></label>
                                 {!! $errors->first('name', '<small class="text-danger">:message</small>') !!}
-                                <input type="text" value="{{ old('name') }}"
+                                <input type="text" value="{{ old('name', $event->name) }}"
                                        class="form-control {!! $errors->has('name') ? 'is-invalid' : '' !!} "
                                        placeholder="Event Name" name="name"
                                        id="name-input">
@@ -37,23 +37,23 @@
                             <div class="form-group">
                                 <label for="event-date-input">Event Date</label>
                                 {!! $errors->first('event_date', '<small class="text-danger">:message</small>') !!}
-                                <input type="date" value="{{ old('event_date') }}"
+                                <input type="date" value="{{ old('event_date', $event->event_date) }}"
                                        class="form-control {!! $errors->has('event_date') ? 'is-invalid' : '' !!} "
                                        placeholder="Event Date" name="event_date" id="event-date-input">
                             </div>
                             <div class="form-group">
                                 <h6>Event Status</h6>
                                 <input type="radio" value="draft" class="btn-check event-status" name="status"
-                                       id="danger-outlined-status" {{ old('status')=="draft" ? 'checked' : '' }}
+                                       id="danger-outlined-status" {{ old('status', $event->status)=="draft" ? 'checked' : '' }}
                                        autocomplete="off" checked>
                                 <label class="btn btn-outline-danger" for="danger-outlined-status">Draft</label>
                                 <input type="radio" value="active" class="btn-check event-status" name="status"
-                                       id="warning-outlined-status" {{ old('status')=="active" ? 'checked' : '' }}
+                                       id="warning-outlined-status" {{ old('status', $event->status)=="active" ? 'checked' : '' }}
                                        autocomplete="off">
                                 <label class="btn btn-outline-warning" for="warning-outlined-status">
                                     Active</label>
                                 <input type="radio" value="finished" class="btn-check event-status" name="status"
-                                       id="success-outlined-status" {{ old('status')=="finished" ? 'checked' : '' }}
+                                       id="success-outlined-status" {{ old('status', $event->status)=="finished" ? 'checked' : '' }}
                                        autocomplete="off">
                                 <label class="btn btn-outline-success" for="success-outlined-status">
                                     Finished</label>
@@ -64,7 +64,7 @@
                                 <label for="desc-input">Description</label>
                                 {!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
                                 <textarea rows="5" type="text"
-                                          class="form-control {!! $errors->has('description') ? 'is-invalid' : '' !!} "
+                                          class="form-control {!! $errors->has('description', $event->description) ? 'is-invalid' : '' !!} "
                                           placeholder="Description" name="description"
                                           id="desc-input">{{ old('description') }}</textarea>
                             </div>
@@ -76,7 +76,7 @@
                                 <select name="guests[]" class="choices form-select multiple-remove"
                                         multiple="multiple">
                                     @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->username}}</option>
+                                        <option {{ (in_array($user->id, old( 'guests', $guestIds)))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -85,7 +85,7 @@
                             <div class="form-group">
                                 <label for="event-cost-input">Event Cost</label>
                                 {!! $errors->first('event_cost', '<small class="text-danger">:message</small>') !!}
-                                <input type="number" value="{{ old('event_cost') }}"
+                                <input type="number" value="{{ old('event_cost', $event->event_cost) }}"
                                        class="form-control {!! $errors->has('event_cost') ? 'is-invalid' : '' !!} "
                                        placeholder="Event Cost" name="event_cost"
                                        id="event-cost-input">
@@ -103,11 +103,11 @@
                         <div class="col-md-8 vr">
                             <h6>Payment Mode</h6>
                             <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="success-outlined" {{ old('payment_mode')=="1" ? 'checked' : '' }}
+                                   id="success-outlined" {{ old('payment_mode', $event->payment_mode)=="1" ? 'checked' : '' }}
                                    autocomplete="off" checked>
                             <label class="btn btn-outline-success" for="success-outlined">Existing Collections</label>
                             <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="danger-outlined" {{ old('payment_mode')=="2" ? 'checked' : '' }}
+                                   id="danger-outlined" {{ old('payment_mode', $event->payment_mode)=="2" ? 'checked' : '' }}
                                    autocomplete="off">
                             <label class="btn btn-outline-success" for="danger-outlined">Existing & New
                                 Collections</label>
@@ -116,7 +116,7 @@
                             <div class="form-group">
                                 <label for="cash-by-funds-input">Cash By Office Funds</label>
                                 {!! $errors->first('cash_by_funds', '<small class="text-danger">:message</small>') !!}
-                                <input type="number" readonly value="{{ old('cash_by_funds') }}"
+                                <input type="number" readonly value="{{ old('cash_by_funds', $event->cash_by_funds) }}"
                                        class="form-control {!! $errors->has('cash_by_funds') ? 'is-invalid' : '' !!} "
                                        placeholder="Cash By Office Funds" name="cash_by_funds"
                                        id="cash-by-funds-input">
@@ -139,33 +139,37 @@
                         </div>
                     </div>
                     <div class="col-md-8" id="participant_fieldset">
-                        <div class="row collections-row" style="display: none">
-                            <div class="col-md-6 mb-4">
-                                <div class="form-group">
-                                    <label for="UserSelection0">Select multiple users for collection</label>
-                                    <select id="UserSelection0" name="collection_users[0][]" class="choices form-select multiple-remove"
-                                            multiple="multiple">
-                                        @foreach($users as $user)
-                                            <option value="{{$user->id}}">{{$user->username}}</option>
-                                        @endforeach
-                                    </select>
+                        <?php  $count = 0 ?>
+                        @foreach($collections as $key=>$collection)
+                            <div class="row collections-row" style="display: none">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-group">
+                                        <label for="UserSelection{{$count}}">Select multiple users for collection</label>
+                                        <select id="UserSelection{{$count}}" name="collection_users[{{$count}}][]" class="choices form-select multiple-remove"
+                                                multiple="multiple">
+                                            @foreach($users as $user)
+                                                <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="amount-input{{$count}}">Amount</label>
+                                        {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
+                                        <input type="number" data-id="UserSelection{{$count}}" value="{{ old('amount[0]', $key) }}"
+                                               class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
+                                               placeholder="Amount" name="amount[{{$count}}]" id="amount-input{{$count}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 justify-content-end d-flex">
+                                    <div class="form-group py-4">
+                                        <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="amount-input">Amount</label>
-                                    {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="number" data-id="UserSelection0" value="{{ old('amount[0]') }}"
-                                           class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
-                                           placeholder="Amount" name="amount[0]" id="amount-input">
-                                </div>
-                            </div>
-                            <div class="col-md-2 justify-content-end d-flex">
-                                <div class="form-group py-4">
-                                    <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
-                                </div>
-                            </div>
-                        </div>
+                            <?php  $count++ ?>
+                        @endforeach
                     </div>
 
                     <div class="row collections-row" style="display: none">
@@ -176,14 +180,13 @@
                     <hr>
                     <div class="row">
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary mt-4 me-1 mb-1">Create</button>
+                            <button type="submit" class="btn btn-primary mt-4 me-1 mb-1">Update</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-
 @endsection
 @section('javascript')
     @parent
@@ -192,19 +195,19 @@
 <script>
 
     $( document ).ready(function() {
+        filterMultiSelect();
+        resettingAmounts();
         if($('.payment_mode_radio:checked').val() == 1) {
-            console.log('hide');
             $('#cash-by-collections-div').hide();
             $('.collections-row').hide();
         }else {
-            console.log('show');
             $('#cash-by-collections-div').show();
             $('.collections-row').show();
         }
     });
 
     var users = {!! $users !!};
-    var selectedUser = [];
+    var selectedUser = {!! $selectedUsers !!};
     $('.payment_mode_radio').change(function () {
         if (this.value == 2) {
             $('#cash-by-collections-div').show();
@@ -214,7 +217,7 @@
             $('.collections-row').hide();
         }
     });
-    let Counter = 1;
+    let Counter = {!! $count !!};
     // jquery.repeater
     $(function () {
         $(document).on('click', '.btn-add', function (e) {
@@ -241,7 +244,7 @@
             }
 
             return false;
-        }).on('change', filterMultiSelect).on('change', );
+        }).on('change keyup', filterMultiSelect).on('change keyup', resettingAmounts);
     });
 
     function availableUsers() {
@@ -296,7 +299,6 @@
                 totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
 
             });
-            console.log(totalCollections);
             $('#cash-by-collections-input').val(totalCollections);
             $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
         }
