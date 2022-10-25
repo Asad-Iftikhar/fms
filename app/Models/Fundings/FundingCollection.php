@@ -21,8 +21,11 @@ use App\Models\Base;
 use App\Models\Events\Event;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FundingCollection extends Base {
+    use SoftDeletes;
+
     /**
      * The table associated with the model.
      *

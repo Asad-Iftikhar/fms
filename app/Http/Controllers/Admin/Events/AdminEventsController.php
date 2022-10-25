@@ -105,6 +105,7 @@ class AdminEventsController extends AdminController {
                 $event->guests()->sync( request()->input( 'guests', array() ) );
                 if( $event->payment_mode == 2 ) {
                     if( $amounts = request()->input( 'amount', array() )){
+                        $users=[];
                         foreach( $amounts as $key=>$amount ) {
                             $users = request()->input( 'collection_users' );
                             $users = $users[$key];
@@ -128,7 +129,7 @@ class AdminEventsController extends AdminController {
         return redirect( 'admin/events/create' )->withInput()->withErrors( $validator );
     }
     /**
-     * @param $id
+     * @param $event_id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getEditEvent ( $event_id ) {
@@ -139,7 +140,7 @@ class AdminEventsController extends AdminController {
             $guestIds = $event->guests()->pluck('user_id')->toArray();
             $selectedUsers = $guestIds;
             $collectionsData = $event->fundingCollections()->get();
-            $result = array();
+            $collections = [];
             foreach ($collectionsData as $element) {
                 array_push($selectedUsers, $element->user_id);
                 $collections[$element['amount']][] = $element->user_id;
@@ -153,7 +154,7 @@ class AdminEventsController extends AdminController {
 
     /**
      * Update Event
-     * @param $id
+     * @param $event_id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function postEditEvent ( $event_id ) {
@@ -186,6 +187,7 @@ class AdminEventsController extends AdminController {
             }
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->passes()) {
+                // checking weather any collection is paid or not
                 if(FundingCollection::where('event_id', $event_id)->where('is_received','1')->first()){
                     $collectionPaid = 1;
                 }else{
@@ -195,13 +197,15 @@ class AdminEventsController extends AdminController {
                 $event->description = $request->input('description');
                 $event->event_date = $request->input('event_date');
                 if(!($collectionPaid)){
+                    // If any collection is paid following attributes will not be updated
                     $event->event_cost = $request->input('event_cost');
                     $event->payment_mode = $request->input('payment_mode');
                     $event->cash_by_funds = $request->input('cash_by_funds');
                 }
                 $event->status = $request->input('status');
-//              $event->created_by = Auth::user()->id;
+                // Returning errors if some cases are not satisfied in active status
                 if ( $event->status == 'active' ) {
+                    // Return Error If Funds are insufficent and status is active
                     if ( $event->payment_mode == 2 && $collectionPaid == 0 ) {
                         if( ($event->cash_by_funds + $request->input('cash_by_collections'))  != $event->event_cost ) {
                             return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event Cost should be equal to collections and funds');
@@ -216,21 +220,27 @@ class AdminEventsController extends AdminController {
                     if ( $event->payment_mode == 2 ) {
                         foreach( $event->fundingCollections()->get() as $collection ){
                             if ( $collection->is_received == 0 ) {
+                                // Return Error If All Collections are not Paid
                                 return redirect()->back()->withInput()->with('error', 'All Collections are not marked as paid so you cant save event as finished ');
                             }
                         }
                     } else {
+                        // Return Error If All Insufficent Funds are not Paid
                         if( $event->cash_by_funds < $event->event_cost ) {
                             return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be finished ');
                         }
                     }
                 }
                 if ($event->save()) {
+                    // Save Guests in event_guest table
                     $event->guests()->sync(request()->input('guests', array()));
                     if( $collectionPaid ){
+                        // If any collection is paid no need to update further things just return
                         return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !, Event Cost , Cash by Funds, Payment Mode and collections cannot be updated because someone has paid collection');
                     }
+                    // Delete all old collections
                     fundingCollection::where('event_id',$event->id)->delete();
+                    // Save collection
                     if ($event->payment_mode == 2) {
                         if ($amounts = request()->input('amount', array())) {
                             foreach ($amounts as $key => $amount) {
@@ -258,6 +268,26 @@ class AdminEventsController extends AdminController {
         return redirect('admin/events');
     }
 
+
+
+    /**
+     * Soft Delete Event
+     * @param $eventId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function deleteEvent($eventId) {
+        if( $event = Event::find($eventId) ) {
+            if( $event->fundingCollections()->where('is_received',1)->first()){
+                return redirect()->back()->with('error', "Cannot Delete Because Collection is Paid");
+            }
+            $event->delete();
+            $event->fundingCollections()->delete();
+
+            return redirect()->back()->with('success', 'Deleted Successfully');
+        } else {
+            return redirect()->back()->with('error', "Event doesn't exists");
+        }
+    }
 
     /**
      * @return \Illuminate\Http\JsonResponse
@@ -308,14 +338,24 @@ class AdminEventsController extends AdminController {
 
         $arrData = $arrData->get();
         foreach ($arrData as $data){
-            if( $data->payment_mode==1 ) {
-                $data->payment_mode = 'Office Funds';
-            }else{
-                $data->payment_mode = 'Office Funds & Collections';
-            }
+            $data->payment_mode_name = $data->getPaymentModeName();
+            $data->created_by = $data->getUserName();
             $data->statusname = $data->getStatus();
-            $data->participants = $data->fundingCollections->count() ;
-            $data->action='<a href="'.url('admin/events/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/events/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+            $data->participants = ($data->fundingCollections->count() + $data->guests()->count() ) ;
+            $data->action='<a href="'.url('admin/events/edit').'/'. $data->id .'" class="edit btn btn-sm btn-outline-primary"><i class="iconly-boldEdit"></i></a>&nbsp;<button onClick="confirmDelete(\''.url('admin/events/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>';
+//            $data->action='<div class="btn-group dropstart mb-1">
+//                                <div class="dropdown">
+//                                    <button class="btn btn-primary btn-sm dropdown-toggle me-1" type="button"
+//                                        id="dropdownMenuButton" data-bs-toggle="dropdown"
+//                                        aria-haspopup="true" aria-expanded="false">
+//                                        Actions
+//                                    </button>
+//                                    <div class="dropdown-menu">
+//                                           <a href="'.url('admin/events/edit').'/'. $data->id .'" class="dropdown-item edit btn btn-outline-info">Edit</a>
+//                                           <button onClick="confirmDelete(\''.url('admin/events/delete').'/'. $data->id.'\')" class="dropdown-item delete-btn delete fa fa-trash">Delete</button>
+//                                    </div>
+//                                </div>
+//                            </div>';
         }
         $response = array(
             "draw" => intval($draw),

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('event_id')->nullable()->constrained('events')->onDelete('CASCADE');
             $table->boolean( 'is_received' )->default( 0 );
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 };

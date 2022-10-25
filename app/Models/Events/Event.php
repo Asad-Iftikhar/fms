@@ -5,6 +5,7 @@ namespace App\Models\Events;
 use App\Models\Base;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Users\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Events\Event
@@ -24,6 +25,11 @@ use App\Models\Users\User;
  * @mixin \Eloquent
  */
 class Event extends Base {
+
+    use SoftDeletes;
+
+    const officeFundOnly = 1;
+    const officeFundWithCollection = 2;
 
     /**
      * The table associated with the model.
@@ -54,7 +60,7 @@ class Event extends Base {
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function guests(): object {
-        return $this->belongsToMany( User::class, 'event_guests' )->withTimestamps();
+        return $this->belongsToMany( User::class, 'event_guests', 'event_id', 'user_id' )->withTimestamps();
     }
 
     public function user() {
@@ -65,15 +71,35 @@ class Event extends Base {
         return $this->hasMany( FundingCollection::class, 'event_id' );
     }
 
+    /**
+     * User Name
+     * @return string
+     */
+    public function getUserName() {
+        return '<a href="'.url("admin/users/edit/".$this->created_by).'" type="button">' . $this->user->username . '</a>';
+    }
+
+    /**
+     * User Name
+     * @return string
+     */
+    public function getPaymentModeName() {
+        if ($this->payment_mode == $this::officeFundWithCollection) {
+            return '<span class="badge bg-success">Office Funds With Collections</span>';
+        } else {
+            return '<span class="badge bg-primary">Office Funds</span>';
+        }
+    }
+
     public function getStatus() {
         if($this->status == 'active') {
-            return '<span class="badge bg-warning">Active</span>';
+            return '<span class="badge bg-success">Active</span>';
         }
         elseif ($this->status == 'draft') {
-            return '<span class="badge bg-danger">Draft</span>';
+            return '<span class="badge bg-warning">Draft</span>';
         }
         else {
-            return '<span class="badge bg-success">Finished</span>';
+            return '<span class="badge bg-danger">Finished</span>';
         }
     }
 }

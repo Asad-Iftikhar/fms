@@ -43,20 +43,22 @@
                             </div>
                             <div class="form-group">
                                 <h6>Event Status</h6>
-                                <input type="radio" value="draft" class="btn-check event-status" name="status"
-                                       id="danger-outlined-status" {{ old('status', $event->status)=="draft" ? 'checked' : '' }}
-                                       autocomplete="off" checked>
-                                <label class="btn btn-outline-danger" for="danger-outlined-status">Draft</label>
-                                <input type="radio" value="active" class="btn-check event-status" name="status"
-                                       id="warning-outlined-status" {{ old('status', $event->status)=="active" ? 'checked' : '' }}
-                                       autocomplete="off">
-                                <label class="btn btn-outline-warning" for="warning-outlined-status">
-                                    Active</label>
-                                <input type="radio" value="finished" class="btn-check event-status" name="status"
-                                       id="success-outlined-status" {{ old('status', $event->status)=="finished" ? 'checked' : '' }}
-                                       autocomplete="off">
-                                <label class="btn btn-outline-success" for="success-outlined-status">
-                                    Finished</label>
+                                <div class="btn-group">
+                                    <input type="radio" value="draft" class="btn-check event-status" name="status"
+                                           id="warning-outlined-status" {{ old('status', $event->status)=="draft" ? 'checked' : '' }}
+                                           autocomplete="off" checked>
+                                    <label class="btn btn-outline-warning" for="warning-outlined-status">Draft</label>
+                                    <input type="radio" value="active" class="btn-check event-status" name="status"
+                                           id="success-outlined-status" {{ old('status', $event->status)=="active" ? 'checked' : '' }}
+                                           autocomplete="off">
+                                    <label class="btn btn-outline-success" for="success-outlined-status">
+                                        Active</label>
+                                    <input type="radio" value="finished" class="btn-check event-status" name="status"
+                                           id="danger-outlined-status" {{ old('status', $event->status)=="finished" ? 'checked' : '' }}
+                                           autocomplete="off">
+                                    <label class="btn btn-outline-danger" for="danger-outlined-status">
+                                        Finished</label>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -102,15 +104,17 @@
                         </div>
                         <div class="col-md-8 vr">
                             <h6>Payment Mode</h6>
-                            <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="success-outlined" {{ old('payment_mode', $event->payment_mode)=="1" ? 'checked' : '' }}
-                                   autocomplete="off" checked>
-                            <label class="btn btn-outline-success" for="success-outlined">Existing Collections</label>
-                            <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="danger-outlined" {{ old('payment_mode', $event->payment_mode)=="2" ? 'checked' : '' }}
-                                   autocomplete="off">
-                            <label class="btn btn-outline-success" for="danger-outlined">Existing & New
-                                Collections</label>
+                            <div class="btn-group">
+                                <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
+                                       id="primary-outlined" {{ old('payment_mode', $event->payment_mode)=="1" ? 'checked' : '' }}
+                                       autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="primary-outlined">Existing Collections</label>
+                                <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode"
+                                       id="success-outlined" {{ old('payment_mode', $event->payment_mode)=="2" ? 'checked' : '' }}
+                                       autocomplete="off">
+                                <label class="btn btn-outline-success" for="success-outlined">Existing With New
+                                    Collections</label>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
