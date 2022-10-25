@@ -310,8 +310,7 @@ class AdminEventsController extends AdminController {
         $columnSortOrder = $orderArray[0]['dir']; //this will get us order direction
         $searchValue = $searchArray['value']; //This is search value
 
-        $event = Event::query()->where('deleted_at', NULL);
-        $total = $event->count();
+        $total = Event::count();
 
         $totalFilter = Event::query()->where('deleted_at', NULL);
         if (!empty($searchValue)){

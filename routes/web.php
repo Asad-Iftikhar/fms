@@ -106,13 +106,19 @@ Route::post('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingC
 #Admin Delete Funding collection
 Route::get('admin/funding/collections/delete/{id}','Admin\Fundings\AdminFundingCollectionController@deleteFundingCollection');
 
-#Admin Events
+#Admin View Events
 Route::get( 'admin/events', 'Admin\Events\AdminEventsController@getIndex' );
 Route::get('admin/events/getEvents','Admin\Events\AdminEventsController@fetchEvents');
+
+#Admin Create Events
 Route::get( 'admin/events/create', 'Admin\Events\AdminEventsController@getCreateEvent' );
 Route::post( 'admin/events/create', 'Admin\Events\AdminEventsController@postCreateEvent' );
+
+#Admin Update Event
 Route::get( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@getEditEvent' );
 Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postEditEvent' );
+
+#Admin Delete Funding Event
 Route::get( 'admin/events/delete/{id}', 'Admin\Events\AdminEventsController@deleteEvent' );
 
 

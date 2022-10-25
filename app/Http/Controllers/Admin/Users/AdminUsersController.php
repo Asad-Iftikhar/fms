@@ -192,8 +192,7 @@ class AdminUsersController extends AdminController {
         $columnSortOrder = $orderArray[0]['dir']; //this will get us order direction
         $searchValue = $searchArray['value']; //This is search value
 
-        $user = User::query()->where('deleted_at', NULL);
-        $total = $user->count();
+        $total = User::count();
 
         $totalFilter = User::query()->where('deleted_at', NULL);
         if (!empty($searchValue)){
