@@ -161,4 +161,6 @@ class AccountController extends AuthorizedController {
             return response()->json( request()->input( 'username' ) . ' is already in use.' );
         }
     }
+
+
 }

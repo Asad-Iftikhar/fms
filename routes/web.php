@@ -114,4 +114,7 @@ Route::post( 'admin/events/create', 'Admin\Events\AdminEventsController@postCrea
 Route::get( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@getEditEvent' );
 Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postEditEvent' );
 
+#User
+
+
 
