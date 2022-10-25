@@ -43,20 +43,22 @@
                             </div>
                             <div class="form-group">
                                 <h6>Event Status</h6>
-                                <input type="radio" value="draft" class="btn-check event-status" name="status"
-                                       id="danger-outlined-status" {{ old('status')=="draft" ? 'checked' : '' }}
-                                       autocomplete="off" checked>
-                                <label class="btn btn-outline-danger" for="danger-outlined-status">Draft</label>
-                                <input type="radio" value="active" class="btn-check event-status" name="status"
-                                       id="warning-outlined-status" {{ old('status')=="active" ? 'checked' : '' }}
-                                       autocomplete="off">
-                                <label class="btn btn-outline-warning" for="warning-outlined-status">
-                                    Active</label>
-                                <input type="radio" value="finished" class="btn-check event-status" name="status"
-                                       id="success-outlined-status" {{ old('status')=="finished" ? 'checked' : '' }}
-                                       autocomplete="off">
-                                <label class="btn btn-outline-success" for="success-outlined-status">
-                                    Finished</label>
+                                <div class="btn-group">
+                                    <input type="radio" value="draft" class="btn-check event-status" name="status"
+                                           id="warning-outlined-status" {{ old('status')=="draft" ? 'checked' : '' }}
+                                           autocomplete="off" checked>
+                                    <label class="btn btn-outline-warning" for="warning-outlined-status">Draft</label>
+                                    <input type="radio" value="active" class="btn-check event-status" name="status"
+                                           id="success-outlined-status" {{ old('status')=="active" ? 'checked' : '' }}
+                                           autocomplete="off">
+                                    <label class="btn btn-outline-success" for="success-outlined-status">
+                                        Active</label>
+                                    <input type="radio" value="finished" class="btn-check event-status" name="status"
+                                           id="danger-outlined-status" {{ old('status')=="finished" ? 'checked' : '' }}
+                                           autocomplete="off">
+                                    <label class="btn btn-outline-danger" for="danger-outlined-status">
+                                        Finished</label>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">

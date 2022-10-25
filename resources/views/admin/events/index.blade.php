@@ -29,12 +29,12 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Total Cost</th>
+                                    <th>Event Cost</th>
                                     <th>Participants</th>
                                     <th>Payment Mode</th>
                                     <th>Event Status</th>
                                     <th>Event Date</th>
-                                    <th>Created at</th>
+                                    <th>Created by</th>
                                     <th class="dt-right">Actions</th>
                                 </tr>
                             </thead>

@@ -106,6 +106,7 @@ class AdminEventsController extends AdminController {
                 $event->guests()->sync( request()->input( 'guests', array() ) );
                 if( $event->payment_mode == 2 ) {
                     if( $amounts = request()->input( 'amount', array() )){
+                        $users=[];
                         foreach( $amounts as $key=>$amount ) {
                             $users = request()->input( 'collection_users' );
                             $users = $users[$key];
@@ -140,7 +141,7 @@ class AdminEventsController extends AdminController {
             $guestIds = $event->guests()->pluck('user_id')->toArray();
             $selectedUsers = $guestIds;
             $collectionsData = $event->fundingCollections()->get();
-            $result = array();
+            $collections = [];
             foreach ($collectionsData as $element) {
                 array_push($selectedUsers, $element->user_id);
                 $collections[$element['amount']][] = $element->user_id;
@@ -267,12 +268,11 @@ class AdminEventsController extends AdminController {
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function deleteEvent($eventId) {
-        if( fundingCollection::where('event_id',$eventId)->where('is_received',1)){
-            return redirect()->back()->with('error', "Cannot Delete Because Collection is Paid");
-        }
         if( $event = Event::find($eventId) ) {
+            if( $event->fundingCollections()->where('is_received',1)->first()){
+                return redirect()->back()->with('error', "Cannot Delete Because Collection is Paid");
+            }
             $event->delete();
-            $event->guests()->delete();
             $event->fundingCollections()->delete();
 
             return redirect()->back()->with('success', 'Deleted Successfully');
@@ -333,8 +333,9 @@ class AdminEventsController extends AdminController {
             if( $data->payment_mode==1 ) {
                 $data->payment_mode = 'Office Funds';
             }else{
-                $data->payment_mode = 'Office Funds & Collections';
+                $data->payment_mode = 'Office Funds with Collections';
             }
+            $data->created_by = $data->getUserName();
             $data->statusname = $data->getStatus();
             $data->participants = $data->fundingCollections->count() ;
             $data->action='<a href="'.url('admin/events/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/events/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
