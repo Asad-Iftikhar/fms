@@ -76,11 +76,7 @@ class Event extends Base {
      * @return string
      */
     public function getUserName() {
-        if (is_null($this->created_by)) {
-            return 'N/A';
-        } else {
-            return '<a href="'.url("admin/users/edit/".$this->created_by).'" type="button">' . $this->user->username . '</a>';
-        }
+        return '<a href="'.url("admin/users/edit/".$this->created_by).'" type="button">' . $this->user->username . '</a>';
     }
 
     /**
