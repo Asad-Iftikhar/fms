@@ -144,6 +144,10 @@ class AdminFundingCollectionController extends AdminController
         $total = \DB::table('funding_collections')->count();
 
         $FilterQuery = FundingCollection::with('fundingType');
+        $FilterQuery->whereNull('event_id')->orWhereHas( 'event', function($subQuery)
+        {
+            $subQuery->where('status', '!=', 'draft');
+        });
         if (!empty($searchValue)) {
             $FilterQuery->where('name', 'like', '%' . $searchValue . '%');
         }
