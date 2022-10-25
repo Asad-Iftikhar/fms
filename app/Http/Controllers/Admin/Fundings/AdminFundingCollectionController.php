@@ -27,6 +27,7 @@ class AdminFundingCollectionController extends AdminController
     }
 
     /**
+     * Funding Collection Grid
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getIndex() {
@@ -116,13 +117,11 @@ class AdminFundingCollectionController extends AdminController
             if ($validator->fails()) {
                 return redirect('admin/funding/collections/edit/' . $id)->withInput()->withErrors($validator);
             } else {
-                $fundingCollection->is_received = request()->input('is_received');
-                $fundingCollection->funding_type_id = request()->input('funding_type_id');
-                $fundingCollection->amount = request()->input('amount');
-
                 try {
-                    $updated = $fundingCollection->update(request()->input());
-                    if ($updated) {
+                    $fundingCollection->is_received = request()->input('is_received');
+                    $fundingCollection->funding_type_id = request()->input('funding_type_id');
+                    $fundingCollection->amount = request()->input('amount');
+                    if ($fundingCollection->save()) {
                         return redirect()->back()->with('success', 'Updated Successfully');
                     }
                 } catch (Exception $e) {
@@ -134,6 +133,7 @@ class AdminFundingCollectionController extends AdminController
     }
 
     /**
+     * listing data
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -220,7 +220,8 @@ class AdminFundingCollectionController extends AdminController
             $collection->collectionTypeName = $collection->getCollectionTypeName();
             $collection->collectionUserName = $collection->firstName();
             $collection->eventName = $collection->getEventName();
-            $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/edit') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+            $collection->paymentStatus = $collection->getPaymentStatus();
+            $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
 
         # response
@@ -232,5 +233,25 @@ class AdminFundingCollectionController extends AdminController
         );
         return response()->json($response);
 
+    }
+
+    /**
+     * Delete Funding Collection
+     * @param $fundingcollectionId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deleteFundingCollection($fundingcollectionId) {
+        $fundingcollection = FundingCollection::find($fundingcollectionId);
+        if ( $fundingcollection != null ) {
+            if( $fundingcollection->event_id != null ) {
+                if( $fundingcollection->is_received == 1 ) {
+                    return redirect()->back()->with('error', "Cannot delete");
+                }
+            }
+            else {
+                $fundingcollection->delete();
+                return redirect()->back()->with('success', 'Deleted Successfully');
+            }
+        }
     }
 }
