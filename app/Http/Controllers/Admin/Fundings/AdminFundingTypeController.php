@@ -101,4 +101,14 @@ class AdminFundingTypeController extends AdminController {
         }
         return redirect()->with('error', "Funding type does not exist");
     }
+
+    public function deleteFundingtypes($fundingtypeId) {
+        $fundingtype = FundingType::find($fundingtypeId);
+        if($fundingtype != null){
+            $fundingtype->delete();
+            return redirect()->back()->with('success', 'Deleted Successfully');
+        } else {
+            return redirect()->back()->with('error', "User doesn't exists");
+        }
+    }
 }

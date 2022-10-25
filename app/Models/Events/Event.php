@@ -64,4 +64,16 @@ class Event extends Base {
     public function fundingCollections(): object {
         return $this->hasMany( FundingCollection::class, 'event_id' );
     }
+
+    public function getStatus() {
+        if($this->status == 'active') {
+            return '<span class="badge bg-warning">Active</span>';
+        }
+        elseif ($this->status == 'draft') {
+            return '<span class="badge bg-danger">Draft</span>';
+        }
+        else {
+            return '<span class="badge bg-success">Finished</span>';
+        }
+    }
 }
