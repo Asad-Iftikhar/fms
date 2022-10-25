@@ -141,9 +141,10 @@ class AdminFundingCollectionController extends AdminController
         # Read value
         $draw = $request->get('draw');
 
-        $total = \DB::table('funding_collections')->count();
+        $total = FundingCollection::count();
 
         $FilterQuery = FundingCollection::with('fundingType');
+        // Get all collections related to event whose status is active or Finished
         $FilterQuery->whereNull('event_id')->orWhereHas( 'event', function($subQuery)
         {
             $subQuery->where('status', '!=', 'draft');
