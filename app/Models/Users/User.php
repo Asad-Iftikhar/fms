@@ -69,7 +69,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     }
 
     public function fundingCollectionsUser() {
-        return $this->hasMany(FundingCollection::class,'funding_collections')->withTimestamps();
+        return $this->hasMany(FundingCollection::class,'user_id');
     }
 
     /**

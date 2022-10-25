@@ -81,12 +81,12 @@ class FundingCollection extends Base {
             return '<a href="'.url("admin/events/edit").'/'. $this->event_id .'" type="button">' . $this->event->name . '</a>';
         }
     }
+
     public static function totalAvailableFunds() {
         $collections = fundingCollection::where('is_received',1)->sum('amount');
         $spendings = Event::where('status','finished')->sum('event_cost');
         return intval($collections - $spendings);
     }
-
 
 
     /**
@@ -95,6 +95,10 @@ class FundingCollection extends Base {
      */
     public function firstName()
     {
+        return $this->user->username;
+    }
+
+    public function linkFirstName(){
         return '<a href="'.url("admin/users/edit").'/'. $this->user_id .'" type="button">' . $this->user->username . '</a>';
     }
 
@@ -109,5 +113,13 @@ class FundingCollection extends Base {
         else {
             return '<span class="badge bg-danger">Pending</span>';
         }
+    }
+
+    public static function getFundingCollectionsByUserId($userId) {
+        return FundingCollection::where('user_id','=',$userId)->get();
+    }
+
+     public function getdescription() {
+                    return $this->event->description;
     }
 }

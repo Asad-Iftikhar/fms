@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
+Route::get('/getdata','HomeController@fetchData');
 Route::get( 'account', 'Account\AccountController@getIndex' );
 
 # settings
@@ -113,8 +114,3 @@ Route::get( 'admin/events/create', 'Admin\Events\AdminEventsController@getCreate
 Route::post( 'admin/events/create', 'Admin\Events\AdminEventsController@postCreateEvent' );
 Route::get( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@getEditEvent' );
 Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postEditEvent' );
-
-#User
-
-
-
