@@ -73,6 +73,13 @@ class FundingCollection extends Base {
             return ucfirst($this->event->name);
         }
     }
+    public static function totalAvailableFunds() {
+        $collections = fundingCollection::where('is_received',1)->sum('amount');
+        $spendings = Event::where('status','finished')->sum('event_cost');
+        return intval($collections - $spendings);
+    }
+
+
 
     public function firstName()
     {
