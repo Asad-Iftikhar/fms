@@ -78,7 +78,7 @@ class FundingCollection extends Base {
         if (is_null($this->event_id)) {
             return 'N/A';
         } else {
-            return '<a href="'.url("admin/events").'" type="button">' . $this->event->name . '</a>';
+            return '<a href="'.url("admin/events/edit").'/'. $this->event_id .'" type="button">' . $this->event->name . '</a>';
         }
     }
 
@@ -88,7 +88,7 @@ class FundingCollection extends Base {
      */
     public function firstName()
     {
-        return $this->user->username;
+        return '<a href="'.url("admin/users/edit").'/'. $this->user_id .'" type="button">' . $this->user->username . '</a>';
     }
 
     /**
