@@ -27,6 +27,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Event extends Base {
 
     use SoftDeletes;
+
+    const officeFundOnly = 1;
+    const officeFundWithCollection = 2;
+
     /**
      * The table associated with the model.
      *
@@ -76,6 +80,18 @@ class Event extends Base {
             return 'N/A';
         } else {
             return '<a href="'.url("admin/users/edit/".$this->created_by).'" type="button">' . $this->user->username . '</a>';
+        }
+    }
+
+    /**
+     * User Name
+     * @return string
+     */
+    public function getPaymentModeName() {
+        if ($this->payment_mode == $this::officeFundWithCollection) {
+            return '<span class="badge bg-success">Office Funds With Collections</span>';
+        } else {
+            return '<span class="badge bg-primary">Office Funds</span>';
         }
     }
 

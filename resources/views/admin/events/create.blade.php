@@ -104,15 +104,17 @@
                         </div>
                         <div class="col-md-8 vr">
                             <h6>Payment Mode</h6>
-                            <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="success-outlined" {{ old('payment_mode')=="1" ? 'checked' : '' }}
-                                   autocomplete="off" checked>
-                            <label class="btn btn-outline-success" for="success-outlined">Existing Collections</label>
-                            <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode"
-                                   id="danger-outlined" {{ old('payment_mode')=="2" ? 'checked' : '' }}
-                                   autocomplete="off">
-                            <label class="btn btn-outline-success" for="danger-outlined">Existing & New
-                                Collections</label>
+                            <div class="btn-group">
+                                <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
+                                       id="primary-outlined" {{ old('payment_mode')=="1" ? 'checked' : '' }}
+                                       autocomplete="off" checked>
+                                <label class="btn btn-outline-primary" for="primary-outlined">Existing Collections</label>
+                                <input type="radio" value="2" class="btn-check payment_mode_radio" name="payment_mode"
+                                       id="danger-outlined" {{ old('payment_mode')=="2" ? 'checked' : '' }}
+                                       autocomplete="off">
+                                <label class="btn btn-outline-success" for="danger-outlined">Existing With New
+                                    Collections</label>
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
