@@ -111,7 +111,7 @@ class AdminUsersController extends AdminController {
             $selected_roles = $user->roles()->pluck('id')->toArray();
             return view('admin.users.edit', compact('user','roles','selected_roles'));
         }
-        return redirect('admin/users');
+        return redirect('admin/users')->with( 'error', 'User Not Found' );
     }
 
 
