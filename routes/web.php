@@ -58,11 +58,20 @@ Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
 #Admin users
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
 Route::get('admin/users/getUsers','Admin\Users\AdminUsersController@fetchUsers');
+
+#Admin Create User
 Route::get( 'admin/users/create', 'Admin\Users\AdminUsersController@getCreateUser' );
 Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postCreateUser' );
+
+#Admin Edit User
 Route::get( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@getEditUser' );
 Route::post( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@postEditUser' );
+
+#Admin Delete User
 Route::get( 'admin/users/delete/{id}', 'Admin\Users\AdminUsersController@deleteUser' );
+
+#Admin Activate/Deactivate User
+Route::get( 'admin/users/change-status/{id}', 'Admin\Users\AdminUsersController@changeStatus' );
 
 #Admin roles
 Route::get( 'admin/roles', 'Admin\Users\AdminRolesController@getIndex' );

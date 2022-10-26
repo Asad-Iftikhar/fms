@@ -42,7 +42,7 @@ class AdminFundingCollectionController extends AdminController
     public function getCreateFundingCollection() {
         // Show the page
         $fundingCollections = FundingCollection::all();
-        $availableUsers = User::all();
+        $availableUsers = User::where('activated', '1')->get();
         $availableFundingTypes = FundingType::all();
         $availableEvents = Event::all();
         return view('admin.fundingCollections.create', compact('fundingCollections', 'availableUsers', 'availableFundingTypes', 'availableEvents'));

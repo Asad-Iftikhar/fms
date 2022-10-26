@@ -215,8 +215,9 @@ class AdminUsersController extends AdminController {
 
         $arrData = $arrData->get();
         foreach ($arrData as $data){
+            $data->activeStatus = $data->getUserActiveStatus();
             if($data->id != 1){
-                $data->action='<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\''.url('admin/users/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+                $data->action= $data->getChangeStatusButton().'&nbsp;<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-sm btn-outline-primary"><i class="iconly-boldEdit"></i></a>&nbsp;<button onClick="confirmDelete(\''.url('admin/users/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>';
             }else{
                 $data->action='<span> --N/A-- </span>';
             }
@@ -229,6 +230,32 @@ class AdminUsersController extends AdminController {
         );
 
         return response()->json($response);
+    }
+
+    /**
+     * Soft Delete User
+     * @param $userId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function changeStatus($userId) {
+        if( $userId == 1 ){
+            return redirect( 'admin/users' )->with( 'error', 'Super Admin Status Cannot Be Changed' );
+        }else{
+            if( $user = User::find($userId) ) {
+                if ( $user->activated ) {
+                    $user->activated = 0;
+                } else {
+                    $user->activated = 1;
+                }
+                if ( $user->save() ) {
+                    return redirect()->back()->with('success', "Status Changed Successfully");
+                } else {
+                    return redirect()->back()->with('error', "Something Went Wrong");
+                }
+            } else {
+                return redirect()->back()->with('error', "User doesn't exists");
+            }
+        }
     }
 
     /**

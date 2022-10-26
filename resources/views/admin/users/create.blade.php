@@ -64,7 +64,7 @@
                                        id="basicInput">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="basicInput">Password<small class="text-danger">*</small></label>
                                 {!! $errors->first('password', '<small class="text-danger">:message</small>') !!}
@@ -74,7 +74,7 @@
                                        id="basicInput">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="basicInput">Confirm Password<small class="text-danger">*</small></label>
                                 {!! $errors->first('confirm_password', '<small class="text-danger">:message</small>') !!}
@@ -84,7 +84,7 @@
                                        id="basicInput">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="basicInput">First Name</label>
                                 {!! $errors->first('first_name', '<small class="text-danger">:message</small>') !!}
@@ -94,7 +94,7 @@
                                        id="basicInput">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="basicInput">Last Name</label>
                                 {!! $errors->first('last_name', '<small class="text-danger">:message</small>') !!}
@@ -123,7 +123,7 @@
                                        id="basicInput">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="basicInput">Date of Birth</label>
                                 {!! $errors->first('dob', '<small class="text-danger">:message</small>') !!}
@@ -132,7 +132,7 @@
                                        placeholder="Date of Birth" name="dob" id="dob-id-icon">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="basicInput">Joining Date</label>
                                 {!! $errors->first('joining_date', '<small class="text-danger">:message</small>') !!}
@@ -141,7 +141,7 @@
                                        placeholder="Joining Date" name="joining_date" id="dob-id-icon">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label for="basicInput">Gender</label>
                             {!! $errors->first('gender', '<br><small class="text-danger">:message</small>') !!}
                             <div class='form-check'>
@@ -155,6 +155,19 @@
                                            class='form-check-input '>
                                     <label for="gender-female">Female</label>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Activation Status</h6>
+                            <div class="btn-group">
+                                <input type="radio" value="0" class="btn-check payment_mode_radio" name="payment_mode"
+                                       id="danger-outlined" {{ old ( 'activated' ) == "0" ? 'checked' : '' }}
+                                       autocomplete="off" checked>
+                                <label class="btn btn-outline-danger" for="danger-outlined">Inactive</label>
+                                <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
+                                       id="success-outlined" {{ old ( 'activated' ) == "1" ? 'checked' : '' }}
+                                       autocomplete="off">
+                                <label class="btn btn-outline-success" for="success-outlined">Active</label>
                             </div>
                         </div>
                         <div class="col-md-12 mb-4">

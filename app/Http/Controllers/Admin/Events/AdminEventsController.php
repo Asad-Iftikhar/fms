@@ -34,7 +34,7 @@ class AdminEventsController extends AdminController {
      * @return string
      */
     public function getCreateEvent () {
-        $users = User::all();
+        $users = User::where('activated', '1')->get();
         $totalFunds = FundingCollection::totalAvailableFunds();
         return view('admin.events.create',compact('users','totalFunds'));
     }
