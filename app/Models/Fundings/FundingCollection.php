@@ -21,6 +21,7 @@ use App\Models\Base;
 use App\Models\Events\Event;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use DB;
 
 class FundingCollection extends Base {
     /**
@@ -98,7 +99,7 @@ class FundingCollection extends Base {
         return $this->user->username;
     }
 
-    public function linkFirstName(){
+    public function linkFirstName() {
         return '<a href="'.url("admin/users/edit").'/'. $this->user_id .'" type="button">' . $this->user->username . '</a>';
     }
 
@@ -115,11 +116,59 @@ class FundingCollection extends Base {
         }
     }
 
-    public static function getFundingCollectionsByUserId($userId) {
-        return FundingCollection::where('user_id','=',$userId)->get();
+    public function getEvent() {
+        if (is_null($this->event_id)) {
+            return 'N/A';
+        } else {
+            return $this->event->name;
+        }
     }
 
-     public function getdescription() {
-                    return $this->event->description;
+    public function getDescription() {
+        if (is_null($this->event_id)) {
+            return $this->fundingType->description;
+        } else {
+            return $this->event->description;
+        }
+    }
+
+    public static function getPendingPaymentByUser($userId){
+        $pendingPaymentByUser = FundingCollection::with('fundingType')->where('user_id',$userId)->where('is_received','=',0)->leftJoin('events', function ($join){
+            $join->on('funding_collections.event_id','=','events.id');
+        })->where(function($subQuery) {
+            /* @var \Illuminate\Database\Eloquent\Builder $subQuery */
+            $subQuery->where('status','!=','draft')->orWhereNull('status');
+        })->sum('amount');
+        return intval($pendingPaymentByUser);
+    }
+
+    public static function getTotalSpendingByUser($userId){
+        $totalSpendingByUser = FundingCollection::with('fundingType')->where('user_id',$userId)->where('is_received','=',1)->leftJoin('events', function ($join){
+            $join->on('funding_collections.event_id','=','events.id');
+        })->where(function($subQuery) {
+            /* @var \Illuminate\Database\Eloquent\Builder $subQuery */
+            $subQuery->where('status','!=','draft')->orWhereNull('status');
+        })->sum('amount');
+        return intval($totalSpendingByUser);
+    }
+
+    public static function getOverallPendings(){
+        $overallPendings = FundingCollection::with('fundingType')->where('is_received','=',0)->leftJoin('events', function ($join){
+            $join->on('funding_collections.event_id','=','events.id');
+        })->where(function($subQuery) {
+            /* @var \Illuminate\Database\Eloquent\Builder $subQuery */
+            $subQuery->where('status','!=','draft')->orWhereNull('status');
+        })->sum('amount');
+        return intval($overallPendings);
+    }
+
+    public static function getTotalCollection() {
+        $totalCollection = FundingCollection::with('fundingType')->where('is_received','=',1)->leftJoin('events', function ($join){
+            $join->on('funding_collections.event_id','=','events.id');
+        })->where(function($subQuery) {
+            /* @var \Illuminate\Database\Eloquent\Builder $subQuery */
+            $subQuery->where('status','!=','draft')->orWhereNull('status');
+        })->sum('amount');
+        return intval($totalCollection);
     }
 }

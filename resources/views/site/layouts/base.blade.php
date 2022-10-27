@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +7,7 @@
     @section('styles')
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{!! asset("/assets/css/bootstrap.css") !!}">
+        <link rel="stylesheet" href="{!! asset("/assets/vendors/iconly/bold.css") !!}">
     <link rel="stylesheet" href="{!! asset("/assets/vendors/bootstrap-icons/bootstrap-icons.css") !!}">
     <link rel="stylesheet" href="{!! asset("/assets/css/app.css") !!}">
     {{--    <link rel="stylesheet" href="{{ asset("/assets/css/pages/auth.css") }}">--}}
@@ -20,11 +20,20 @@
             <header style="border-bottom: 1px solid #00000021">
                 <nav class="navbar navbar-expand navbar-light ">
                     <div class="container-fluid">
-                        <a href="#"><img src="{{ asset('assets/images/logo/nxblogo.svg') }}" alt="Logo" srcset=""></a>
-
+                        <a href="{!! url('/') !!}"><img src="{{ asset('assets/images/logo/nxblogo.svg') }}" alt="Logo" srcset=""></a>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="nav ms-lg-4">
+                                <li class="nav-item">
+                                        <a class="nav nav-link active" aria-current="page" href="#">Collection</a>
+                                </li>
+                            </ul>
+                            <ul class="nav ms-lg-4">
+                                <li class="nav-item">
+                                    <a class="nav nav-link active" aria-current="page" href="#">Event</a>
+                                </li>
+                            </ul>
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                                <li class="nav-item dropdown me-3">
+                                <li class="nav-item">
                                     <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                        aria-expanded="false">
                                         <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>

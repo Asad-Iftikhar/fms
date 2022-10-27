@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
-Route::get('/getdata','HomeController@fetchData');
 Route::get( 'account', 'Account\AccountController@getIndex' );
 
 # settings
