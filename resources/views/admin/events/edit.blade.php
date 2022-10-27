@@ -221,6 +221,8 @@
                             <th>Name</th>
                             <th>Type</th>
                             <th>Amount</th>
+                            <th>Last Invited</th>
+                            <th>Last Reminded to pay</th>
                             <th>ACTION</th>
                         </tr>
                         </thead>
@@ -232,9 +234,12 @@
                                 </td>
                                 <td class="text-bold-500">{{ $guest->username }}</td>
                                 <td>Guest</td>
-                                <td>0</td>
-                                <td><a href="{{ url('admin/users/sendinvitation') }}"><i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-                            </tr>
+                                <td>N/A</td>
+                                <td>{{ $guest->last_invited }}</td>
+                                <td>N/A</td>
+                                <td>
+                                    <a class="btn btn-info btn-sm invite-btn" href="{{ url('admin/users/sendInvite/'.$guest->id) }}"><i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite'; }} </a>
+                                </td>                            </tr>
                         @endforeach
                         @foreach($event->fundingCollections as $collection)
                         <tr>
@@ -244,7 +249,12 @@
                             <td class="text-bold-500">{{ $collection->user->username }}</td>
                             <td class="text-bold-500">Participant</td>
                             <td class="text-bold-500">{{ $collection->amount }}</td>
-                            <td><a href="#"><i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
+                            <td>{{ $collection->last_invited }}</td>
+                            <td>{{ $collection->last_reminded }}</td>
+                            <td>
+                                <a class="btn btn-info btn-sm invite-btn" href="{{ url('admin/users/sendInvite/'.$collection->id) }}"><i class="iconly-boldSend"></i> Invite </a>
+                                <a class="btn btn-warning btn-sm invite-btn" href="{{ url('admin/users/sendRemind/'.$collection->id) }}"><i class="iconly-boldSend"></i> Remind </a>
+                            </td>
                         </tr>
                         @endforeach
                         </tbody>
