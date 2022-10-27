@@ -34,7 +34,7 @@ class AdminEventsController extends AdminController {
      * @return string
      */
     public function getCreateEvent () {
-        $users = User::all();
+        $users = User::where('activated', '1')->get();
         $totalFunds = FundingCollection::totalAvailableFunds();
         return view('admin.events.create',compact('users','totalFunds'));
     }
@@ -134,13 +134,17 @@ class AdminEventsController extends AdminController {
      */
     public function getEditEvent ( $event_id ) {
         // Show the page
-        $users = User::all();
         $totalFunds = FundingCollection::totalAvailableFunds();
         if($event = Event::find($event_id)){
             $guestIds = $event->guests()->pluck('user_id')->toArray();
             $selectedUsers = $guestIds;
             $collectionsData = $event->fundingCollections()->get();
             $collections = [];
+            if ( $event->status == 'finished' ) {
+                $users = User::withTrashed()->get();
+            }else{
+                $users = User::all();
+            }
             foreach ($collectionsData as $element) {
                 array_push($selectedUsers, $element->user_id);
                 $collections[$element['amount']][] = $element->user_id;
@@ -310,8 +314,7 @@ class AdminEventsController extends AdminController {
         $columnSortOrder = $orderArray[0]['dir']; //this will get us order direction
         $searchValue = $searchArray['value']; //This is search value
 
-        $event = Event::query()->where('deleted_at', NULL);
-        $total = $event->count();
+        $total = Event::count();
 
         $totalFilter = Event::query()->where('deleted_at', NULL);
         if (!empty($searchValue)){

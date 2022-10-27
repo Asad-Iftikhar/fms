@@ -42,7 +42,7 @@ class AdminFundingCollectionController extends AdminController
     public function getCreateFundingCollection() {
         // Show the page
         $fundingCollections = FundingCollection::all();
-        $availableUsers = User::all();
+        $availableUsers = User::where('activated', '1')->get();
         $availableFundingTypes = FundingType::all();
         $availableEvents = Event::all();
         return view('admin.fundingCollections.create', compact('fundingCollections', 'availableUsers', 'availableFundingTypes', 'availableEvents'));
@@ -141,9 +141,14 @@ class AdminFundingCollectionController extends AdminController
         # Read value
         $draw = $request->get('draw');
 
-        $total = \DB::table('funding_collections')->count();
+        $total = FundingCollection::count();
 
         $FilterQuery = FundingCollection::with('fundingType');
+        // Get all collections related to event whose status is active or Finished
+        $FilterQuery->whereNull('event_id')->orWhereHas( 'event', function($subQuery)
+        {
+            $subQuery->where('status', '!=', 'draft');
+        });
         if (!empty($searchValue)) {
             $FilterQuery->where('name', 'like', '%' . $searchValue . '%');
         }

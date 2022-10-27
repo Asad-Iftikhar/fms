@@ -58,11 +58,20 @@ Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
 #Admin users
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );
 Route::get('admin/users/getUsers','Admin\Users\AdminUsersController@fetchUsers');
+
+#Admin Create User
 Route::get( 'admin/users/create', 'Admin\Users\AdminUsersController@getCreateUser' );
 Route::post( 'admin/users/create', 'Admin\Users\AdminUsersController@postCreateUser' );
+
+#Admin Edit User
 Route::get( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@getEditUser' );
 Route::post( 'admin/users/edit/{id}', 'Admin\Users\AdminUsersController@postEditUser' );
+
+#Admin Delete User
 Route::get( 'admin/users/delete/{id}', 'Admin\Users\AdminUsersController@deleteUser' );
+
+#Admin Activate/Deactivate User
+Route::get( 'admin/users/change-status/{id}', 'Admin\Users\AdminUsersController@changeStatus' );
 
 #Admin roles
 Route::get( 'admin/roles', 'Admin\Users\AdminRolesController@getIndex' );
@@ -106,13 +115,19 @@ Route::post('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingC
 #Admin Delete Funding collection
 Route::get('admin/funding/collections/delete/{id}','Admin\Fundings\AdminFundingCollectionController@deleteFundingCollection');
 
-#Admin Events
+#Admin View Events
 Route::get( 'admin/events', 'Admin\Events\AdminEventsController@getIndex' );
 Route::get('admin/events/getEvents','Admin\Events\AdminEventsController@fetchEvents');
+
+#Admin Create Events
 Route::get( 'admin/events/create', 'Admin\Events\AdminEventsController@getCreateEvent' );
 Route::post( 'admin/events/create', 'Admin\Events\AdminEventsController@postCreateEvent' );
+
+#Admin Update Event
 Route::get( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@getEditEvent' );
 Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postEditEvent' );
+
+#Admin Delete Funding Event
 Route::get( 'admin/events/delete/{id}', 'Admin\Events\AdminEventsController@deleteEvent' );
 
 
