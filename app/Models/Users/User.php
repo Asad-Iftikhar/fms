@@ -134,6 +134,27 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     }
 
     /**
+     * Get User Permissions Array
+     *
+     * @return array
+     */
+    public function getUserPermissions() {
+        $ThisUser = $this;
+        try {
+            $UserRoles = $ThisUser->roles;
+            $UserPermissions = [];
+            foreach ( $UserRoles as $UserRole ) {
+                foreach ( $UserRole->permissions as $permission ) {
+                    $UserPermissions[$permission->id] = $permission->name;
+                }
+            }
+            return $UserPermissions;
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    /**
      * Can the User do something
      *
      * @param array|string $permissions Single permission or an array or permissions
