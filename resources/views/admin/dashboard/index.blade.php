@@ -28,7 +28,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon purple">
-                                            <i class="iconly-boldShow"></i>
+                                            <i class="iconly-boldActivity"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
@@ -46,7 +46,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="stats-icon blue">
-                                            <i class="iconly-boldProfile"></i>
+                                            <i class="iconly-boldDownload"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
