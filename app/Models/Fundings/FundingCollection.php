@@ -72,7 +72,7 @@ class FundingCollection extends Base {
     }
 
     /**
-     * Event Name
+     * Event Name as a link
      * @return string
      */
     public function getEventName() {
@@ -83,6 +83,10 @@ class FundingCollection extends Base {
         }
     }
 
+    /**
+     * Total Availabe funds
+     * @return int
+     */
     public static function totalAvailableFunds() {
         $collections = fundingCollection::where('is_received',1)->sum('amount');
         $spendings = Event::where('status','finished')->sum('event_cost');
@@ -99,6 +103,10 @@ class FundingCollection extends Base {
         return $this->user->username;
     }
 
+    /**
+     * First name return as a link
+     * @return string
+     */
     public function linkFirstName() {
         return '<a href="'.url("admin/users/edit").'/'. $this->user_id .'" type="button">' . $this->user->username . '</a>';
     }
@@ -116,6 +124,10 @@ class FundingCollection extends Base {
         }
     }
 
+    /**
+     * Event name
+     * @return string
+     */
     public function getEvent() {
         if (is_null($this->event_id)) {
             return 'N/A';
@@ -124,6 +136,10 @@ class FundingCollection extends Base {
         }
     }
 
+    /**
+     * Description
+     * @return mixed
+     */
     public function getDescription() {
         if (is_null($this->event_id)) {
             return $this->fundingType->description;
@@ -132,6 +148,11 @@ class FundingCollection extends Base {
         }
     }
 
+    /**
+     * Pending Payment by user
+     * @param $userId
+     * @return int
+     */
     public static function getPendingPaymentByUser($userId){
         $pendingPaymentByUser = FundingCollection::with('fundingType')->where('user_id',$userId)->where('is_received','=',0)->leftJoin('events', function ($join){
             $join->on('funding_collections.event_id','=','events.id');
@@ -142,6 +163,11 @@ class FundingCollection extends Base {
         return intval($pendingPaymentByUser);
     }
 
+    /**
+     * Total spending by user
+     * @param $userId
+     * @return int
+     */
     public static function getTotalSpendingByUser($userId){
         $totalSpendingByUser = FundingCollection::with('fundingType')->where('user_id',$userId)->where('is_received','=',1)->leftJoin('events', function ($join){
             $join->on('funding_collections.event_id','=','events.id');
@@ -152,6 +178,10 @@ class FundingCollection extends Base {
         return intval($totalSpendingByUser);
     }
 
+    /**
+     * Over All pendings on Admin's end
+     * @return int
+     */
     public static function getOverallPendings(){
         $overallPendings = FundingCollection::with('fundingType')->where('is_received','=',0)->leftJoin('events', function ($join){
             $join->on('funding_collections.event_id','=','events.id');
@@ -162,6 +192,10 @@ class FundingCollection extends Base {
         return intval($overallPendings);
     }
 
+    /**
+     * Over All collections on Admin's end
+     * @return int
+     */
     public static function getTotalCollection() {
         $totalCollection = FundingCollection::with('fundingType')->where('is_received','=',1)->leftJoin('events', function ($join){
             $join->on('funding_collections.event_id','=','events.id');

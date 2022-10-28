@@ -16,6 +16,7 @@ class HomeController extends Controller
 {
     /**
      * Get Home Page View
+     * listing on the basis of pending payments with respect to specific user
      * @return \Illuminate\View\View
      */
     public function getIndex() {
