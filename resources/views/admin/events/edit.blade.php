@@ -10,24 +10,22 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
-                    <h4>Update Event</h4>
+                    <h4>Edit Event :: <b>{{ $event->name }}</b></h4>
                 </div>
                 <div class="col-6">
                     <span>
-                        <a href="{{ url('admin/events') }}" class="btn btn-primary" style="float: right"><i
-                                class="iconly-boldArrow---Left-2"></i> Back</a>
+                        <a href="{{ url('admin/events') }}" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2"></i> Back</a>
                     </span>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-
                     <div class="col-12">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation" style="min-width:50%">
                                 <a class="nav-link active" id="v-pills-form-tab" data-bs-toggle="pill"
                                    href="#v-pills-form" role="tab" aria-controls="v-pills-form"
-                                   aria-selected="true">Event Form</a>
+                                   aria-selected="true">Edit Details</a>
                             </li>
                             <li class="nav-item" role="presentation" style="min-width:50%">
                                 <a class="nav-link" id="v-pills-participants-tab" data-bs-toggle="pill"

@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label for="name">User</label>
                                 <select class="choices form-select" disabled>
-                                    <option>{{ $fundingCollection->firstName() }}</option>
+                                    <option>{{ $fundingCollection->user->username }}</option>
                                 </select>
                             </div>
                         </div>

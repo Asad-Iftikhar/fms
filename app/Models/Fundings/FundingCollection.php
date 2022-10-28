@@ -41,7 +41,7 @@ class FundingCollection extends Base {
      * @return mixed
      */
     public function user() {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id')->withTrashed();
     }
 
     /**
@@ -90,24 +90,6 @@ class FundingCollection extends Base {
         $collections = fundingCollection::where('is_received',1)->sum('amount');
         $spendings = Event::where('status','finished')->sum('event_cost');
         return intval($collections - $spendings);
-    }
-
-
-    /**
-     * First Name
-     * @return mixed
-     */
-    public function firstName()
-    {
-        return $this->user->username;
-    }
-
-    /**
-     * First name return as a link
-     * @return string
-     */
-    public function linkFirstName() {
-        return '<a href="'.url("admin/users/edit").'/'. $this->user_id .'" type="button">' . $this->user->username . '</a>';
     }
 
     /**
