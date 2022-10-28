@@ -50,7 +50,7 @@
                                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
                                         <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">{{ Auth::user()->first_name.' '.Auth::user()->last_name }}</h6>
+                                            <h6 class="mb-0 text-gray-600">{{ Auth::user()->getFullName() }}</h6>
                                             @if(Auth::user()->can('admin'))
                                                 <p class="mb-0 text-sm text-gray-600">Administrator</p>
                                             @endif

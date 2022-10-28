@@ -233,7 +233,7 @@
                                 <td class="text-bold-500">{{ $guest->username }}</td>
                                 <td>Guest</td>
                                 <td>N/A</td>
-                                <td>{{ $guest->last_invited }}</td>
+                                <td>{{ (empty($collection->last_invited ))? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans() }}</td>
                                 <td>N/A</td>
                                 <td>
                                     <a class="btn btn-info btn-sm invite-btn" href="{{ url('admin/users/sendInvite/'.$guest->id) }}"><i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite'; }} </a>
@@ -241,20 +241,20 @@
                             </tr>
                         @endforeach
                         @foreach($event->fundingCollections as $collection)
-                        <tr>
-                            <td class="">
-                                <img height="70px" class="text-center mx-auto" src="{{ $collection->user->getUserAvatar() }}">
-                            </td>
-                            <td class="text-bold-500">{{ $collection->user->username }}</td>
-                            <td class="text-bold-500">Participant</td>
-                            <td class="text-bold-500">{{ $collection->amount }}</td>
-                            <td>{{ $collection->last_invited }}</td>
-                            <td>{{ $collection->last_reminded }}</td>
-                            <td>
-                                <a class="btn btn-info btn-sm invite-btn" href="{{ url('admin/users/sendInvite/'.$collection->id) }}"><i class="iconly-boldSend"></i> Invite </a>
-                                <a class="btn btn-warning btn-sm invite-btn" href="{{ url('admin/users/sendRemind/'.$collection->id) }}"><i class="iconly-boldSend"></i> Remind </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td class="">
+                                    <img height="70px" class="text-center mx-auto" src="{{ $collection->user->getUserAvatar() }}">
+                                </td>
+                                <td class="text-bold-500">{{ $collection->user->username }}</td>
+                                <td class="text-bold-500">Participant</td>
+                                <td class="text-bold-500">{{ $collection->amount }}</td>
+                                <td>{{ ( empty ( $collection->last_invited ) ) ? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans() }}</td>
+                                <td>{{ ( empty ( $collection->last_invited ) ) ? 'Not Reminded' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans() }}</td>
+                                <td>
+                                    <a class="btn btn-info btn-sm invite-btn" href="{{ url('admin/users/sendInvite/'.$collection->id) }}"><i class="iconly-boldSend"></i> {{ ($collection->is_invited == 0)?'Invite':'Re Invite' }} </a>
+                                    <a class="btn btn-warning btn-sm remind-btn" href="{{ url('admin/users/sendRemind/'.$collection->id) }}"><i class="iconly-boldSend"></i> {{ ($collection->is_reminded == 0)?'Send Reminder':'Resend Reminder' }}  </a>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
