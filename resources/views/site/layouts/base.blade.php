@@ -24,7 +24,7 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="nav ms-lg-4">
                                 <li class="nav-item">
-                                        <a class="nav nav-link active" aria-current="page" href="#">Collection</a>
+                                        <a class="nav nav-link active" aria-current="page" href="{{ url('account/collection') }}">Collection</a>
                                 </li>
                             </ul>
                             <ul class="nav ms-lg-4">
@@ -64,7 +64,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <a class="dropdown-item" href="{{ url('account') }}">
+                                        <a class="dropdown-item" href="{{ url('/') }}">
                                             <i class="icon-mid bi bi-person me-2"></i>
                                             Home
                                         </a>

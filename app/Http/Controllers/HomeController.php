@@ -20,15 +20,14 @@ class HomeController extends Controller
      * @return \Illuminate\View\View
      */
     public function getIndex() {
-        $totalAmount = FundingCollection::totalAvailableFunds();
-        $totalCollection = FundingCollection::getTotalCollection();
-        $activeEvents = Event::where('status','=','active')->get();
-
         // If User Not Login load login view
         if (!Auth::check()) {
             return view( 'site.account.login' );
         }
         $User =  Auth::user();
+        $totalAmount = FundingCollection::totalAvailableFunds();
+        $totalCollection = FundingCollection::getTotalCollection();
+        $activeEvents = Event::where('status','=','active')->get();
         $pendingPayment = FundingCollection::getPendingPaymentByUser($User->id);
         $totalSpendings = FundingCollection::getTotalSpendingByUser($User->id);
         $pendingPaymentList = FundingCollection::with('fundingType')->where('user_id',$User->id)->where('is_received','=',0)->leftJoin('events', function ($join){

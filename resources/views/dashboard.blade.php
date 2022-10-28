@@ -93,14 +93,20 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($pendingPaymentList as $collection)
+                                        @if(count($pendingPaymentList) > 0)
+                                            @foreach($pendingPaymentList as $collection)
+                                                <tr>
+                                                    <td>{{ $collection->getCollectionTypeName()}}</td>
+                                                    <td>{{ $collection->amount}}</td>
+                                                    <td>{{$collection->getEvent()}}</td>
+                                                    <td>{{$collection->getDescription()}}</td>
+                                                </tr>
+                                            @endforeach
+                                        @else
                                             <tr>
-                                                <td>{{ $collection->getCollectionTypeName()}}</td>
-                                                <td>{{ $collection->amount}}</td>
-                                                <td>{{$collection->getEvent()}}</td>
-                                                <td>{{$collection->getDescription()}}</td>
+                                                <td colspan="4" style="text-align: center; color: red">No Pending Available</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -115,21 +121,21 @@
                         <h4>Active Events</h4>
                     </div>
                     <div class="card-content pb-4">
-                            <div class="upcommingevent ms-4">
-                                @if ($activeEvents->count())
-                                    @foreach($activeEvents as $activeEvent)
-                                        <i class="iconly-boldCalendar text-primary"></i>
-                                        {{'Event Name: ' . $activeEvent->name}}
-                                        <p>{{'Event Description: '. $activeEvent->description}}</p>
-                                        <hr>
-                                    @endforeach
-                                @else
-                                    <div class="alert alert-secondary">No Events.</div>
-                                @endif
-                            </div>
+                        <div class="upcommingevent ms-4">
+                            @if ($activeEvents->count())
+                                @foreach($activeEvents as $activeEvent)
+                                    <i class="iconly-boldCalendar text-primary"></i>
+                                    {{'Event Name: ' . $activeEvent->name}}
+                                    <p>{{'Event Description: '. $activeEvent->description}}</p>
+                                    <hr>
+                                @endforeach
+                            @else
+                                <div class="alert alert-secondary">No Events.</div>
+                            @endif
                         </div>
                     </div>
                 </div>
+            </div>
         </section>
     </div>
 @stop

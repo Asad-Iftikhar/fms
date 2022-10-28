@@ -186,4 +186,17 @@ class FundingCollection extends Base {
         })->sum('amount');
         return intval($totalCollection);
     }
+
+    /**
+     * Payment Status
+     * @return string
+     */
+    public function getPayment() {
+        if ($this->is_received == 1) {
+            return 'Received';
+        }
+        else {
+            return 'Pending';
+        }
+    }
 }
