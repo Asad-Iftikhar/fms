@@ -237,7 +237,8 @@
                                 <td>N/A</td>
                                 <td>
                                     <a class="btn btn-info btn-sm invite-btn" href="{{ url('admin/users/sendInvite/'.$guest->id) }}"><i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite'; }} </a>
-                                </td>                            </tr>
+                                </td>
+                            </tr>
                         @endforeach
                         @foreach($event->fundingCollections as $collection)
                         <tr>
