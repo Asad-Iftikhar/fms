@@ -134,6 +134,27 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     }
 
     /**
+     * Get User Permissions Array
+     *
+     * @return array
+     */
+    public function getUserPermissions() {
+        $ThisUser = $this;
+        try {
+            $UserRoles = $ThisUser->roles;
+            $UserPermissions = [];
+            foreach ( $UserRoles as $UserRole ) {
+                foreach ( $UserRole->permissions as $permission ) {
+                    $UserPermissions[$permission->id] = $permission->name;
+                }
+            }
+            return $UserPermissions;
+        } catch (\Exception $e) {
+            return [];
+        }
+    }
+
+    /**
      * Can the User do something
      *
      * @param array|string $permissions Single permission or an array or permissions
@@ -180,5 +201,33 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
             }
         }
         return asset('assets/images/faces/2.jpg');
+    }
+
+    /**
+     * Get User Status
+     *
+     * @return string
+     */
+    public function getUserActiveStatus() {
+
+        if ($this->activated) {
+            return '<span class="badge bg-success">Active</span>';
+        } else {
+            return '<span class="badge bg-danger">Inactive</span>';
+        }
+    }
+
+    /**
+     * Get User Change Status Buttons
+     *
+     * @return string
+     */
+    public function getChangeStatusButton() {
+
+        if ($this->activated) {
+            return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-danger">Deactivate</a>';
+        } else {
+            return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-success">Activate</a>';
+        }
     }
 }

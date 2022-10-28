@@ -30,6 +30,7 @@
                                   <th>ID</th>
                                   <th>Username</th>
                                   <th>Email</th>
+                                  <th>Active Status</th>
                                   <th class="dt-right">Actions</th>
                                 </tr>
                              </thead>
@@ -63,6 +64,7 @@
                 {data: 'id'},
                 {data: 'username'},
                 {data: 'email'},
+                {data: 'activeStatus'},
                 {data: 'action'}
             ],
             columnDefs: [

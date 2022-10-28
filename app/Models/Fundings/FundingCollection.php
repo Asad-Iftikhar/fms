@@ -21,7 +21,6 @@ use App\Models\Base;
 use App\Models\Events\Event;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use DB;
 
 class FundingCollection extends Base {
     /**
