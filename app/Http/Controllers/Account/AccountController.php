@@ -119,8 +119,6 @@ class AccountController extends AuthorizedController {
 
     /**
      * User Avatar processing page.
-     *
-     *
      * @return
      */
     public function removeAvatar() {
@@ -163,5 +161,6 @@ class AccountController extends AuthorizedController {
             return response()->json( request()->input( 'username' ) . ' is already in use.' );
         }
     }
+
 
 }

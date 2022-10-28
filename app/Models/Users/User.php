@@ -23,7 +23,12 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     protected $fillable = [
         'username',
         'email',
+        'first_name',
+        'last_name',
         'password',
+        'phone',
+        'gender',
+        'joining_date',
         'reminder_code',
         'activation_code',
         'activated',
@@ -69,7 +74,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     }
 
     public function fundingCollectionsUser() {
-        return $this->hasMany(FundingCollection::class,'funding_collections')->withTimestamps();
+        return $this->hasMany(FundingCollection::class,'user_id');
     }
 
     /**
@@ -230,4 +235,25 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
             return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-success">Activate</a>';
         }
     }
+
+    /**
+     * Full name as a link
+     * @return string
+     */
+    public function linkWithFullName() {
+        return '<a href="'.url("admin/users/edit").'/'. $this->id .'" type="button">' . $this->getFullName() . '</a>';
+    }
+
+    /**
+     * Full name
+     * @return string
+     */
+    public function getFullName() {
+        if (is_null($this->firstname) && is_null($this->lastname)) {
+            return 'N/A';
+        }
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+
 }

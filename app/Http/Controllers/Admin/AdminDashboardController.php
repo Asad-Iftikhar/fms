@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
+use App\Models\Fundings\FundingCollection;
 use Hashids\Hashids;
 use Illuminate\Support\Carbon;
 use Helpers\DashboardStats;
@@ -18,6 +19,10 @@ class AdminDashboardController extends AdminController {
      *
      */
     public function getIndex() {
+        $allUsers = User::all()->count();
+        $totalFunds = FundingCollection::totalAvailableFunds();
+        $totalPendings = FundingCollection::getOverallPendings();
+        $totalCollection = FundingCollection::getTotalCollection();
         //Total Members
         $UsersWithRoles = User::has('Roles')->get()->pluck('id');
         if ( is_array( $UsersWithRoles ) && !empty( $UsersWithRoles ) ) {
@@ -26,6 +31,6 @@ class AdminDashboardController extends AdminController {
             $TotalUsers = User::where( 'activated', '=', true )->where( 'disabled', '=', false )->count();
         }
         // Show the page
-        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles') );
+        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','allUsers') );
     }
 }

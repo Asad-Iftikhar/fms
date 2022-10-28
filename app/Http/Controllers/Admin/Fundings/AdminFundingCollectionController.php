@@ -143,7 +143,7 @@ class AdminFundingCollectionController extends AdminController
 
         $total = FundingCollection::count();
 
-        $FilterQuery = FundingCollection::with('fundingType');
+        $FilterQuery = FundingCollection::with('fundingType', 'user');
         // Get all collections related to event whose status is active or Finished
         $FilterQuery->whereNull('event_id')->orWhereHas( 'event', function($subQuery)
         {
@@ -223,7 +223,7 @@ class AdminFundingCollectionController extends AdminController
 
         foreach ($arrData as $collection) {
             $collection->collectionTypeName = $collection->getCollectionTypeName();
-            $collection->collectionUserName = $collection->firstName();
+            $collection->collectionUserName = $collection->user->linkWithFullName();
             $collection->eventName = $collection->getEventName();
             $collection->paymentStatus = $collection->getPaymentStatus();
             $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
@@ -237,7 +237,6 @@ class AdminFundingCollectionController extends AdminController
             "data" => $arrData,
         );
         return response()->json($response);
-
     }
 
     /**
