@@ -241,7 +241,14 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      * @return string
      */
     public function linkWithFullName() {
-        return '<a href="'.url("admin/users/edit").'/'. $this->id .'" type="button">' . $this->getFullName() . '</a>';
+
+        if ($this->trashed()) {
+            # if user deleted then no need to show its link
+            return $this->getFullName();
+        } else {
+            // if user not deleted
+            return '<a href="'.url("admin/users/edit").'/'. $this->id .'" type="button">' . $this->getFullName() . '</a>';
+        }
     }
 
     /**
