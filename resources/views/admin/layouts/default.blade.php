@@ -64,7 +64,7 @@
                                     <li>
                                         <a class="dropdown-item" href="{{url('account')}}">
                                             <i class="icon-mid bi bi-person me-2"></i>
-                                            My Profile
+                                            Home
                                         </a>
                                     </li>
                                     <li>
