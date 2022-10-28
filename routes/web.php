@@ -115,7 +115,7 @@ Route::post('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingC
 #Admin Delete Funding collection
 Route::get('admin/funding/collections/delete/{id}','Admin\Fundings\AdminFundingCollectionController@deleteFundingCollection');
 
-#Admin View Events
+#Admin Events
 Route::get( 'admin/events', 'Admin\Events\AdminEventsController@getIndex' );
 Route::get('admin/events/getEvents','Admin\Events\AdminEventsController@fetchEvents');
 

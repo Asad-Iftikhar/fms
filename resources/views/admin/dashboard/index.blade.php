@@ -1,5 +1,4 @@
 @extends('admin.layouts.default')
-
 @section('title', 'Dashboard')
 @section('content')
     <div class="page-content">
@@ -16,25 +15,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Total Funds Available</h6>
-                                        <h6 class="font-extrabold mb-0">112,000</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3 col-md-6">
-                        <div class="card">
-                            <div class="card-body px-3 py-4-5">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="stats-icon blue">
-                                            <i class="iconly-boldProfile"></i>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Funds Spent</h6>
-                                        <h6 class="font-extrabold mb-0">183,000</h6>
+                                        <h6 class="text-muted font-semibold">Available Funds</h6>
+                                        <h6 class="font-extrabold mb-0">{{$totalFunds .' '.'Rs'}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -50,8 +32,25 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Incoming Funds</h6>
-                                        <h6 class="font-extrabold mb-0">280,000</h6>
+                                        <h6 class="text-muted font-semibold">Total Collections</h6>
+                                        <h6 class="font-extrabold mb-0">{{$totalCollection .' '.'Rs'}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3 col-md-6">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="stats-icon blue">
+                                            <i class="iconly-boldProfile"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 class="text-muted font-semibold">Total Payment Pending</h6>
+                                        <h6 class="font-extrabold mb-0">{{$totalPendings .' '.'Rs'}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +67,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="text-muted font-semibold">Total Employees</h6>
-                                        <h6 class="font-extrabold mb-0">62</h6>
+                                        <h6 class="font-extrabold mb-0">{{$allUsers}}</h6>
                                     </div>
                                 </div>
                             </div>
