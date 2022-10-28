@@ -7,7 +7,7 @@ use App\Models\Fundings\FundingCollection;
 use App\Models\Events\Event;
 use Illuminate\Support\Facades\Auth;
 
-class UserCollectionController extends Controller
+class CollectionController extends Controller
 {
     /**
      * Get Home Page View
@@ -15,6 +15,6 @@ class UserCollectionController extends Controller
      */
     public function getIndex()
     {
-
+        return view("user.collection");
     }
 }

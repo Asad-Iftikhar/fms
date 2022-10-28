@@ -19,7 +19,7 @@ class AdminDashboardController extends AdminController {
      *
      */
     public function getIndex() {
-        $allUsers = User::all()->count();
+        $activeUsers = User::where('activated','=',1)->count();
         $totalFunds = FundingCollection::totalAvailableFunds();
         $totalPendings = FundingCollection::getOverallPendings();
         $totalCollection = FundingCollection::getTotalCollection();
@@ -31,6 +31,6 @@ class AdminDashboardController extends AdminController {
             $TotalUsers = User::where( 'activated', '=', true )->where( 'disabled', '=', false )->count();
         }
         // Show the page
-        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','allUsers') );
+        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','activeUsers') );
     }
 }

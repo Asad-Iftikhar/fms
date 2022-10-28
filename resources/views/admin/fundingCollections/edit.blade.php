@@ -42,7 +42,7 @@
                                     <select name="funding_type_id" class="form-select" id="funding_type_id">
                                         @foreach( $fundingTypes as $fundingtype )
                                             <option data-amount="{{ $fundingtype->amount }}"
-                                                    value="{{ old('funding_type_id',$fundingtype->id) }}" {{ ($fundingtype->id == $fundingCollection->funding_type_id) ? 'selected' : '' }}>{{ $fundingtype->name }}</option>
+                                                    value="{{ old('funding_type_id', $fundingtype->id) }}" {{ ($fundingtype->id == $fundingCollection->funding_type_id) ? 'selected' : '' }}>{{ $fundingtype->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
