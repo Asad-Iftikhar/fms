@@ -10,13 +10,13 @@
                             <div class="card-body px-3 py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="stats-icon purple">
-                                            <i class="iconly-boldSend"></i>
+                                        <div class="stats-icon red">
+                                            <i class="iconly-boldBuy"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Available Funds</h6>
-                                        <h6 class="font-extrabold mb-0">{{$totalAmount .' '.'Rs'}}</h6>
+                                        <h6 class="text-muted font-semibold">Total Collections</h6>
+                                        <h6 class="font-extrabold mb-0">{{$totalCollection}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -27,13 +27,13 @@
                             <div class="card-body px-3 py-4-5">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="stats-icon red">
-                                            <i class="iconly-boldBuy"></i>
+                                        <div class="stats-icon purple">
+                                            <i class="iconly-boldSend"></i>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Total Collection</h6>
-                                        <h6 class="font-extrabold mb-0">{{$totalCollection}}</h6>
+                                        <h6 class="text-muted font-semibold">Available Collections</h6>
+                                        <h6 class="font-extrabold mb-0">{{$totalAmount .' '.'Rs'}}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Pending Payments</h6>
+                                        <h6 class="text-muted font-semibold">Pending Collections</h6>
                                         <h6 class="font-extrabold mb-0">{{$pendingPayment .' '.'Rs'}}</h6>
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Total Spendings</h6>
+                                        <h6 class="text-muted font-semibold">Spended Collections</h6>
                                         <h6 class="font-extrabold mb-0">{{$totalSpendings .' '.'Rs'}}</h6>
                                     </div>
                                 </div>
@@ -116,12 +116,16 @@
                     </div>
                     <div class="card-content pb-4">
                             <div class="upcommingevent ms-4">
+                                @if ($activeEvents->count())
                                     @foreach($activeEvents as $activeEvent)
                                         <i class="iconly-boldCalendar text-primary"></i>
                                         {{'Event Name: ' . $activeEvent->name}}
                                         <p>{{'Event Description: '. $activeEvent->description}}</p>
                                         <hr>
                                     @endforeach
+                                @else
+                                    <div class="alert alert-secondary">No Events.</div>
+                                @endif
                             </div>
                         </div>
                     </div>
