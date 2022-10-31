@@ -191,7 +191,7 @@ class FundingCollection extends Base {
      * Payment Status
      * @return string
      */
-    public function getPayment() {
+    public function getPaymentMethod() {
         if ($this->is_received == 1) {
             return 'Received';
         }

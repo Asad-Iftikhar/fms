@@ -29,7 +29,7 @@
                             </ul>
                             <ul class="nav ms-lg-4">
                                 <li class="nav-item">
-                                    <a class="nav nav-link active" aria-current="page" href="#">Event</a>
+                                    <a class="nav nav-link active" aria-current="page" href="{{ url('account/event') }}">Event</a>
                                 </li>
                             </ul>
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

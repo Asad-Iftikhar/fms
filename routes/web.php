@@ -18,6 +18,9 @@ Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
 
 Route::get('account/collection','User\CollectionController@getIndex');
+Route::get('account/collection/{id}','User\CollectionController@getCollectionId');
+Route::get('account/event','User\EventController@getIndex');
+Route::get('account/event/{id}/{name}','User\EventController@getEventId');
 
 # settings
 Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );
