@@ -127,7 +127,12 @@ Route::post( 'admin/events/create', 'Admin\Events\AdminEventsController@postCrea
 Route::get( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@getEditEvent' );
 Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postEditEvent' );
 
-#Admin Delete Funding Event
+#Admin Delete Event
 Route::get( 'admin/events/delete/{id}', 'Admin\Events\AdminEventsController@deleteEvent' );
+
+#Admin Ajax Requests of Event Participants
+Route::post( 'admin/events/invite-guest', 'Admin\Events\AdminEventsController@inviteGuest' );
+Route::post( 'admin/events/invite-participant', 'Admin\Events\AdminEventsController@inviteParticipant' );
+Route::post( 'admin/events/remind-participant', 'Admin\Events\AdminEventsController@remindParticipant' );
 
 

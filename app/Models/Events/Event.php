@@ -57,10 +57,17 @@ class Event extends Base {
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function getGuests(): object {
+        return $this->hasMany( EventGuests::class, 'event_id' );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
      */
     public function guests(): object {
-        return $this->belongsToMany( User::class, 'event_guests', 'event_id', 'user_id' )->withTimestamps();
+        return $this->belongsToMany( User::class, 'event_guests', 'event_id', 'user_id' );
     }
 
     public function user() {

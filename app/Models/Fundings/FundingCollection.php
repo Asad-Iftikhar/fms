@@ -71,6 +71,18 @@ class FundingCollection extends Base {
     }
 
     /**
+     * Collection Type or Event Name
+     * @return string
+     */
+    public function getCollectionTitle() {
+        if (is_null($this->event_id)) {
+            return $this->fundingType->name;
+        } else {
+            return $this->event->name;
+        }
+    }
+
+    /**
      * Event Name as a link
      * @return string
      */

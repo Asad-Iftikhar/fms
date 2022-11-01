@@ -18,44 +18,56 @@
                         <span>Dashboard</span>
                     </a>
                 </li>
-
-                <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/users/*') || \Request::is('admin/users') || \Request::is('admin/roles/*') || \Request::is('admin/roles')])>
-                    <a href="#" class='sidebar-link'>
-                        <i class="iconly-boldProfile"></i>
-                        <span>Manage Users</span>
-                    </a>
-                    <ul @class(["submenu", "active" => \Request::is('admin/users/*') || \Request::is('admin/users') || \Request::is('admin/roles/*') || \Request::is('admin/roles')])>
-                        <li @class(["submenu-item", "active" => \Request::is('admin/users') || \Request::is('admin/users/*')])>
-                            <a href="{!! url('admin/users') !!}">Users</a>
-                        </li>
-                        <li @class(["submenu-item", "active" => \Request::is('admin/roles') || \Request::is('admin/roles/*')])>
-                            <a href="{{ url('admin/roles') }}">Roles</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')
-                        || \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*') ])>
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-cash-stack"></i>
-                        <span>Manage Funds</span>
-                    </a>
-                    <ul @class(["submenu", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')
-                        || \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*')])>
-                        <li @class(["submenu-item", "active" => \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*')])>
-                            <a href="{{ url('admin/funding/collections') }}">Collections</a>
-                        </li>
-                        <li @class(["submenu-item", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')])>
-                            <a href="{{ url('admin/funding/types') }}">Types</a>
-                        </li>
-                    </ul>
-                </li>
-                <li @class(["sidebar-item", "active" => \Request::is('admin/events') || \Request::is('admin/events/*') ])>
-                    <a href="{{ url('admin/events') }}" class='sidebar-link'>
-                        <i class="bi bi-calendar-event"></i>
-                        <span>Events</span>
-                    </a>
-                </li>
+                @if ( Auth::user()->can('manage_users') || Auth::user()->can('manage_roles') )
+                    <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/users/*') || \Request::is('admin/users') || \Request::is('admin/roles/*') || \Request::is('admin/roles')])>
+                        <a href="#" class='sidebar-link'>
+                            <i class="iconly-boldProfile"></i>
+                            <span>Manage Users</span>
+                        </a>
+                        <ul @class(["submenu", "active" => \Request::is('admin/users/*') || \Request::is('admin/users') || \Request::is('admin/roles/*') || \Request::is('admin/roles')])>
+                            @if ( Auth::user()->can('manage_users') )
+                                <li @class(["submenu-item", "active" => \Request::is('admin/users') || \Request::is('admin/users/*')])>
+                                    <a href="{!! url('admin/users') !!}">Users</a>
+                                </li>
+                            @endif
+                            @if ( Auth::user()->can('manage_roles') )
+                                <li @class(["submenu-item", "active" => \Request::is('admin/roles') || \Request::is('admin/roles/*')])>
+                                    <a href="{{ url('admin/roles') }}">Roles</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
+                @if ( Auth::user()->can('manage_funding_collections') || Auth::user()->can('manage_funding_types') )
+                    <li @class(["sidebar-item has-sub", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')
+                            || \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*') ])>
+                        <a href="#" class='sidebar-link'>
+                            <i class="bi bi-cash-stack"></i>
+                            <span>Manage Funds</span>
+                        </a>
+                        <ul @class(["submenu", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')
+                            || \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*')])>
+                            @if ( Auth::user()->can('manage_funding_collections') )
+                                <li @class(["submenu-item", "active" => \Request::is('admin/funding/collections') || \Request::is('admin/funding/collections/*')])>
+                                    <a href="{{ url('admin/funding/collections') }}">Collections</a>
+                                </li>
+                            @endif
+                            @if ( Auth::user()->can('manage_funding_types') )
+                                <li @class(["submenu-item", "active" => \Request::is('admin/funding/types') || \Request::is('admin/funding/types/*')])>
+                                    <a href="{{ url('admin/funding/types') }}">Types</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </li>
+                @endif
+                @if ( Auth::user()->can('manage_events') )
+                    <li @class(["sidebar-item", "active" => \Request::is('admin/events') || \Request::is('admin/events/*') ])>
+                        <a href="{{ url('admin/events') }}" class='sidebar-link'>
+                            <i class="bi bi-calendar-event"></i>
+                            <span>Events</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
