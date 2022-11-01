@@ -1578,3 +1578,11 @@ a {
     border: 1px solid #ccc;
     border-top: none;
 }
+
+.media-list:nth-child(odd) {
+    background-color: #eee !important;
+}
+.email-application .content-area-wrapper .content-right .email-app-list-wrapper .email-app-list .email-user-list .users-list-wrapper li.mail-read {
+    background-color: transparent !important;
+}
+

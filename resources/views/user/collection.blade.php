@@ -20,13 +20,16 @@
                                         <div class="email-user-list list-group ps ps--active-y">
                                             @if(count($previousPayments) > 0)
                                                 @foreach($previousPayments as $collection)
+
+{{--                                                    Collection Listing--}}
+
                                                     <ul class="users-list-wrapper media-list">
                                                         <li class="media mail-read">
                                                             <div class="media-body">
                                                                 <div class="user-details">
                                                                     <div class="mail-items">
                                                                     <span class="list-group-item-text text-truncate">
-                                                                        <h4>{{$collection->getCollectionTypeName()}}</h4>
+                                                                        <h4>{{'Collection Name: ' . $collection->getCollectionEventName()}}</h4>
                                                                     </span>
                                                                     </div>
                                                                     <div class="mail-meta-item">
@@ -37,13 +40,13 @@
                                                                 </div>
                                                                 <div class="mail-message">
                                                                     <h5 class="list-group-item-text mb-0 truncate">
-                                                                        {{ $collection->amount }}
-                                                                        {{ $collection->getPaymentMethod() }}
+                                                                        {{'Amount: ' . $collection->amount }}
+                                                                        {{'Payment Status: ' .  $collection->getPaymentMethod() }}
                                                                     </h5>
                                                                     <div class="mail-meta-item">
-                                                        <span class="float-right">
-                                                            <span class="bullet bullet-danger bullet-sm"></span>
-                                                        </span>
+                                                                        <span class="float-right">
+                                                                            <span class="bullet bullet-danger bullet-sm">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $collection->created_at )->toDateString() !!}</span>
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                             </div>

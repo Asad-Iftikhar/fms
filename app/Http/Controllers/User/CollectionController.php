@@ -6,7 +6,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\AuthController;
 use App\Models\Fundings\FundingCollection;
 use Illuminate\Support\Facades\Auth;
-use DB;
 
 class CollectionController extends AuthController
 {
@@ -25,6 +24,12 @@ class CollectionController extends AuthController
         }
     }
 
+    /**
+     * Previous Collection with respect to id
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function getCollectionId($id)
     {
         $previousPayments = FundingCollection::find($id);

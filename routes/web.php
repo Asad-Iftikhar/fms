@@ -17,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
 
+#User Side Collection Route
 Route::get('account/collection','User\CollectionController@getIndex');
 Route::get('account/collection/{id}','User\CollectionController@getCollectionId');
+
+#User Side Event Route
 Route::get('account/event','User\EventController@getIndex');
 Route::get('account/event/{id}/{name}','User\EventController@getEventId');
 

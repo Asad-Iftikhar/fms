@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-6">
                             <span>
-                                <a href="{{url('account/collection')}}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
+                                <a href="{{ url('account/collection') }}" type="button" class="btn btn-primary" style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back</a>
                             </span>
                         </div>
                     </div>

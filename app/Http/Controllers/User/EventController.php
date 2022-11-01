@@ -4,10 +4,8 @@ namespace App\Http\Controllers\User;
 
 
 use App\Http\Controllers\AuthController;
-use App\Models\Fundings\FundingCollection;
 use App\Models\Events\Event;
 use Illuminate\Support\Facades\Auth;
-use DB;
 
 class EventController extends AuthController
 {
@@ -28,6 +26,10 @@ class EventController extends AuthController
         }
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function getEventId($id) {
         if( $event = Event::find($id) ) {
             return view('user.event_view',compact('event'));

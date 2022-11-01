@@ -7,10 +7,14 @@
 @section('content')
     <div class="page-content">
 
+{{--        Tabs For active and finished events--}}
+
         <div class="tab">
             <button class="tablinks active" onclick="clickHandle(event, 'ActiveEvents')">Active Events</button>
             <button class="tablinks" onclick="clickHandle(event, 'FinishedEvents')">Finished Events</button>
         </div>
+
+{{--        Active Event listing--}}
 
         <div id="ActiveEvents" class="tabcontent" style="display: block;">
             <div class="page-heading email-application">
@@ -24,8 +28,8 @@
                                     <div class="email-app-list-wrapper">
                                         <div class="email-app-list">
                                             <div class="email-user-list list-group ps ps--active-y">
-                                                @if(count($activeEvents) > 0)
-                                                    @foreach($activeEvents as $collection)
+                                                @if( count($activeEvents) > 0 )
+                                                    @foreach( $activeEvents as $collection )
                                                         <ul class="users-list-wrapper media-list">
                                                             <li class="media mail-read">
                                                                 <div class="media-body">
@@ -47,6 +51,12 @@
                                                                             {{ 'Event Cost: ' . $collection->event_cost }}
                                                                             {{ 'Event Status: ' . $collection->status }}
                                                                         </h5>
+                                                                        <div class="mail-meta-item">
+                                                                        <span class="float-right">
+                                                                            <span
+                                                                                class="bullet bullet-danger bullet-sm">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $collection->created_at )->toDateString() !!}</span>
+                                                                        </span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -77,6 +87,8 @@
             </div>
         </div>
 
+{{--        Finished Event Listing--}}
+
         <div id="FinishedEvents" class="tabcontent">
             <div class="page-heading email-application">
                 <section class="section content-area-wrapper">
@@ -93,22 +105,34 @@
                                                     @foreach( $finishedEvents as $collection )
                                                         <ul class="users-list-wrapper media-list">
                                                             <li class="media mail-read">
-                                                                    <div class="media-body">
-                                                                        <div class="user-details">
-                                                                            <div class="mail-items">
-                                                                    <span class="list-group-item-text text-truncate"
-                                                                          style="color: red">
-                                                                        <h4> {{ 'Event Name: ' . $collection->name }} </h4>
-                                                                    </span>
-                                                                            </div>
+                                                                <div class="media-body">
+                                                                    <div class="user-details">
+                                                                        <div class="mail-items">
+                                                                            <span
+                                                                                class="list-group-item-text text-truncate"
+                                                                                style="color: red">
+                                                                                <h4> {{ 'Event Name: ' . $collection->name }} </h4>
+                                                                            </span>
                                                                         </div>
-                                                                        <div class="mail-message">
-                                                                            <h5 class="list-group-item-text mb-0 truncate">
-                                                                                {{ 'Event Cost: ' . $collection->event_cost }}
-                                                                                {{ 'Event Status: ' . $collection->status }}
-                                                                            </h5>
+                                                                        <div class="mail-meta-item">
+                                                                            <a href=" {{ url('account/event/' . $collection->id . '/' . $collection->name ) }} ">
+                                                                                View
+                                                                            </a>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="mail-message">
+                                                                        <h5 class="list-group-item-text mb-0 truncate">
+                                                                            {{ 'Event Cost: ' . $collection->event_cost }}
+                                                                            {{ 'Event Status: ' . $collection->status }}
+                                                                        </h5>
+                                                                        <div class="mail-meta-item">
+                                                                        <span class="float-right">
+                                                                            <span
+                                                                                class="bullet bullet-danger bullet-sm">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $collection->created_at )->toDateString() !!}</span>
+                                                                        </span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </li>
                                                         </ul>
                                                     @endforeach
