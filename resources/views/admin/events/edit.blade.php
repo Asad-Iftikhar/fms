@@ -212,38 +212,47 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-participants" role="tabpanel"
                      aria-labelledby="v-pills-participants-tab">
+                    <div class="row my-4">
+                        <div class="col-md-6">
+                            <h4>Guests and Participants</h4>
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
                     <table class="table table-striped mb-0">
                         <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>Last Invited</th>
-                            <th>Last Reminded to pay</th>
-                            <th>ACTION</th>
-                        </tr>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Last Invited</th>
+                                <th>Last Reminded to pay</th>
+                                <th>ACTION</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach($event->getGuests as $guest)
-                            <tr>
-                                <td class="">
-                                    <img height="70px" class="text-center mx-auto" src="{{ $guest->user->getUserAvatar() }}">
-                                </td>
-                                <td class="text-bold-500">{{ $guest->user->username }}</td>
-                                <td>Guest</td>
-                                <td>N/A</td>
-                                <td class="last_invited">{{ (empty($guest->last_invited ))? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans() }}</td>
-                                <td class="">N/A</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm ajax-btn" data-action="{{ url('admin/events/invite-guest') }}" data-id="{{ $guest->id }}">
-                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                        <i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite' }}
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                        @foreach($event->fundingCollections as $collection)
+                        @if(($event->getGuests->count() > 0) || ($event->fundingCollections->count() > 0))
+                            @foreach($event->getGuests as $guest)
+                                <tr>
+                                    <td class="">
+                                        <img height="70px" class="text-center mx-auto" src="{{ $guest->user->getUserAvatar() }}">
+                                    </td>
+                                    <td class="text-bold-500">{{ $guest->user->username }}</td>
+                                    <td>Guest</td>
+                                    <td>N/A</td>
+                                    <td class="last_invited">{{ (empty($guest->last_invited ))? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans() }}</td>
+                                    <td class="">N/A</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm ajax-btn" data-action="{{ url('admin/events/invite-guest') }}" data-id="{{ $guest->id }}">
+                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            <i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite' }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @foreach($event->fundingCollections as $collection)
                             <tr>
                                 <td class="">
                                     <img height="70px" class="text-center mx-auto" src="{{ $collection->user->getUserAvatar() }}">
@@ -265,6 +274,13 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @else
+                            <tr>
+                                <td align="center" colspan="7">
+                                    No Participants Found
+                                </td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -351,15 +367,9 @@
                     selectedUser.push(parseInt($(option).val()));
                 }
             });
-            /*let selectedValues = values.map(function (Option, Sec) {
-               return $(Sec).val();
-            });
-            console.log(selectedValues);*/
-            // alert('array ready');
 
             $('.choices').find('.choices__item--choice').show();
             if(selectedUser){
-                // alert('if ready');
                 $(selectedUser).each(function (index,value){
                     setTimeout(function(){
                         $('.choices').find('.choices__item--choice[data-value="'+value+'"]').hide();
@@ -386,11 +396,9 @@
                 $('#cash-by-collections-input').val(totalCollections);
                 $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
             }
-
         }
 
-
-        // Ajax request to invite and remind particiapants and guests
+        // Ajax request to invite and remind participants and guests
 
         $('.ajax-btn').on('click', sendInvite);
         function sendInvite() {
@@ -416,14 +424,14 @@
                         clickedBtn.attr("disabled", false);
                         btnIcon.addClass("d-none");
                         if ( res.status ) {
-                            if(res.data.invited_text) {
-                                $(lastInvitedDiv).html(res.data.invited_text);
+                            if(res.invited_text) {
+                                $(lastInvitedDiv).html(res.invited_text);
                             }
-                            if(res.data.reminded_text) {
-                                $(lastRemindedDiv).html(res.data.reminded_text);
+                            if(res.reminded_text) {
+                                $(lastRemindedDiv).html(res.reminded_text);
                             }
-                            if(res.data.btn_text) {
-                                $(clickedBtn).html(res.data.btn_text);
+                            if(res.btn_text) {
+                                $(clickedBtn).html(res.btn_text);
                             }
                             swal({
                                 title: 'Success',

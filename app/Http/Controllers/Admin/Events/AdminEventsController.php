@@ -368,8 +368,10 @@ class AdminEventsController extends AdminController {
      * @throws \Throwable
      */
     public function inviteGuest(Request $request) {
-        $res['msg'] = 'Something Went Wrong, Please Try Again later';
-        $res['status'] = 0;
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
         $guestId = $request->input('id');
         if ( $guest = EventGuests::find($guestId) ) {
             $guest->is_invited = 1;
@@ -381,24 +383,20 @@ class AdminEventsController extends AdminController {
                 $guest->desc = (empty($guest->event->description) ? 'N/A' : $guest->event->description );
                 $guest->date = (empty($guest->event->event_date) ? 'To be Decided' : $guest->event->event_date );
                 try {
-                    Mail::to($guest->email)->send(new inviteGuestMail($guest));
                     //Email sending
-                    $res['data'] = $guest;
-                    $res['data']->invited_text = \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans();
-                    $res['data']->btn_text = '<i class="iconly-boldSend"></i> Re Invite';
+                    Mail::to($guest->email)->send(new inviteGuestMail($guest));
+                    $res['invited_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans();
+                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
                     $res['msg'] = 'Invited successfully';
                     $res['status'] = 1;
                 } catch (\Exception $e) {
                     $res['msg'] = 'Something Went Wrong, Cannot Send Email';
-                    $res['status'] = 0;
                 }
             }
         } else {
             $res['msg'] = 'Guest Not Found';
-            $res['status'] = 0;
         }
-
-        exit(json_encode($res));
+        return response()->json( $res );
     }
 
     /**
@@ -406,8 +404,10 @@ class AdminEventsController extends AdminController {
      * @throws \Throwable
      */
     public function inviteParticipant(Request $request) {
-        $res['msg'] = 'Something Went Wrong, Please Try Again later';
-        $res['status'] = 0;
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
         $collectionId = $request->input('id');
         if ( $collection = FundingCollection::find($collectionId) ) {
             $collection->is_invited = 1;
@@ -421,22 +421,18 @@ class AdminEventsController extends AdminController {
                 try {
                     //Email sending
                     Mail::to($collection->email)->send(new inviteParticipantMail($collection));
-                    $res['data'] = $collection;
-                    $res['data']->invited_text = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans();
-                    $res['data']->btn_text = '<i class="iconly-boldSend"></i> Re Invite';
+                    $res['invited_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans();
+                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
                     $res['msg'] = 'Invited successfully';
                     $res['status'] = 1;
                 } catch (\Exception $e) {
                     $res['msg'] = 'Something Went Wrong, Cannot Send Email';
-                    $res['status'] = 0;
                 }
             }
         } else {
             $res['msg'] = 'Participant Not Found';
-            $res['status'] = 0;
         }
-
-        exit(json_encode($res));
+        return response()->json( $res );
     }
 
     /**
@@ -458,22 +454,18 @@ class AdminEventsController extends AdminController {
                 try {
                     //Email sending
                     Mail::to($collection->email)->send(new remindMail($collection));
-                    $res['data'] = $collection;
-                    $res['data']->reminded_text = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
-                    $res['data']->btn_text = '<i class="iconly-boldSend"></i> Remind again';
+                    $res['reminded_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
+                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
                     $res['msg'] = 'Reminder sent successfully';
                     $res['status'] = 1;
                 } catch (\Exception $e) {
                     $res['msg'] = 'Something Went Wrong, Cannot Send Email';
-                    $res['status'] = 0;
                 }
             }
         } else {
             $res['msg'] = 'Participant Not Found';
-            $res['status'] = 0;
         }
-
-        exit(json_encode($res));
+        return response()->json( $res );
     }
 
 }
