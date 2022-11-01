@@ -11,7 +11,7 @@
                                     <label for="first-name-icon">Username</label>
                                     {!! $errors->first('username', '<small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
-                                        <input type="text" value="{{ $user->username}}" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
+                                        <input type="text" value="{{ old( 'username', $user->username ) }}" class="form-control {!! $errors->has('username') ? 'is-invalid' : '' !!} "
                                                placeholder="Username" name="username"
                                                id="first-name-icon">
                                         <div class="form-control-icon">
@@ -25,7 +25,7 @@
                                     <label for="first-name-icon">First Name</label>
                                     {!! $errors->first('first_name', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
-                                        <input type="text" value="{{$user->first_name}}" class="form-control {!! $errors->has('first_name') ? 'is-invalid' : '' !!} "
+                                        <input type="text" value="{{ old( 'first_name', $user->first_name ) }}" class="form-control {!! $errors->has('first_name') ? 'is-invalid' : '' !!} "
                                                placeholder="First Name" name="first_name"
                                                id="first-name-icon">
                                         <div class="form-control-icon">
@@ -39,7 +39,7 @@
                                     <label for="first-name-icon">Last Name</label>
                                     {!! $errors->first('last_name', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
-                                        <input type="text" value="{{ $user->last_name}}" class="form-control {!! $errors->has('last_name') ? 'is-invalid' : '' !!} "
+                                        <input type="text" value="{{ old( 'last_name', $user->last_name ) }}" class="form-control {!! $errors->has('last_name') ? 'is-invalid' : '' !!} "
                                                placeholder="Last Name" name="last_name"
                                                id="first-name-icon">
                                         <div class="form-control-icon">
@@ -54,7 +54,7 @@
                                     {!! $errors->first('email', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
                                         <input type="text" class="form-control {!! $errors->has('email') ? 'is-invalid' : '' !!} "
-                                               placeholder="Email" value="{{ $user->email}}"
+                                               placeholder="Email" value="{{ old( 'email', $user->email ) }}"
                                                id="email-id-icon" name="email">
                                         <div class="form-control-icon">
                                             <i class="bi bi-envelope"></i>
@@ -68,7 +68,7 @@
                                     {!! $errors->first('phone', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
                                         <input type="text" name="phone" class="form-control {!! $errors->has('phone') ? 'is-invalid' : '' !!} "
-                                               value="{{ $user->phone}}"
+                                               value="{{ old( 'phone', $user->phone ) }}"
                                                placeholder="Phone Number" id="mobile-id-icon">
                                         <div class="form-control-icon">
                                             <i class="bi bi-phone"></i>
@@ -81,7 +81,7 @@
                                     <label for="dob-id-icon">Date of Birth</label>
                                     {!! $errors->first('dob', '<br><small class="text-danger">:message</small>') !!}
                                     <div class="position-relative">
-                                        <input value="{{ $user->dob}}" type="date" class="form-control {!! $errors->has('dob') ? 'is-invalid' : '' !!} "
+                                        <input value="{{ old( 'dob', $user->dob ) }}" type="date" class="form-control {!! $errors->has('dob') ? 'is-invalid' : '' !!} "
                                                placeholder="Date of Birth" name="dob" id="dob-id-icon">
                                         <div class="form-control-icon">
                                             <i class="bi bi-calendar-date"></i>
@@ -94,13 +94,13 @@
                                 <div class='form-check'>
                                     <div class="checkbox mt-2">
                                         <input type="radio" value="male" name="gender" id="gender-male"
-                                               class='form-check-input' {{ ($user->gender == 'male')?'checked':'' }}>
-                                        <label for="remember-me-v">Male</label>
+                                               class='form-check-input' {{ ( old( 'gender', $user->gender ) == 'male')?'checked':'' }}>
+                                        <label for="gender-male">Male</label>
                                     </div>
                                     <div class="checkbox mt-2">
                                         <input type="radio" value="female" name="gender" id="gender-female"
-                                               class='form-check-input ' {{ ($user->gender == 'female')?'checked':'' }}>
-                                        <label for="remember-me-v">Female</label>
+                                               class='form-check-input ' {{  (old( 'gender', $user->gender) == 'female')?'checked':'' }}>
+                                        <label for="gender-female">Female</label>
                                     </div>
                                 </div>
                             </div>

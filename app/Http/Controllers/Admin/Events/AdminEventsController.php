@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Admin\Events;
 
 use App\Http\Controllers\AdminController;
+use App\Mail\InviteGuestMail;
+use App\Mail\InviteParticipantMail;
+use App\Mail\RemindMail;
 use App\Models\Events\Event;
 use App\Models\Users\User;
+use App\Models\Events\EventGuests;
 use App\Models\Fundings\FundingCollection;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Mail;
 
 class AdminEventsController extends AdminController {
     //
@@ -135,7 +141,7 @@ class AdminEventsController extends AdminController {
     public function getEditEvent ( $event_id ) {
         // Show the page
         $totalFunds = FundingCollection::totalAvailableFunds();
-        if($event = Event::with( [ 'guests', 'fundingCollections.user' ] )->find($event_id)){
+        if($event = Event::with( [ 'getGuests.user', 'fundingCollections.user' ] )->find($event_id)){
             $guestIds = $event->guests()->pluck('user_id')->toArray();
             $selectedUsers = $guestIds;
             $collectionsData = $event->fundingCollections()->get();
@@ -346,19 +352,6 @@ class AdminEventsController extends AdminController {
             $data->statusname = $data->getStatus();
             $data->participants = ($data->fundingCollections->count() + $data->guests()->count() ) ;
             $data->action='<a href="'.url('admin/events/edit').'/'. $data->id .'" class="edit btn btn-sm btn-outline-primary"><i class="iconly-boldEdit"></i></a>&nbsp;<button onClick="confirmDelete(\''.url('admin/events/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>';
-//            $data->action='<div class="btn-group dropstart mb-1">
-//                                <div class="dropdown">
-//                                    <button class="btn btn-primary btn-sm dropdown-toggle me-1" type="button"
-//                                        id="dropdownMenuButton" data-bs-toggle="dropdown"
-//                                        aria-haspopup="true" aria-expanded="false">
-//                                        Actions
-//                                    </button>
-//                                    <div class="dropdown-menu">
-//                                           <a href="'.url('admin/events/edit').'/'. $data->id .'" class="dropdown-item edit btn btn-outline-info">Edit</a>
-//                                           <button onClick="confirmDelete(\''.url('admin/events/delete').'/'. $data->id.'\')" class="dropdown-item delete-btn delete fa fa-trash">Delete</button>
-//                                    </div>
-//                                </div>
-//                            </div>';
         }
         $response = array(
             "draw" => intval($draw),
@@ -368,6 +361,111 @@ class AdminEventsController extends AdminController {
         );
 
         return response()->json($response);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function inviteGuest(Request $request) {
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
+        $guestId = $request->input('id');
+        if ( $guest = EventGuests::find($guestId) ) {
+            $guest->is_invited = 1;
+            $guest->last_invited = Carbon::now()->toDateTimeString();
+            if( $guest->save() ) {
+                $guest->email = $guest->user->email;
+                $guest->name = $guest->user->getFullName();
+                $guest->event_name = $guest->event->name;
+                $guest->desc = (empty($guest->event->description) ? 'N/A' : $guest->event->description );
+                $guest->date = (empty($guest->event->event_date) ? 'To be Decided' : $guest->event->event_date );
+                try {
+                    //Email sending
+                    Mail::to($guest->email)->send(new InviteGuestMail($guest));
+                    $res['invited_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans();
+                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
+                    $res['msg'] = 'Invited successfully';
+                    $res['status'] = 1;
+                } catch (\Exception $e) {
+                    $res['msg'] = 'Something Went Wrong, Cannot Send Email';
+                }
+            }
+        } else {
+            $res['msg'] = 'Guest Not Found';
+        }
+        return response()->json( $res );
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function inviteParticipant(Request $request) {
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
+        $collectionId = $request->input('id');
+        if ( $collection = FundingCollection::find($collectionId) ) {
+            $collection->is_invited = 1;
+            $collection->last_invited = Carbon::now()->toDateTimeString();
+            if( $collection->save() ) {
+                $collection->email = $collection->user->email;
+                $collection->name = $collection->user->getFullName();
+                $collection->event_name = $collection->getEvent();
+                $collection->desc = (empty($collection->event->description) ? 'N/A' : $collection->event->description );
+                $collection->date = (empty($collection->event->event_date) ? 'To be Decided' : $collection->event->event_date );
+                try {
+                    //Email sending
+                    Mail::to($collection->email)->send(new InviteParticipantMail($collection));
+                    $res['invited_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans();
+                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
+                    $res['msg'] = 'Invited successfully';
+                    $res['status'] = 1;
+                } catch (\Exception $e) {
+                    $res['msg'] = 'Something Went Wrong, Cannot Send Email';
+                }
+            }
+        } else {
+            $res['msg'] = 'Participant Not Found';
+        }
+        return response()->json( $res );
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function remindParticipant(Request $request) {
+        $res['msg'] = 'Something Went Wrong, Please Try Again later';
+        $res['status'] = 0;
+        $collectionId = $request->input('id');
+        if ( $collection = FundingCollection::find($collectionId) ) {
+            $collection->is_reminded = 1;
+            $collection->last_reminded = Carbon::now()->toDateTimeString();
+            if( $collection->save() ) {
+                $collection->email = $collection->user->email;
+                $collection->name = $collection->user->getFullName();
+                $collection->title = $collection->getCollectionTitle();
+                $collection->amount = $collection->amount;
+                try {
+                    //Email sending
+                    Mail::to($collection->email)->send(new RemindMail($collection));
+                    $res['reminded_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
+                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
+                    $res['msg'] = 'Reminder sent successfully';
+                    $res['status'] = 1;
+                } catch (\Exception $e) {
+                    $res['msg'] = 'Something Went Wrong, Cannot Send Email';
+                }
+            }
+        } else {
+            $res['msg'] = 'Participant Not Found';
+        }
+        return response()->json( $res );
     }
 
 }

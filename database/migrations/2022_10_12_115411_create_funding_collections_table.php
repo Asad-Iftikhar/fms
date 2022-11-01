@@ -23,6 +23,10 @@ return new class extends Migration
             $table->float( 'amount' )->nullable();
             $table->foreignId('event_id')->nullable()->constrained('events')->onDelete('CASCADE');
             $table->boolean( 'is_received' )->default( 0 );
+            $table->boolean( 'is_invited' )->default( 0 );
+            $table->boolean( 'is_reminded' )->default( 0 );
+            $table->dateTime( 'last_reminded' )->nullable();
+            $table->dateTime( 'last_invited' )->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
