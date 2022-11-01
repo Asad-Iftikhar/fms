@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Event;
 
 
 use App\Http\Controllers\AuthController;
 use App\Models\Events\Event;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends AuthController
 {
@@ -22,7 +23,7 @@ class EventController extends AuthController
             $User =  Auth::user();
             $activeEvents = Event::where('status','=','active')->get();
             $finishedEvents = Event::where('status','=','finished')->get();
-            return view("user.event",compact('activeEvents','finishedEvents'));
+            return view("site.event.index",compact('activeEvents','finishedEvents'));
         }
     }
 
@@ -31,8 +32,23 @@ class EventController extends AuthController
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function getEventId($id) {
-        if( $event = Event::find($id) ) {
-            return view('user.event_view',compact('event'));
+
+        $rules = [
+          'id' => $id
+        ];
+
+        $validator = Validator::make($rules, [
+           'id' => 'required|exists:events,id'
+        ]);
+
+        if($validator->passes())
+        {
+            if( $event = Event::find($id) ) {
+                return view('site.event.detail',compact('event'));
+            }
+        }
+        else {
+            return redirect('account/event')->with('error', "No Record Exist");
         }
     }
 }

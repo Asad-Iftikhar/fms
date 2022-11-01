@@ -16,7 +16,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="text-muted font-semibold">Total Collections</h6>
-                                        <h6 class="font-extrabold mb-0">{{$totalCollection}}</h6>
+                                        <h6 class="font-extrabold mb-0"> {{ $totalCollection }} Rs  </h6>
                                     </div>
                                 </div>
                             </div>
@@ -83,23 +83,23 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-lg">
+                                    <table class="table table-hover table-lg table-striped">
                                         <thead>
                                         <tr>
                                             <th>Fund Type Name</th>
                                             <th>Amount</th>
                                             <th>Event Name</th>
-                                            <th>Description</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @if(count($pendingPaymentList) > 0)
                                             @foreach($pendingPaymentList as $collection)
                                                 <tr>
-                                                    <td>{{ $collection->getCollectionTypeName()}}</td>
-                                                    <td>{{ $collection->amount}}</td>
-                                                    <td>{{$collection->getEvent()}}</td>
-                                                    <td>{{$collection->getDescription()}}</td>
+                                                    <td>{{ $collection->getCollectionTypeName() }}</td>
+                                                    <td>{{ $collection->amount }}</td>
+                                                    <td>{{ $collection->getEvent() }}</td>
+                                                    <td><a href="{{ url('collection/' . $collection->id) }}">View</a></td>
                                                 </tr>
                                             @endforeach
                                         @else

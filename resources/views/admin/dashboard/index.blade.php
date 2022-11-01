@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="text-muted font-semibold">Total Employees</h6>
-                                        <h6 class="font-extrabold mb-0"> {{ $activeUsers }} </h6>
+                                        <h6 class="font-extrabold mb-0"> {{ $activeUsersCount }} </h6>
                                     </div>
                                 </div>
                             </div>

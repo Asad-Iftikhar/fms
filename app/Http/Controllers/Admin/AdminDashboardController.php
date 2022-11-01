@@ -12,16 +12,12 @@ class AdminDashboardController extends AdminController {
 
     /**
      * Show the administration dashboard page.
-     * Show active user on the admin dashboard
-     * SHow active events on the admin dashboard
-     * Show total funds on the admin dashboard
-     * total pending and collections
-     *
+     * Stats
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      *
      */
     public function getIndex() {
-        $activeUsers = User::where('activated','=',1)->count();
+        $activeUsersCount = User::where('activated','=',1)->count();
         $activeEvents = Event::where('status','=','active')->get();
         $totalFunds = FundingCollection::totalAvailableFunds();
         $totalPendings = FundingCollection::getOverallPendings();
@@ -34,6 +30,6 @@ class AdminDashboardController extends AdminController {
             $TotalUsers = User::where( 'activated', '=', true )->where( 'disabled', '=', false )->count();
         }
         // Show the page
-        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','activeUsers','activeEvents'));
+        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','activeUsersCount','activeEvents'));
     }
 }
