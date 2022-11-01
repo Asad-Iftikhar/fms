@@ -3,15 +3,17 @@
 namespace App\Mail;
 
 use App\Models\Fundings\FundingCollection;
+use App\Models\Users\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class remindMail extends Mailable
+class InviteParticipantMail extends Mailable
 {
     use Queueable, SerializesModels;
     public FundingCollection $data;
+
     /**
      * Create a new message instance.
      *
@@ -30,6 +32,6 @@ class remindMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Collection Reminder')->markdown('emails.remindEmail');
+        return $this->subject('Event Invitation')->markdown('emails.inviteEmail');
     }
 }

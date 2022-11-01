@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\Events;
 
 use App\Http\Controllers\AdminController;
-use App\Mail\inviteGuestMail;
-use App\Mail\inviteParticipantMail;
-use App\Mail\remindMail;
+use App\Mail\InviteGuestMail;
+use App\Mail\InviteParticipantMail;
+use App\Mail\RemindMail;
 use App\Models\Events\Event;
 use App\Models\Users\User;
 use App\Models\Events\EventGuests;
@@ -384,7 +384,7 @@ class AdminEventsController extends AdminController {
                 $guest->date = (empty($guest->event->event_date) ? 'To be Decided' : $guest->event->event_date );
                 try {
                     //Email sending
-                    Mail::to($guest->email)->send(new inviteGuestMail($guest));
+                    Mail::to($guest->email)->send(new InviteGuestMail($guest));
                     $res['invited_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans();
                     $res['btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
                     $res['msg'] = 'Invited successfully';
@@ -420,7 +420,7 @@ class AdminEventsController extends AdminController {
                 $collection->date = (empty($collection->event->event_date) ? 'To be Decided' : $collection->event->event_date );
                 try {
                     //Email sending
-                    Mail::to($collection->email)->send(new inviteParticipantMail($collection));
+                    Mail::to($collection->email)->send(new InviteParticipantMail($collection));
                     $res['invited_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans();
                     $res['btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
                     $res['msg'] = 'Invited successfully';
@@ -453,7 +453,7 @@ class AdminEventsController extends AdminController {
                 $collection->amount = $collection->amount;
                 try {
                     //Email sending
-                    Mail::to($collection->email)->send(new remindMail($collection));
+                    Mail::to($collection->email)->send(new RemindMail($collection));
                     $res['reminded_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
                     $res['btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
                     $res['msg'] = 'Reminder sent successfully';
