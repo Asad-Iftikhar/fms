@@ -31,7 +31,7 @@ class EventController extends AuthController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getEventId($id) {
+    public function getEvent($id) {
 
         $rules = [
           'id' => $id

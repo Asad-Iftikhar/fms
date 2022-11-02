@@ -225,7 +225,7 @@ class AdminFundingCollectionController extends AdminController
             $collection->collectionTypeName = $collection->getCollectionTypeName();
             $collection->collectionUserName = $collection->user->linkWithFullName();
             $collection->eventName = $collection->getEventName();
-            $collection->paymentStatus = $collection->getPaymentStatus();
+            $collection->paymentStatus = $collection->getPaymentStatusBadge();
             $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
 

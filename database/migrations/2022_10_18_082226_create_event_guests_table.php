@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id');
             $table->foreignId('user_id');
+            $table->boolean( 'is_invited' )->default( 0 );
+            $table->dateTime( 'last_invited' )->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

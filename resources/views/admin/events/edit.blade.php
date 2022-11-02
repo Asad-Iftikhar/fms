@@ -212,39 +212,75 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-participants" role="tabpanel"
                      aria-labelledby="v-pills-participants-tab">
+                    <div class="row my-4">
+                        <div class="col-md-6">
+                            <h4>Guests and Participants</h4>
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
                     <table class="table table-striped mb-0">
                         <thead>
-                        <tr>
-                            <th>Image</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            <th>ACTION</th>
-                        </tr>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Last Invited</th>
+                                <th>Last Reminded to pay</th>
+                                <th>ACTION</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach($event->guests as $guest)
+                        @if(($event->getGuests->count() > 0) || ($event->fundingCollections->count() > 0))
+                            @foreach($event->getGuests as $guest)
+                                <tr>
+                                    <td class="">
+                                        <img height="70px" class="text-center mx-auto" src="{{ $guest->user->getUserAvatar() }}">
+                                    </td>
+                                    <td class="text-bold-500">{{ $guest->user->username }}</td>
+                                    <td>Guest</td>
+                                    <td>N/A</td>
+                                    <td class="last_invited">{{ (empty($guest->last_invited ))? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans() }}</td>
+                                    <td class="">N/A</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm ajax-btn" data-action="{{ url('admin/events/invite-guest') }}" data-id="{{ $guest->id }}">
+                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            <i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite' }}
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            @foreach($event->fundingCollections as $collection)
                             <tr>
                                 <td class="">
-                                    <img height="70px" class="text-center mx-auto" src="{{ $guest->getUserAvatar() }}">
+                                    <img height="70px" class="text-center mx-auto" src="{{ $collection->user->getUserAvatar() }}">
                                 </td>
-                                <td class="text-bold-500">{{ $guest->username }}</td>
-                                <td>Guest</td>
-                                <td>0</td>
-                                <td><a href="{{ url('admin/users/sendinvitation') }}"><i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
+                                <td class="text-bold-500">{{ $collection->user->username }}</td>
+                                <td class="text-bold-500">Participant</td>
+                                <td class="text-bold-500">{{ $collection->amount }}</td>
+                                <td class="last_invited">{{ ( empty ( $collection->last_invited ) ) ? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans() }}</td>
+                                <td class="last_reminded">{{ ( empty ( $collection->last_reminded ) ) ? 'Not Reminded' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans() }}</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm ajax-btn" data-action="{{ url('admin/events/invite-participant') }}" data-id="{{ $collection->id }}">
+                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                        <i class="iconly-boldSend"></i> {{ ($collection->is_invited == 0)?'Invite':'Re Invite' }}
+                                    </button>
+                                    <button class="btn btn-warning btn-sm ajax-btn" data-action="{{ url('admin/events/remind-participant') }}" data-id="{{ $collection->id }}">
+                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                        <i class="iconly-boldSend"></i> {{ ($collection->is_reminded == 0)?' Send Reminder':' Remind again' }}
+                                    </button>
+                                </td>
                             </tr>
                         @endforeach
-                        @foreach($event->fundingCollections as $collection)
-                        <tr>
-                            <td class="">
-                                <img height="70px" class="text-center mx-auto" src="{{ $collection->user->getUserAvatar() }}">
-                            </td>
-                            <td class="text-bold-500">{{ $collection->user->username }}</td>
-                            <td class="text-bold-500">Participant</td>
-                            <td class="text-bold-500">{{ $collection->amount }}</td>
-                            <td><a href="#"><i class="badge-circle badge-circle-light-secondary font-medium-1" data-feather="mail"></i></a></td>
-                        </tr>
-                        @endforeach
+                        @else
+                            <tr>
+                                <td align="center" colspan="7">
+                                    No Participants Found
+                                </td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -255,118 +291,169 @@
 @section('javascript')
     @parent
     <script src="{!! asset('assets/vendors/choices.js/choices.min.js') !!}"></script>
+    <script src="{{ asset('assets/js/sweetalert/sweetalert.min.js') }}"></script>
 
-<script>
-
-    $( document ).ready(function() {
-        filterMultiSelect();
-        resettingAmounts();
-        if($('.payment_mode_radio:checked').val() == 1) {
-            $('#cash-by-collections-div').hide();
-            $('.collections-row').hide();
-        }else {
-            $('#cash-by-collections-div').show();
-            $('.collections-row').show();
-        }
-    });
-
-    var users = {!! $users !!};
-    var selectedUser = {!! $selectedUsers !!};
-    $('.payment_mode_radio').change(function () {
-        if (this.value == 2) {
-            $('#cash-by-collections-div').show();
-            $('.collections-row').show();
-        } else if (this.value == 1) {
-            $('#cash-by-collections-div').hide();
-            $('.collections-row').hide();
-        }
-    });
-    let Counter = {!! $count !!};
-    // jquery.repeater
-    $(function () {
-        $(document).on('click', '.btn-add', function (e) {
-            e.preventDefault();
-            let currentEntry;
-            let choiceId = 'UserSelection' + Counter++;
-            currentEntry = '<div class="row collections-row"><div class="col-md-6 mb-4"><div class="form-group"><label for="amount-input">Select multiple users for collection</label> <select name="collection_users['+Counter+'][]" id="' + choiceId + '" class="choices form-select multiple-remove" multiple="multiple">' + availableUsers() + '</select></div></div><div class="col-md-4"><div class="form-group"><label>Amount</label><input type="number" value="" class="form-control quantity-inputs" placeholder="Amount" name="amount['+Counter+']" data-id="'+choiceId+'"></div></div><div class="col-md-2 justify-content-end d-flex"><div class="form-group py-4"> <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> </button></div></div></div>';
-            $('#participant_fieldset').append(currentEntry);
-            let choiceDOM = document.getElementById( choiceId);
-            new Choices(choiceDOM,
-                {
-                    delimiter: ',',
-                    editItems: true,
-                    maxItemCount: 50,
-                    removeItemButton: true,
-                });
-        }).on('click', '.btn-remove', function (e) {
-            if ( $('#participant_fieldset>.collections-row').length > 1 ) {
-                $(this).closest('.collections-row').remove();
-                filterMultiSelect();
-                resettingAmounts();
-            } else {
-                alert('deleting last row is not allowed');
-            }
-
-            return false;
-        }).on('change keyup', filterMultiSelect).on('change keyup', resettingAmounts);
-    });
-
-    function availableUsers() {
-        let values = '';
-
-        $(users).each(function (index, user) {
-            if ( $.inArray( parseInt(user.id), selectedUser) == -1) {
-                values += '<option value="' + user.id + '">' + user.username + '</option>';
+    <script>
+        $( document ).ready(function() {
+            filterMultiSelect();
+            resettingAmounts();
+            if($('.payment_mode_radio:checked').val() == 1) {
+                $('#cash-by-collections-div').hide();
+                $('.collections-row').hide();
+            }else {
+                $('#cash-by-collections-div').show();
+                $('.collections-row').show();
             }
         });
-        return values;
-    }
-    $('.choices').on('change keyup', filterMultiSelect);
 
-    function filterMultiSelect() {
-        selectedUser=[];
-        let values = $('.choices option');
-        values.each(function (index, option) {
-            if ( $.inArray( parseInt($(option).val()), selectedUser ) == -1) {
-                selectedUser.push(parseInt($(option).val()));
+        var users = {!! $users !!};
+        var selectedUser = {!! $selectedUsers !!};
+        $('.payment_mode_radio').change(function () {
+            if (this.value == 2) {
+                $('#cash-by-collections-div').show();
+                $('.collections-row').show();
+            } else if (this.value == 1) {
+                $('#cash-by-collections-div').hide();
+                $('.collections-row').hide();
             }
         });
-        /*let selectedValues = values.map(function (Option, Sec) {
-           return $(Sec).val();
+        let Counter = {!! $count !!};
+        // jquery.repeater
+        $(function () {
+            $(document).on('click', '.btn-add', function (e) {
+                e.preventDefault();
+                let currentEntry;
+                let choiceId = 'UserSelection' + Counter++;
+                currentEntry = '<div class="row collections-row"><div class="col-md-6 mb-4"><div class="form-group"><label for="amount-input">Select multiple users for collection</label> <select name="collection_users['+Counter+'][]" id="' + choiceId + '" class="choices form-select multiple-remove" multiple="multiple">' + availableUsers() + '</select></div></div><div class="col-md-4"><div class="form-group"><label>Amount</label><input type="number" value="" class="form-control quantity-inputs" placeholder="Amount" name="amount['+Counter+']" data-id="'+choiceId+'"></div></div><div class="col-md-2 justify-content-end d-flex"><div class="form-group py-4"> <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i> </button></div></div></div>';
+                $('#participant_fieldset').append(currentEntry);
+                let choiceDOM = document.getElementById( choiceId);
+                new Choices(choiceDOM,
+                    {
+                        delimiter: ',',
+                        editItems: true,
+                        maxItemCount: 50,
+                        removeItemButton: true,
+                    });
+            }).on('click', '.btn-remove', function (e) {
+                if ( $('#participant_fieldset>.collections-row').length > 1 ) {
+                    $(this).closest('.collections-row').remove();
+                    filterMultiSelect();
+                    resettingAmounts();
+                } else {
+                    alert('deleting last row is not allowed');
+                }
+
+                return false;
+            }).on('change keyup', filterMultiSelect).on('change keyup', resettingAmounts);
         });
-        console.log(selectedValues);*/
-        // alert('array ready');
 
-        $('.choices').find('.choices__item--choice').show();
-        if(selectedUser){
-            // alert('if ready');
-            $(selectedUser).each(function (index,value){
-                setTimeout(function(){
-                    $('.choices').find('.choices__item--choice[data-value="'+value+'"]').hide();
-                }, 100)
-            })
-        }
-    }
+        function availableUsers() {
+            let values = '';
 
-    $('#participant_fieldset, #event-cost-input, .payment_mode_radio').on('change keyup', resettingAmounts);
-
-    function resettingAmounts(){
-        let totalFunds = {!! $totalFunds !!};
-        let totalCost = $('#event-cost-input').val();
-        if( $('.payment_mode_radio:checked').val() == 1 ){
-            $('#cash-by-funds-input').val(Math.min(totalFunds,totalCost));
-        } else {
-            let totalCollections = 0;
-            $('.quantity-inputs').each(function(index, Element) {
-
-                let selectUserFieldId =  $(Element).data('id');
-                totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
-
+            $(users).each(function (index, user) {
+                if ( $.inArray( parseInt(user.id), selectedUser) == -1) {
+                    values += '<option value="' + user.id + '">' + user.username + '</option>';
+                }
             });
-            $('#cash-by-collections-input').val(totalCollections);
-            $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
+            return values;
+        }
+        $('.choices').on('change keyup', filterMultiSelect);
+
+        function filterMultiSelect() {
+            selectedUser=[];
+            let values = $('.choices option');
+            values.each(function (index, option) {
+                if ( $.inArray( parseInt($(option).val()), selectedUser ) == -1) {
+                    selectedUser.push(parseInt($(option).val()));
+                }
+            });
+
+            $('.choices').find('.choices__item--choice').show();
+            if(selectedUser){
+                $(selectedUser).each(function (index,value){
+                    setTimeout(function(){
+                        $('.choices').find('.choices__item--choice[data-value="'+value+'"]').hide();
+                    }, 100)
+                })
+            }
         }
 
-    }
-</script>
+        $('#participant_fieldset, #event-cost-input, .payment_mode_radio').on('change keyup', resettingAmounts);
+
+        function resettingAmounts(){
+            let totalFunds = {!! $totalFunds !!};
+            let totalCost = $('#event-cost-input').val();
+            if( $('.payment_mode_radio:checked').val() == 1 ){
+                $('#cash-by-funds-input').val(Math.min(totalFunds,totalCost));
+            } else {
+                let totalCollections = 0;
+                $('.quantity-inputs').each(function(index, Element) {
+
+                    let selectUserFieldId =  $(Element).data('id');
+                    totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
+
+                });
+                $('#cash-by-collections-input').val(totalCollections);
+                $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
+            }
+        }
+
+        // Ajax request to invite and remind participants and guests
+
+        $('.ajax-btn').on('click', sendInvite);
+        function sendInvite() {
+            let clickedBtn = $(this);
+            clickedBtn.attr("disabled", true);
+            let btnIcon = clickedBtn.find("span");
+            btnIcon.removeClass("d-none");
+            let id = $(this).data('id');
+            let action = $(this).data('action');
+            let lastInvitedDiv = $(this).closest('tr').find('.last_invited');
+            let lastRemindedDiv = $(this).closest('tr').find('.last_reminded');
+            clickedBtn.attr("disabled", true);
+            $.ajax({
+                type:'POST',
+                url: action,
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "id": id
+                },
+                success:function(res) {
+                    setTimeout(function () {
+                        clickedBtn.attr("disabled", false);
+                        btnIcon.addClass("d-none");
+                        if ( res.status ) {
+                            if(res.invited_text) {
+                                $(lastInvitedDiv).html(res.invited_text);
+                            }
+                            if(res.reminded_text) {
+                                $(lastRemindedDiv).html(res.reminded_text);
+                            }
+                            if(res.btn_text) {
+                                $(clickedBtn).html(res.btn_text);
+                            }
+                            swal({
+                                title: 'Success',
+                                text: res.msg,
+                                icon: "success",
+                            }).then(() => {
+
+                            });
+                        } else {
+                            swal({
+                                title: 'Error',
+                                text: res.msg,
+                                icon: "error",
+                            }).then(() => {
+
+                            });
+                        }
+                    }, 100);
+
+                }
+            });
+        }
+    </script>
+
 @endsection

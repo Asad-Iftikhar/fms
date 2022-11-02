@@ -47,7 +47,7 @@ class AccountController extends AuthorizedController {
             'last_name' => 'string',
             'username' => 'required|unique:users,username,'.$user->id,
             'email' => 'email|required|unique:users,email,'.$user->id,
-            'dob' => 'date|required',
+            'dob' => 'required|date',
             'phone' => 'nullable|min:11|unique:users,phone,'.$user->id
         );
         $validator = Validator::make( request()->all(), $rules );

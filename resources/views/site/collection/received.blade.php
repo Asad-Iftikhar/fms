@@ -41,7 +41,7 @@
                                                                 <div class="mail-message">
                                                                     <h5 class="list-group-item-text mb-0 truncate">
                                                                         {{'Amount: ' . $collection->amount }}
-                                                                        {{'Payment Status: ' .  $collection->getPaymentMethod() }}
+                                                                        {{'Payment Status: ' .  $collection->getPaymentStatus() }}
                                                                     </h5>
                                                                     <div class="mail-meta-item">
                                                                         <span class="float-right">
