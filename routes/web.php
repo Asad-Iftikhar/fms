@@ -15,7 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
+Route::get( 'collection/{id}', 'HomeController@getCollectionInfo' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
+
+#User Side Collection Route
+Route::get('account/collection','Collection\CollectionController@getIndex');
+Route::get('account/collection/{id}','Collection\CollectionController@getCollection');
+
+#User Side Event Route
+Route::get('account/event','Event\EventController@getIndex');
+Route::get('account/event/{id}/{name}','Event\EventController@getEventId');
 
 # settings
 Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );

@@ -16,7 +16,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <h6 class="text-muted font-semibold">Total Collections</h6>
-                                        <h6 class="font-extrabold mb-0">{{$totalCollection}}</h6>
+                                        <h6 class="font-extrabold mb-0"> {{ $totalCollection }} Rs  </h6>
                                     </div>
                                 </div>
                             </div>
@@ -83,24 +83,30 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-lg">
+                                    <table class="table table-hover table-lg table-striped">
                                         <thead>
                                         <tr>
                                             <th>Fund Type Name</th>
                                             <th>Amount</th>
                                             <th>Event Name</th>
-                                            <th>Description</th>
+                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($pendingPaymentList as $collection)
+                                        @if(count($pendingPaymentList) > 0)
+                                            @foreach($pendingPaymentList as $collection)
+                                                <tr>
+                                                    <td>{{ $collection->getCollectionTypeName() }}</td>
+                                                    <td>{{ $collection->amount }}</td>
+                                                    <td>{{ $collection->getEvent() }}</td>
+                                                    <td><a href="{{ url('collection/' . $collection->id) }}">View</a></td>
+                                                </tr>
+                                            @endforeach
+                                        @else
                                             <tr>
-                                                <td>{{ $collection->getCollectionTypeName()}}</td>
-                                                <td>{{ $collection->amount}}</td>
-                                                <td>{{$collection->getEvent()}}</td>
-                                                <td>{{$collection->getDescription()}}</td>
+                                                <td colspan="4" style="text-align: center; color: red">No Pending Available</td>
                                             </tr>
-                                        @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -115,18 +121,17 @@
                         <h4>Active Events</h4>
                     </div>
                     <div class="card-content pb-4">
-                            <div class="upcommingevent ms-4">
-                                @if ($activeEvents->count())
-                                    @foreach($activeEvents as $activeEvent)
-                                        <i class="iconly-boldCalendar text-primary"></i>
-                                        {{'Event Name: ' . $activeEvent->name}}
-                                        <p>{{'Event Description: '. $activeEvent->description}}</p>
-                                        <hr>
-                                    @endforeach
-                                @else
-                                    <div class="alert alert-secondary">No Events.</div>
-                                @endif
-                            </div>
+                        <div class="upcommingevent ms-4">
+                            @if ($activeEvents->count())
+                                @foreach($activeEvents as $activeEvent)
+                                    <i class="iconly-boldCalendar text-primary"></i>
+                                    {{'Event Name: ' . $activeEvent->name}}
+                                    <p>{{'Event Description: '. $activeEvent->description}}</p>
+                                    <hr>
+                                @endforeach
+                            @else
+                                <div class="alert alert-secondary">No Events.</div>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -108,7 +108,7 @@ class FundingCollection extends Base {
      * Payment Status
      * @return string
      */
-    public function getPaymentStatus() {
+    public function getPaymentStatusBadge() {
         if ($this->is_received == 1) {
             return '<span class="badge bg-success">Received</span>';
         }
@@ -197,5 +197,30 @@ class FundingCollection extends Base {
             $subQuery->where('status','!=','draft')->orWhereNull('status');
         })->sum('amount');
         return intval($totalCollection);
+    }
+
+    /**
+     * Collection Event Name
+     * @return string
+     */
+    public function getCollectionEventName() {
+        if (is_null($this->event_id)) {
+            return $this->fundingType->name;
+        } else {
+            return $this->event->name;
+        }
+    }
+
+    /**
+     * Payment Status
+     * @return string
+     */
+    public function getPaymentStatus() {
+        if ($this->is_received == 1) {
+            return 'Received';
+        }
+        else {
+            return 'Pending';
+        }
     }
 }
