@@ -139,9 +139,13 @@ Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postE
 #Admin Delete Event
 Route::get( 'admin/events/delete/{id}', 'Admin\Events\AdminEventsController@deleteEvent' );
 
-#Admin Ajax Requests of Event Participants
+#Admin Ajax Requests to Invite / Remind Event Participants
 Route::post( 'admin/events/invite-guest', 'Admin\Events\AdminEventsController@inviteGuest' );
 Route::post( 'admin/events/invite-participant', 'Admin\Events\AdminEventsController@inviteParticipant' );
 Route::post( 'admin/events/remind-participant', 'Admin\Events\AdminEventsController@remindParticipant' );
+
+#Admin Ajax Requests to Invite / Remind all Event Participants
+Route::post( 'admin/events/invite-all', 'Admin\Events\AdminEventsController@inviteAll' );
+Route::post( 'admin/events/remind-all', 'Admin\Events\AdminEventsController@remindAll' );
 
 

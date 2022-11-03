@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Mail;
+use App\Jobs\InviteAllParticipants;
+use App\Jobs\RemindAllParticipants;
 
 class AdminEventsController extends AdminController {
     //
@@ -113,15 +115,17 @@ class AdminEventsController extends AdminController {
                     if( $amounts = request()->input( 'amount', array() )){
                         $users=[];
                         foreach( $amounts as $key=>$amount ) {
-                            $users = request()->input( 'collection_users' );
-                            $users = $users[$key];
-                            foreach($users as $user){
-                                $fundingCollection = new fundingCollection;
-                                $fundingCollection->user_id = $user;
-                                $fundingCollection->amount = $amount;
-                                $fundingCollection->event_id = $event->id;
-                                $fundingCollection->is_received = 0;
-                                $fundingCollection->save();
+                            if( $amount > 0 ) {
+                                $users = request()->input( 'collection_users' );
+                                $users = $users[$key];
+                                foreach($users as $user){
+                                    $fundingCollection = new fundingCollection;
+                                    $fundingCollection->user_id = $user;
+                                    $fundingCollection->amount = $amount;
+                                    $fundingCollection->event_id = $event->id;
+                                    $fundingCollection->is_received = 0;
+                                    $fundingCollection->save();
+                                }
                             }
                         }
                     }
@@ -156,7 +160,8 @@ class AdminEventsController extends AdminController {
                 $collections[$element['amount']][] = $element->user_id;
             }
             $selectedUsers = json_encode($selectedUsers);
-            return view('admin.events.edit', compact('event','users', 'guestIds', 'totalFunds', 'collections', 'selectedUsers'));
+            $currentDate = \Illuminate\Support\Carbon::now()->toDateString();
+            return view('admin.events.edit', compact('event','users', 'guestIds', 'totalFunds', 'collections', 'selectedUsers', 'currentDate'));
         } else {
             return redirect('admin/events')->with( 'error', 'No Event Found !' );
         }
@@ -254,15 +259,17 @@ class AdminEventsController extends AdminController {
                     if ($event->payment_mode == 2) {
                         if ($amounts = request()->input('amount', array())) {
                             foreach ($amounts as $key => $amount) {
-                                $users = request()->input('collection_users');
-                                $users = $users[$key];
-                                foreach ($users as $user) {
-                                    $fundingCollection = new fundingCollection;
-                                    $fundingCollection->user_id = $user;
-                                    $fundingCollection->amount = $amount;
-                                    $fundingCollection->event_id = $event->id;
-                                    $fundingCollection->is_received = 0;
-                                    $fundingCollection->save();
+                                if( $amount > 0 ) {
+                                    $users = request()->input('collection_users');
+                                    $users = $users[$key];
+                                    foreach ($users as $user) {
+                                        $fundingCollection = new fundingCollection;
+                                        $fundingCollection->user_id = $user;
+                                        $fundingCollection->amount = $amount;
+                                        $fundingCollection->event_id = $event->id;
+                                        $fundingCollection->is_received = 0;
+                                        $fundingCollection->save();
+                                    }
                                 }
                             }
                         }
@@ -277,8 +284,6 @@ class AdminEventsController extends AdminController {
         }
         return redirect('admin/events');
     }
-
-
 
     /**
      * Soft Delete Event
@@ -444,23 +449,27 @@ class AdminEventsController extends AdminController {
         $res['status'] = 0;
         $collectionId = $request->input('id');
         if ( $collection = FundingCollection::find($collectionId) ) {
-            $collection->is_reminded = 1;
-            $collection->last_reminded = Carbon::now()->toDateTimeString();
-            if( $collection->save() ) {
-                $collection->email = $collection->user->email;
-                $collection->name = $collection->user->getFullName();
-                $collection->title = $collection->getCollectionTitle();
-                $collection->amount = $collection->amount;
-                try {
-                    //Email sending
-                    Mail::to($collection->email)->send(new RemindMail($collection));
-                    $res['reminded_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
-                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
-                    $res['msg'] = 'Reminder sent successfully';
-                    $res['status'] = 1;
-                } catch (\Exception $e) {
-                    $res['msg'] = 'Something Went Wrong, Cannot Send Email';
+            if($collection->is_received == 0){
+                $collection->is_reminded = 1;
+                $collection->last_reminded = Carbon::now()->toDateTimeString();
+                if( $collection->save() ) {
+                    $collection->email = $collection->user->email;
+                    $collection->name = $collection->user->getFullName();
+                    $collection->title = $collection->getCollectionTitle();
+                    $collection->amount = $collection->amount;
+                    try {
+                        //Email sending
+                        Mail::to($collection->email)->send(new RemindMail($collection));
+                        $res['reminded_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
+                        $res['btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
+                        $res['msg'] = 'Reminder sent successfully';
+                        $res['status'] = 1;
+                    } catch (\Exception $e) {
+                        $res['msg'] = 'Something Went Wrong, Cannot Send Email';
+                    }
                 }
+            } else {
+                $res['msg'] = 'Collection is already paid';
             }
         } else {
             $res['msg'] = 'Participant Not Found';
@@ -468,4 +477,55 @@ class AdminEventsController extends AdminController {
         return response()->json( $res );
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function inviteAll(Request $request) {
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
+        $eventId = $request->input('event_id');
+        if ( $event = Event::find($eventId) ) {
+            if($event->fundingCollections->count() > 0 || $event->getGuests->count() > 0){
+                InviteAllParticipants::dispatch($eventId);
+                $res['invited_text'] = 'Sending...';
+                $res['invite_btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
+                $res['msg'] = 'All participants are invited successfully.';
+                $res['status'] = 1;
+            }else{
+                $res['msg'] = 'No Participants Found';
+            }
+        } else {
+            $res['msg'] = 'Event Not Found';
+        }
+        return response()->json( $res );
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function remindAll(Request $request) {
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
+        $eventId = $request->input('event_id');
+        if ( $event = Event::find($eventId) ) {
+            if($event->fundingCollections->count() > 0){
+                RemindAllParticipants::dispatch($eventId);
+                $res['reminded_text'] = 'Sending...';
+                $res['remind_btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
+                $res['msg'] = 'All participants are reminded successfully';
+                $res['status'] = 1;
+            }else{
+                $res['msg'] = 'No Participants Found';
+            }
+        } else {
+            $res['msg'] = 'Event Not Found';
+        }
+        return response()->json( $res );
+    }
 }
