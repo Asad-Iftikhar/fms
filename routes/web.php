@@ -37,6 +37,10 @@ Route::get( 'account/setting/remove-avatar', 'Account\AccountController@removeAv
 Route::get( 'account/setting/change-password', 'Account\AccountController@getProfileSettings' );
 Route::post( 'account/setting/change-password', 'Account\AccountController@postChangePassword' );
 
+# Notifications
+Route::get( '/notifications', 'Notification\NotificationController@notifications' );
+Route::get( 'get-notifications', 'Notification\NotificationController@getNotifications' );
+
 
 # Login
 Route::get( 'account/login', 'AuthController@index' );

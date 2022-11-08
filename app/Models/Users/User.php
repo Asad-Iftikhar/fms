@@ -5,6 +5,7 @@ namespace App\Models\Users;
 use App\Models\Base;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Media\Media;
+use App\Models\Notifications\Notification;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -73,8 +74,18 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         return $this->belongsTo(Media::class,'avatar');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
     public function fundingCollectionsUser() {
         return $this->hasMany(FundingCollection::class,'user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function notification() {
+        return $this->hasMany(Notification::class,'user_id');
     }
 
     /**
@@ -234,6 +245,15 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         } else {
             return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-success">Activate</a>';
         }
+    }
+
+    /**
+     * Get User Change Status Buttons
+     *
+     * @return string
+     */
+    public function getUserLatestNotifications() {
+        return $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6);
     }
 
     /**

@@ -34,7 +34,7 @@
                                 <label for="status">Status</label>
                                 <div class="col-md-12 mb-4">
                                     <input type="text" class="form-control"
-                                           value="{{  $previousPayments ->getPaymentMethod() }}" disabled/>
+                                           value="{{  $previousPayments ->getPaymentStatus() }}" disabled/>
                                 </div>
                             </div>
                         </div>

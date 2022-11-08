@@ -41,10 +41,30 @@
                                     <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <h6 class="dropdown-header">Notifications</h6>
+                                    @if( Auth::user()->getUserLatestNotifications->count() > 0 )
+                                        <li>
+                                            <h6 class="dropdown-header">Notifications</h6>
+                                        </li>
+                                        @foreach( Auth::user()->getUserLatestNotifications as $notification )
+                                            <li class="{{ empty($notification->read_at)?'bg-light':'' }}">
+                                                <a {{ empty($notification->read_at)?'href="'.url($notification->redirect_url).'"':'' }} " class="dropdown-item">
+                                                    <b>{{ $notification->title }}</b>
+                                                    <br>
+                                                    {{ substr($notification->description,0,40).'...' }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li>
+                                            <h6 class="dropdown-header">No Notifications Found</h6>
+                                        </li>
+                                    @endif
+                                    <hr>
+                                    <li class="text-center">
+                                        <a href="{{ url('notifications') }}" class="dropdown-item">
+                                            <h6>See All Notifications</h6>
+                                        </a>
                                     </li>
-                                    <li><a class="dropdown-item">No notification available</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -52,14 +72,14 @@
                             <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="user-menu d-flex">
                                     <div class="user-name text-end me-3">
-                                        <h6 class="mb-0 text-gray-600">{{ Auth::user()->first_name.' '.Auth::user()->last_name }}</h6>
+                                        <h6 class="mb-0 text-gray-600">{{ Auth::user()->getFullName() }}</h6>
                                         @if(Auth::user()->can('admin'))
                                             <p class="mb-0 text-sm text-gray-600">Administrator</p>
                                         @endif
                                     </div>
                                     <div class="user-img d-flex align-items-center">
                                         <div class="avatar avatar-md">
-                                            <img src="{{ asset('assets/images/faces/1.jpg') }}">
+                                            <img src="{{ Auth::user()->getUserAvatar() }}">
                                         </div>
                                     </div>
                                 </div>
