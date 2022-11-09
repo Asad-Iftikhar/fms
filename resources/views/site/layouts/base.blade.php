@@ -17,6 +17,7 @@
 </head>
 <body>
 <div id="app">
+
     <div id="main" class='layout-navbar'>
         <header style="border-bottom: 1px solid #00000021">
             <nav class="navbar navbar-expand navbar-light ">
@@ -41,13 +42,13 @@
                                     <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                    @if( Auth::user()->getUserLatestNotifications->count() > 0 )
+                                    @if( Auth::user()->getUserLatestNotifications()->count() > 0 )
                                         <li>
                                             <h6 class="dropdown-header">Notifications</h6>
                                         </li>
-                                        @foreach( Auth::user()->getUserLatestNotifications as $notification )
+                                        @foreach( Auth::user()->getUserLatestNotifications() as $notification )
                                             <li class="{{ empty($notification->read_at)?'bg-light':'' }}">
-                                                <a {{ empty($notification->read_at)?'href="'.url($notification->redirect_url).'"':'' }} " class="dropdown-item">
+                                                <a href="{{ url($notification->redirect_url) }}" class="dropdown-item">
                                                     <b>{{ $notification->title }}</b>
                                                     <br>
                                                     {{ substr($notification->description,0,40).'...' }}

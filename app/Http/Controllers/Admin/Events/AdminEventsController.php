@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Events;
 
+use App\Events\EventNotification;
 use App\Http\Controllers\AdminController;
 use App\Mail\InviteGuestMail;
 use App\Mail\InviteParticipantMail;
@@ -112,17 +113,6 @@ class AdminEventsController extends AdminController {
             }
             if($event->save()){
                 $event->guests()->sync( request()->input( 'guests', array() ) );
-                if ( $event->status == 'active' ) {
-                    foreach ( $event->getGuests as $guest ) {
-                        $event_notification = new Notification();
-                        $event_notification->user_type = 'user';
-                        $event_notification->title = 'New Event Created';
-                        $event_notification->description = 'A New Event is Created with title "'.$event->title.' and you are invited as a guest to it.".';
-                        $event_notification->user_id = $guest->id;
-                        $event_notification->redirect_url = 'account/event/'.$event->id;
-                        $event_notification->save();
-                    }
-                }
                 if( $event->payment_mode == 2 ) {
                     if( $amounts = request()->input( 'amount', array() )){
                         $users=[];
@@ -137,24 +127,11 @@ class AdminEventsController extends AdminController {
                                     $fundingCollection->event_id = $event->id;
                                     $fundingCollection->is_received = 0;
                                     $fundingCollection->save();
-                                    if ( $event->status == 'active' || $event->status == 'finished' ) {
-                                        $event_notification = new Notification();
-                                        $event_notification->user_type = 'user';
-                                        $event_notification->title = 'New Event Created';
-                                        $event_notification->description = 'A New Event is Created with title "'.$event->name.'".';
-                                        $event_notification->user_id = $user;
-                                        $event_notification->redirect_url = 'account/event/'.$event->id;
-                                        $event_notification->save();
-                                        $collection_notification = new Notification();
-                                        $collection_notification->user_type = 'user';
-                                        $collection_notification->title = 'New Collection Created';
-                                        $collection_notification->description = 'A New Collection is Created with amount "'.$amount.'".';
-                                        $collection_notification->user_id = $user;
-                                        $collection_notification->redirect_url = 'account/collections/'.$fundingCollection->id;
-                                        $collection_notification->save();
-                                    }
                                 }
                             }
+                        }
+                        if( $event->status == 'active' ) {
+                            event(new EventNotification($event));
                         }
                     }
                 }

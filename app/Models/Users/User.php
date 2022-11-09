@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Models\Base;
+use App\Models\Events\Event;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Media\Media;
 use App\Models\Notifications\Notification;
@@ -253,7 +254,19 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      * @return string
      */
     public function getUserLatestNotifications() {
-        return $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6);
+        $notifications = $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6)->get();
+        foreach ( $notifications as $notification ) {
+            if( $notification->type instanceof Event ) {
+                $notification->redirect_url = 'account/event/'.$notification->type->id.'/'.$notification->type->name ;
+            } elseif ( $notification->type instanceof FundingCollection ) {
+                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+            } elseif ( $notification->type instanceof User ) {
+                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+            } else {
+                $notification->redirect_url = '#' ;
+            }
+        }
+        return $notifications;
     }
 
     /**

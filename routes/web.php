@@ -24,7 +24,7 @@ Route::get('account/collection/{id}','Collection\CollectionController@getCollect
 
 #User Side Event Route
 Route::get('account/event','Event\EventController@getIndex');
-Route::get('account/event/{id}/{name}','Event\EventController@getEventId');
+Route::get('account/event/{id}/{name}','Event\EventController@getEvent');
 
 # settings
 Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );

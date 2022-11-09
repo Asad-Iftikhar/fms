@@ -107,4 +107,9 @@ class Event extends Base {
         }
     }
 
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'type');
+    }
+
 }
