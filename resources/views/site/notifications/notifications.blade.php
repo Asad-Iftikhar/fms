@@ -53,6 +53,7 @@
 
 @section('javascript')
     @parent
+    <script src="{{ asset('assets/js/sweetalert/sweetalert.min.js') }}"></script>
 
 <script>
     let skip = 6;
@@ -84,7 +85,7 @@
                     })
                 }
             } else {
-                $('clickedBtn').hide();
+                clickedBtn.attr("disabled", true);
                 swal({
                     title: 'Error',
                     text: 'No More Notifications Found',
