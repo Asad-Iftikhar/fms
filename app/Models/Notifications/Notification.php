@@ -3,6 +3,7 @@
 namespace App\Models\Notifications;
 
 use App\Models\Base;
+use App\Models\Events\Event;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -44,6 +45,25 @@ class Notification extends Base {
     public function type()
     {
         return $this->morphTo();
+    }
+
+
+    /**
+     * Get Notification Icon
+     *
+     * @return string
+     */
+    public function getNotificationIcon() {
+
+        if ($this->type instanceof Event) {
+            return '<i class="text-primary iconly-boldActivity"></i>';
+        } elseif ( $this->type instanceof FundingCollection ) {
+            return '<i class="text-primary bi-cash-stack"></i>';
+        } elseif ( $this->type instanceof User ) {
+            return '<i class="text-primary iconly-boldUser"></i>';
+        } else {
+            return '<i class="text-primary iconly-boldActivity"></i>';
+        }
     }
 
     /**

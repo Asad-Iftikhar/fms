@@ -39,7 +39,7 @@ Route::post( 'account/setting/change-password', 'Account\AccountController@postC
 
 # Notifications
 Route::get( '/notifications', 'Notification\NotificationController@notifications' );
-Route::get( 'get-notifications', 'Notification\NotificationController@getNotifications' );
+Route::post( 'get-notifications', 'Notification\NotificationController@getNotifications' );
 
 
 # Login
