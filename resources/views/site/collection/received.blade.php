@@ -33,7 +33,7 @@
                                                                     </span>
                                                                     </div>
                                                                     <div class="mail-meta-item">
-                                                                        <a href=" {{ url('account/collection/' . $collection->id ) }} ">
+                                                                        <a href=" {{ url('collections/' . $collection->id ) }} ">
                                                                             View
                                                                         </a>
                                                                     </div>
@@ -60,7 +60,7 @@
                                                             <div class="mail-message">
                                                                 <h5 class="list-group-item-text mb-0 truncate"
                                                                     style="color: red">
-                                                                    No Active Events Available
+                                                                    No Received Collections Available
                                                                 </h5>
                                                             </div>
                                                         </div>

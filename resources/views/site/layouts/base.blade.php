@@ -25,13 +25,13 @@
                                                     srcset=""></a>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav nav nav-tabs ms-lg-4">
-                            <li class="nav-item active">
-                                <a @class(["nav-link", "active" => \Request::is('account/collection')])
-                                href="{{ url('account/collection') }}">Collection</a>
+                            <li @class(["nav-item", "active" => \Request::is('collections')])>
+                                <a @class(["nav-link", "active" => \Request::is('collections')])
+                                href="{{ url('collections') }}">Collection <span class="badge bg-danger">{{ auth()->user()->getUserChatCount() }}</span></a>
                             </li>
-                            <li class="nav-item">
-                                <a @class(["nav-link", "active" => \Request::is('account/event')])
-                                href="{{ url('account/event') }}">Event</a>
+                            <li @class(["nav-item", "active" => \Request::is('events')])>
+                                <a @class(["nav-link", "active" => \Request::is('events')])
+                                href="{{ url('events') }}">Event</a>
                             </li>
                         </ul>
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">

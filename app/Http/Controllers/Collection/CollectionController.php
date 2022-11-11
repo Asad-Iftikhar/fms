@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Collection;
 
 
+use App\Events\PushNotificationEvent;
 use App\Http\Controllers\AuthController;
+use App\Models\ChatMessage;
 use App\Models\Fundings\FundingCollection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Pusher\Pusher;
 
 
 class CollectionController extends AuthController
@@ -32,7 +36,7 @@ class CollectionController extends AuthController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getCollection($id)
+    public function detail($id)
     {
         $user = Auth::user();
         $rules = [
@@ -43,14 +47,62 @@ class CollectionController extends AuthController
             'id' => 'required|exists:funding_collections,id'
         ]);
         if ($validator->passes()) {
-            $previousPayments = FundingCollection::find($id);
-            if ($previousPayments->user_id == $user->id) {
-                    return view('site.collection.detail', compact('previousPayments'));
+            $fundingCollection = FundingCollection::find($id);
+            if ($fundingCollection->user_id == $user->id) {
+                    return view('site.collection.detail', compact('fundingCollection'));
             } else {
-                return redirect('account/collection')->with('error', "Insufficient permission");
+                return redirect('collections')->with('error', "Insufficient permission");
             }
         } else {
-            return redirect('account/collection')->with('error', "No Record Exist");
+            return redirect('collections')->with('error', "No Record Exist");
         }
+    }
+
+
+    /**
+     * send messages using pusher -> user side
+     *
+     * @param $collectionId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendMessage($collectionId){
+        $response = [
+            'status' => false,
+            'message' => ''
+        ];
+        if ($fundingCollection = FundingCollection::find($collectionId)) {
+            $user = Auth::user();
+            if($user->id == $fundingCollection->user_id) {
+                $rules = array(
+                    'content' => 'nullable|string',
+                    'collection_id' => 'nullable|string',
+                    'chat_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+                );
+                $validator = Validator::make(request()->only(['content','collection_id', 'image_id']),$rules);
+
+                if($validator->passes()) {
+                    $chat = new ChatMessage();
+                    $chat->collection_id = request()->input('collection_id');
+                    $chat->from_user = $user->id;
+                    $chat->content = request()->input('content');
+                    if (request()->hasFile('chat_image')){
+                        $filename = $this->upload_file(request()->file('chat_image'),'/chat/','chat_');
+                        $chat->image_id = $filename;
+                    }
+                    if( $chat->save() ) {
+                        $response['status'] = true;
+                        $response['message'] = $chat->getMessageHtml();
+
+                        // Chat message event
+                        event(new PushNotificationEvent('my-event-admin', $chat->getSentMessageHtml()));
+
+                    }
+                    else {
+                        return response()->json($response);
+                    }
+                }
+            }
+        }
+        return response()->json($response);
     }
 }

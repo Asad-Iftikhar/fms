@@ -2,7 +2,9 @@
 
 namespace App\Models\Users;
 
+use App\Http\Controllers\ChatController;
 use App\Models\Base;
+use App\Models\ChatMessage;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Media\Media;
 use App\Models\Users\Roles\Role;
@@ -58,6 +60,9 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return mixed|string|null
+     */
     public function preferredLocale() {
         return $this->locale;
     }
@@ -69,12 +74,25 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         return $this->belongsToMany( Role::class, 'role_user' )->withTimestamps();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function avatarImage() {
         return $this->belongsTo(Media::class,'avatar');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function fundingCollectionsUser() {
         return $this->hasMany(FundingCollection::class,'user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function chatMessages() {
+        return $this->hasMany(ChatMessage::class, 'from_user');
     }
 
     /**
@@ -262,5 +280,11 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         return $this->firstname . ' ' . $this->lastname;
     }
 
+    /**
+     * @return int
+     */
+    public function getUserChatCount() {
+        return $this->chatMessages()->where('is_read','=',0)->count();
+    }
 
 }

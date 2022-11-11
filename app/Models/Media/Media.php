@@ -33,6 +33,8 @@ class Media extends Base {
      */
     protected $fillable = array('name', 'file_path', 'url_file', 'url_thumb');
 
-
+    public function getImageThumbnail() {
+        return '<img src="'. $this->url_file .'" class="figure-img img-fluid rounded">';
+    }
 
 }

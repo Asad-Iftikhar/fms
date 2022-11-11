@@ -16,15 +16,17 @@ use Illuminate\Support\Facades\Route;
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'collection/{id}', 'HomeController@getCollectionInfo' );
+Route::post( 'collection/{id}/sendMessage', 'HomeController@sendMessage' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
 
 #User Side Collection Route
-Route::get('account/collection','Collection\CollectionController@getIndex');
-Route::get('account/collection/{id}','Collection\CollectionController@getCollection');
+Route::get('collections','Collection\CollectionController@getIndex');
+Route::get('collections/{id}','Collection\CollectionController@detail');
+Route::post('collections/{id}/sendMessage','Collection\CollectionController@sendMessage');
 
 #User Side Event Route
-Route::get('account/event','Event\EventController@getIndex');
-Route::get('account/event/{id}/{name}','Event\EventController@getEventId');
+Route::get('events','Event\EventController@getIndex');
+Route::get('event/{id}/{name}','Event\EventController@detail');
 
 # settings
 Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );
@@ -120,6 +122,7 @@ Route::post('admin/funding/collections/create','Admin\Fundings\AdminFundingColle
 #Admin Update Funding Collection
 Route::get('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@getEditFundingCollection');
 Route::post('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@postEditFundingCollection');
+Route::post('admin/funding/collections/{id}/sendMessage','Admin\Fundings\AdminFundingCollectionController@sendMessage');
 
 #Admin Delete Funding collection
 Route::get('admin/funding/collections/delete/{id}','Admin\Fundings\AdminFundingCollectionController@deleteFundingCollection');

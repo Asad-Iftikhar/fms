@@ -31,7 +31,7 @@ class EventController extends AuthController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getEvent($id) {
+    public function detail($id) {
 
         $rules = [
           'id' => $id
@@ -48,7 +48,7 @@ class EventController extends AuthController
             }
         }
         else {
-            return redirect('account/event')->with('error', "No Record Exist");
+            return redirect('events')->with('error', "No Record Exist");
         }
     }
 }
