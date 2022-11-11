@@ -25,8 +25,9 @@ class CollectionController extends AuthController
             return view('site.account.login');
         } else {
             $User = Auth::user();
-            $previousPayments = FundingCollection::where('user_id', $User->id)->where('is_received', '=', 1)->get();
-            return view("site.collection.received", compact('previousPayments'));
+            $receivedPayments = FundingCollection::where('user_id', $User->id)->where('is_received', '=', 1)->get();
+            $previousPendingPayments = FundingCollection::where('user_id', $User->id)->where('is_received', '=', 0)->get();
+            return view("site.collection.received", compact('receivedPayments','previousPendingPayments'));
         }
     }
 
