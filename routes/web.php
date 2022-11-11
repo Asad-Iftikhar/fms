@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'collection/{id}', 'HomeController@getCollectionInfo' );
-Route::post( 'collection/{id}/sendMessage', 'HomeController@sendMessage' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
 
 #User Side Collection Route

@@ -52,7 +52,7 @@
                             <div class="card">
                                 <div class="card-body pt-4 bg-grey"  id="scroll" style="height: 300px; overflow: auto;">
                                     <div class="chat-content">
-                                        @foreach ($fundingCollection->chatMessages as $message)
+                                        @foreach ($fundingCollection->messages as $message)
                                             {!! $message->getMessageHtml() !!}
                                         @endforeach
                                     </div>

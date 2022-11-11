@@ -2,9 +2,9 @@
 
 namespace App\Models\Users;
 
-use App\Http\Controllers\ChatController;
+
 use App\Models\Base;
-use App\Models\ChatMessage;
+use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Media\Media;
 use App\Models\Users\Roles\Role;
@@ -91,8 +91,8 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function chatMessages() {
-        return $this->hasMany(ChatMessage::class, 'from_user');
+    public function messages() {
+        return $this->hasMany(FundingCollectionMessage::class, 'from_user');
     }
 
     /**
@@ -284,7 +284,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      * @return int
      */
     public function getUserChatCount() {
-        return $this->chatMessages()->where('is_read','=',0)->count();
+        return $this->messages()->where('is_read','=',0)->count();
     }
 
 }

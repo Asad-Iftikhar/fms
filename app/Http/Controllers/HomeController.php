@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\PushNotificationEvent;
 use App\Mail\resetpassMail;
-use App\Models\ChatMessage;
+use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Users\User;
 use App\Models\Events\Event;
@@ -73,54 +73,5 @@ class HomeController extends Controller
         else {
             return redirect('/')->with('error', "No Record Exist");
         }
-    }
-
-
-    /**
-     * chat for pending payments
-     *
-     * @param $collectionId
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function sendMessage($collectionId){
-        $response = [
-            'status' => false,
-            'message' => ''
-        ];
-        if ($fundingCollection = FundingCollection::find($collectionId)) {
-            $user = Auth::user();
-            if($user->id == $fundingCollection->user_id) {
-                $rules = array(
-                    'content' => 'nullable|string',
-                    'collection_id' => 'nullable|string',
-                    'chat_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
-                );
-                $validator = Validator::make(request()->only(['content','collection_id', 'image_id']),$rules);
-
-                if($validator->passes()) {
-                    $chat = new ChatMessage();
-                    $chat->collection_id = request()->input('collection_id');
-                    $chat->from_user = $user->id;
-                    $chat->content = request()->input('content');
-                    $chat->is_read = 0;
-                    if (request()->hasFile('chat_image')){
-                        $filename = $this->upload_file(request()->file('chat_image'),'/chat/','chat_');
-                        $chat->image_id = $filename;
-                    }
-                    if( $chat->save() ) {
-                        $response['status'] = true;
-                        $response['message'] = $chat->getMessageHtml();
-
-                        // Chat message event
-                        event(new PushNotificationEvent('my-event-admin', $chat->getSentMessageHtml()));
-
-                    }
-                    else {
-                        return response()->json($response);
-                    }
-                }
-            }
-        }
-        return response()->json($response);
     }
 }

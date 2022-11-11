@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Fundings;
 
 use App\Models\Fundings\FundingCollection;
 use App\Models\Media\Media;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Users\User;
 
-class ChatMessage extends Model
+class FundingCollectionMessage extends Model
 {
-    use HasFactory;
+    protected $table = 'funding_collection_messages';
 
     protected $fillable = ['content', 'from_user', 'collection_id'];
 

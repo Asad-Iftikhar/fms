@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chat_messages', function (Blueprint $table) {
+        Schema::create('funding_collection_messages', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('collection_id');
             $table->unsignedInteger('from_user');
             $table->text('content')->nullable();
-            $table->foreignId('image_id')->nullable();
+            $table->foreignId('image_id')->nullable()->constrained('media')->onDelete('CASCADE');;
             $table->boolean('is_read');
             $table->timestamps();
         });

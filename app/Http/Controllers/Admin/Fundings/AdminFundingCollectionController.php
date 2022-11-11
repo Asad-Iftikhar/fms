@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\Fundings;
 
 use App\Events\PushNotificationEvent;
 use App\Http\Controllers\AdminController;
-use App\Models\ChatMessage;
+use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Events\Event;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Fundings\FundingType;
@@ -284,7 +284,7 @@ class AdminFundingCollectionController extends AdminController
             $validator = Validator::make(request()->only(['content', 'collection_id', 'image_id']), $rules);
 
             if ($validator->passes()) {
-                $chat = new ChatMessage();
+                $chat = new FundingCollectionMessage();
                 $chat->collection_id = request()->input('collection_id');
                 $chat->from_user = $user->id;
                 $chat->content = request()->input('content');

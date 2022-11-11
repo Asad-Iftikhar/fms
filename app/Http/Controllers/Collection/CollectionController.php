@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Collection;
 
 use App\Events\PushNotificationEvent;
 use App\Http\Controllers\AuthController;
-use App\Models\ChatMessage;
+use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Fundings\FundingCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,7 +82,7 @@ class CollectionController extends AuthController
                 $validator = Validator::make(request()->only(['content','collection_id', 'image_id']),$rules);
 
                 if($validator->passes()) {
-                    $chat = new ChatMessage();
+                    $chat = new FundingCollectionMessage();
                     $chat->collection_id = request()->input('collection_id');
                     $chat->from_user = $user->id;
                     $chat->content = request()->input('content');
