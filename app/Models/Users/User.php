@@ -248,6 +248,27 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         }
     }
 
+
+    /**
+     * Get User Latest Unread Notifications
+     *
+     * @return string
+     */
+    public function countUserUnreadNotifications() {
+        return $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->count();
+
+    }
+
+    /**
+     * Get User Latest Unread Notifications
+     *
+     * @return string
+     */
+    public function getAllUserUnreadNotifications() {
+        return $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->get();
+
+    }
+
     /**
      * Get User Latest Unread Notifications
      *

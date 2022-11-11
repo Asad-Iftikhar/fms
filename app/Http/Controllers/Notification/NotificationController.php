@@ -28,7 +28,7 @@ class NotificationController extends AuthController
     }
 
     /**
-     * Create Event
+     * Get User Notifications
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -50,6 +50,7 @@ class NotificationController extends AuthController
                         $notification->icon = $notification->getNotificationIcon();
                         if( empty($notification->read_at) ) {
                             $notification->read_class = 'bg-light';
+                            $notification->created_ago = \Carbon\Carbon::createFromTimeStamp(strtotime( $notification->created_at ))->diffForHumans();
                         }else{
                             $notification->read_class = '';
                         }
@@ -61,6 +62,36 @@ class NotificationController extends AuthController
                 }
             }else{
                 $res['msg'] = 'No More Notifications Found';
+            }
+        }
+        return response()->json( $res );
+    }
+
+    /**
+     * Create Event
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function markAllRead(Request $request)
+    {
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
+        if (!Auth::check()) {
+            $res['msg'] = 'Please Login to Continue';
+        } else {
+            $user =  Auth::user();
+            $notifications = $user->getAllUserUnreadNotifications();
+            if($notifications->count() > 0){
+                foreach ($notifications as $notification) {
+                    $notification->read_at = \Carbon\Carbon::now()->toDateTimeString();
+                    $notification->save();
+                }
+                $res['status'] = 1;
+                $res['msg'] = 'All Notifications are Marked as Read';
+            }else{
+                $res['msg'] = 'No Unread Notifications Found';
             }
         }
         return response()->json( $res );
