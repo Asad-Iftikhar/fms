@@ -99,6 +99,11 @@ class CollectionController extends AuthController
         return response()->json($response);
     }
 
+    /**
+     * Mark unread messages as read
+     *
+     * @param $fundingCollectionId
+     */
     public function markMessageAsRead($fundingCollectionId) {
         if ( $fundingCollection = FundingCollection::with('messages')->find($fundingCollectionId) ) {
             if ($fundingCollection->user_id == auth()->id()) {
