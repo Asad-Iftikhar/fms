@@ -286,5 +286,4 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     public function getUserChatCount() {
         return $this->messages()->where('is_read','=',0)->count();
     }
-
 }

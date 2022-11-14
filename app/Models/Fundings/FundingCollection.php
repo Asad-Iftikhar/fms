@@ -228,4 +228,5 @@ class FundingCollection extends Base {
             return 'Pending';
         }
     }
+
 }

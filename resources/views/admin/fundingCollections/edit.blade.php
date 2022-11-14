@@ -174,8 +174,8 @@
             });
 
             /*pusher*/
-            let pusher = new Pusher( '55c4f792919f9dc8b0fb' , {
-                cluster: 'ap2',
+            let pusher = new Pusher( '{{env("PUSHER_APP_KEY")}}' , {
+                cluster: '{{env("PUSHER_APP_CLUSTER")}}',
                 forceTLS: true
             });
 

@@ -27,7 +27,7 @@
                         <ul class="nav nav nav-tabs ms-lg-4">
                             <li @class(["nav-item", "active" => \Request::is('collections')])>
                                 <a @class(["nav-link", "active" => \Request::is('collections')])
-                                href="{{ url('collections') }}">Collection <span class="badge bg-danger">{{ auth()->user()->getUserChatCount() }}</span></a>
+                                href="{{ url('collections') }}">Collection</a>
                             </li>
                             <li @class(["nav-item", "active" => \Request::is('events')])>
                                 <a @class(["nav-link", "active" => \Request::is('events')])

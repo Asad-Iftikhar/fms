@@ -9,10 +9,11 @@
 
         {{--        Tabs For active and finished events--}}
         <div class="tab">
-            <button class="tablinks active" onclick="clickHandle(event, 'ReceivedCollection')">Received Collections</button>
-            <button class="tablinks" onclick="clickHandle(event, 'PendingCollection')">Pending Collections</button>
+            <button class="tablinks active" onclick="clickHandle(event, 'ReceivedCollection')">Received Collections <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages) }}</span></button>
+            <button class="tablinks" onclick="clickHandle(event, 'PendingCollection')">Pending Collections <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages) }}</span></button>
         </div>
 
+        {{--        Received Collection listing--}}
         <div id="ReceivedCollection" class="tabcontent" style="display: block;">
             <div class="page-heading email-application">
                 <section class="section content-area-wrapper">
@@ -25,8 +26,8 @@
                                     <div class="email-app-list-wrapper">
                                         <div class="email-app-list">
                                             <div class="email-user-list list-group ps ps--active-y">
-                                                @if(count($receivedPayments) > 0)
-                                                    @foreach($receivedPayments as $collection)
+                                                @if(count($receivedCollection) > 0)
+                                                    @foreach($receivedCollection as $collection)
 
                                                         {{--Collection Listing--}}
 
@@ -37,10 +38,12 @@
                                                                         <div class="mail-items">
                                                                     <span class="list-group-item-text text-truncate">
                                                                         <h4>{{'Collection Name: ' . $collection->getCollectionEventName()}}</h4>
+
                                                                     </span>
                                                                         </div>
                                                                         <div class="mail-meta-item">
                                                                             <a href=" {{ url('collections/' . $collection->id ) }} ">
+                                                                                <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages, $collection->id) }}</span>
                                                                                 View
                                                                             </a>
                                                                         </div>
@@ -86,7 +89,8 @@
             </div>
         </div>
 
-        <div id="PendingCollection" class="tabcontent" style="display: block;">
+        {{--        Pending Collection listing--}}
+        <div id="PendingCollection" class="tabcontent">
             <div class="page-heading email-application">
                 <section class="section content-area-wrapper">
                     <div class="content-right" style="width:100%">
@@ -98,8 +102,8 @@
                                     <div class="email-app-list-wrapper">
                                         <div class="email-app-list">
                                             <div class="email-user-list list-group ps ps--active-y">
-                                                @if(count($previousPendingPayments) > 0)
-                                                    @foreach($previousPendingPayments as $collection)
+                                                @if(count($previousPendingCollection) > 0)
+                                                    @foreach($previousPendingCollection as $collection)
 
                                                         {{--Collection Listing--}}
 
@@ -114,6 +118,7 @@
                                                                         </div>
                                                                         <div class="mail-meta-item">
                                                                             <a href=" {{ url('collections/' . $collection->id ) }} ">
+                                                                                <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages, $collection->id) }}</span>
                                                                                 View
                                                                             </a>
                                                                         </div>
@@ -141,7 +146,7 @@
                                                                 <div class="mail-message">
                                                                     <h5 class="list-group-item-text mb-0 truncate"
                                                                         style="color: red">
-                                                                        No Received Collections Available
+                                                                        No Pending Collections Available
                                                                     </h5>
                                                                 </div>
                                                             </div>

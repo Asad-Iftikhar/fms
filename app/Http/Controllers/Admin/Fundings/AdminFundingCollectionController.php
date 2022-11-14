@@ -277,8 +277,8 @@ class AdminFundingCollectionController extends AdminController
         if ($fundingCollection = FundingCollection::find($collectionId)) {
             $user = Auth::user();
             $rules = array(
-                'content' => 'nullable|string',
-                'collection_id' => 'nullable|string',
+                'content' => 'required|string',
+                'collection_id' => 'required|string',
                 'chat_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
             );
             $validator = Validator::make(request()->only(['content', 'collection_id', 'image_id']), $rules);
@@ -288,7 +288,7 @@ class AdminFundingCollectionController extends AdminController
                 $chat->collection_id = request()->input('collection_id');
                 $chat->from_user = $user->id;
                 $chat->content = request()->input('content');
-                $chat->is_read = 0;
+//                $chat->is_read = 0;
                 if (request()->hasFile('chat_image')) {
                     $filename = $this->upload_file(request()->file('chat_image'), '/chat/', 'chat_');
                     $chat->image_id = $filename;
@@ -301,7 +301,7 @@ class AdminFundingCollectionController extends AdminController
                     event(new PushNotificationEvent('my-event-' . $fundingCollection->id, $chat->getSentMessageHtml()));
 
                 } else {
-                    $response['message'] = '404';
+                    return response()->json($response);
                 }
             }
         }

@@ -25,38 +25,30 @@ class CollectionController extends AuthController
             return view('site.account.login');
         } else {
             $User = Auth::user();
-            $receivedPayments = FundingCollection::where('user_id', $User->id)->where('is_received', '=', 1)->get();
-            $previousPendingPayments = FundingCollection::where('user_id', $User->id)->where('is_received', '=', 0)->get();
-            return view("site.collection.received", compact('receivedPayments','previousPendingPayments'));
+            $receivedCollection = FundingCollection::where('user_id', $User->id)->where('is_received', '=', 1)->get();
+            $previousPendingCollection = FundingCollection::where('user_id', $User->id)->where('is_received', '=', 0)->get();
+            return view("site.collection.received", compact('receivedCollection', 'previousPendingCollection'));
         }
     }
 
     /**
      * Previous Collection with respect to id
      *
-     * @param $id
+     * @param $fundingCollectionId
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function detail($id)
-    {
-        $user = Auth::user();
-        $rules = [
-            'id' => $id
-        ];
-
-        $validator = Validator::make($rules, [
-            'id' => 'required|exists:funding_collections,id'
-        ]);
-        if ($validator->passes()) {
-            $fundingCollection = FundingCollection::find($id);
+    public function detail($fundingCollectionId) {
+        if ($fundingCollection = FundingCollection::find($fundingCollectionId)) {
+            $user = Auth::user();
             if ($fundingCollection->user_id == $user->id) {
-                    return view('site.collection.detail', compact('fundingCollection'));
+                // Mark all received messages as read
+                FundingCollectionMessage::markMessagesAsRead($fundingCollectionId, $user->id);
+                return view('site.collection.detail', compact('fundingCollection'));
             } else {
                 return redirect('collections')->with('error', "Insufficient permission");
             }
-        } else {
-            return redirect('collections')->with('error', "No Record Exist");
         }
+        return redirect('collections')->with('error', "No Record Exist");
     }
 
 
@@ -66,44 +58,54 @@ class CollectionController extends AuthController
      * @param $collectionId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function sendMessage($collectionId){
+    public function sendMessage($collectionId)
+    {
         $response = [
             'status' => false,
             'message' => ''
         ];
         if ($fundingCollection = FundingCollection::find($collectionId)) {
             $user = Auth::user();
-            if($user->id == $fundingCollection->user_id) {
+            if ($user->id == $fundingCollection->user_id) {
                 $rules = array(
-                    'content' => 'nullable|string',
-                    'collection_id' => 'nullable|string',
+                    'content' => 'required|string',
+                    'collection_id' => 'required|string',
                     'chat_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
                 );
-                $validator = Validator::make(request()->only(['content','collection_id', 'image_id']),$rules);
+                $validator = Validator::make(request()->only(['content', 'collection_id', 'image_id']), $rules);
 
-                if($validator->passes()) {
+                if ($validator->passes()) {
                     $chat = new FundingCollectionMessage();
                     $chat->collection_id = request()->input('collection_id');
                     $chat->from_user = $user->id;
                     $chat->content = request()->input('content');
-                    if (request()->hasFile('chat_image')){
-                        $filename = $this->upload_file(request()->file('chat_image'),'/chat/','chat_');
+                    if (request()->hasFile('chat_image')) {
+                        $filename = $this->upload_file(request()->file('chat_image'), '/chat/', 'chat_');
                         $chat->image_id = $filename;
                     }
-                    if( $chat->save() ) {
+                    if ($chat->save()) {
                         $response['status'] = true;
                         $response['message'] = $chat->getMessageHtml();
 
                         // Chat message event
                         event(new PushNotificationEvent('my-event-admin', $chat->getSentMessageHtml()));
 
-                    }
-                    else {
+                    } else {
                         return response()->json($response);
                     }
                 }
             }
         }
         return response()->json($response);
+    }
+
+    public function markMessageAsRead($fundingCollectionId) {
+        if ( $fundingCollection = FundingCollection::with('messages')->find($fundingCollectionId) ) {
+            if ($fundingCollection->user_id == auth()->id()) {
+                $user = Auth::user();
+                FundingCollectionMessage::markMessagesAsRead($fundingCollectionId, $user->id);
+            }
+        }
+
     }
 }

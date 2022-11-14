@@ -22,6 +22,7 @@ Route::get( 'account', 'Account\AccountController@getIndex' );
 Route::get('collections','Collection\CollectionController@getIndex');
 Route::get('collections/{id}','Collection\CollectionController@detail');
 Route::post('collections/{id}/sendMessage','Collection\CollectionController@sendMessage');
+Route::get('collections/{id}/markMessagesAsSeen','Collection\CollectionController@markMessageAsRead');
 
 #User Side Event Route
 Route::get('events','Event\EventController@getIndex');
