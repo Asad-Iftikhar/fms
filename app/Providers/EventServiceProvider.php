@@ -5,7 +5,11 @@ namespace App\Providers;
 use App\Events\EventNotification;
 use App\Listeners\SendEventNotification;
 use App\Models\Events\Event;
+use App\Models\Events\EventGuests;
+use App\Models\Fundings\FundingCollection;
+use App\Observers\EventGuestsObserver;
 use App\Observers\EventObserver;
+use App\Observers\FundingCollectionObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -24,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         EventNotification::class => [
             SendEventNotification::class,
         ],
+        UserNotification::class => [
+            SendUserNotification::class,
+        ],
     ];
 
     /**
@@ -34,6 +41,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Event::observe(EventObserver::class);
+        FundingCollection::observe(FundingCollectionObserver::class);
+        EventGuests::observe(EventGuestsObserver::class);
     }
 
     /**

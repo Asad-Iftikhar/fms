@@ -130,10 +130,10 @@ class AdminEventsController extends AdminController {
                                 }
                             }
                         }
-                        if( $event->status == 'active' ) {
-                            event(new EventNotification($event));
-                        }
                     }
+                }
+                if( $event->status == 'active' || $event->status == 'finished' ) {
+                    event(new EventNotification($event, 'created'));
                 }
                 return redirect( 'admin/events/edit/'.$event->id )->with( 'success', 'Created Successfully !' );
             }else{
@@ -278,6 +278,9 @@ class AdminEventsController extends AdminController {
                                 }
                             }
                         }
+                    }
+                    if( $event->status == 'active' || $event->status == 'finished' ) {
+                        event(new EventNotification($event, 'updated'));
                     }
                     return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !');
                 } else {

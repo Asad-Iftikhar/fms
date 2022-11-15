@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Events\EventNotification;
+use App\Events\UserNotification;
 use App\Models\Events\Event;
 
 class EventObserver

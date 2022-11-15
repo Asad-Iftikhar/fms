@@ -2,13 +2,14 @@
 
 namespace App\Listeners;
 
-use App\Events\EventNotification;
-use App\Models\Events\Event;
+use App\Events\UserNotification;
+use App\Models\Events\EventGuests;
+use App\Models\Fundings\FundingCollection;
 use App\Models\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class SendEventNotification
+class SendUserNotification
 {
     /**
      * Create the event listener.
@@ -17,19 +18,27 @@ class SendEventNotification
      */
     public function __construct()
     {
-
+        //
     }
 
     /**
      * Handle the event.
      *
-     * @param  \App\Events\EventNotification  $event
+     * @param  \App\Events\UserNotification  $event
      * @return void
      */
-    public function handle(EventNotification $event)
+    public function handle(UserNotification $event)
     {
         $action = $event->action;
-        $event = $event->event ;
+        $object = $event->object ;
+        dd($object);
+        if ( $object instanceof EventGuests ) {
+
+        }elseif ( $object instanceof FundingCollection  ) {
+
+        } else {
+
+        }
         foreach ( $event->getGuests as $guest ) {
             $event_notification = new Notification();
             $event_notification->user_type = 'user';

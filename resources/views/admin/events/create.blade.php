@@ -197,11 +197,9 @@
 
     $( document ).ready(function() {
         if($('.payment_mode_radio:checked').val() == 1) {
-            console.log('hide');
             $('#cash-by-collections-div').hide();
             $('.collections-row').hide();
         }else {
-            console.log('show');
             $('#cash-by-collections-div').show();
             $('.collections-row').show();
         }
@@ -268,11 +266,6 @@
                 selectedUser.push(parseInt($(option).val()));
             }
         });
-        /*let selectedValues = values.map(function (Option, Sec) {
-           return $(Sec).val();
-        });
-        console.log(selectedValues);*/
-        // alert('array ready');
 
         $('.choices').find('.choices__item--choice').show();
         if(selectedUser){
@@ -300,7 +293,6 @@
                 totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
 
             });
-            console.log(totalCollections);
             $('#cash-by-collections-input').val(totalCollections);
             $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
         }

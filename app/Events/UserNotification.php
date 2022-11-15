@@ -11,21 +11,21 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class EventNotification
+class UserNotification
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Event $event;
+    public $object;
     public $action;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Event $event, $action)
+    public function __construct($object, $action)
     {
-        $this->event = $event;
         $this->action = $action;
+        $this->object = $object;
     }
 
     /**

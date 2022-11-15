@@ -23,9 +23,9 @@
                             </div>
                         </div>
                         <div class="card-content pb-4 all-notifications">
-                            @if($all_notifications->count() > 0 )
-                                @foreach($all_notifications as $notification)
-                                    <a class="text-muted" href="{{ $notification->redirect_url }}">
+                            @if( $all_notifications->count() > 0 )
+                                @foreach( $all_notifications as $notification )
+                                    <a data-id="{{ $notification->id }}" class="text-muted notification-link" data-href="{{ $notification->redirect_url }}">
                                         <div class="recent-message d-flex px-4 py-3 my-2 {{ empty($notification->read_at)?'bg-light':'' }}">
                                             <div class="avatar avatar-lg display-5">
                                                 {!! $notification->getNotificationIcon() !!}
@@ -92,7 +92,7 @@
                 skip += 6;
                 if(res.notifications) {
                     $.each(res.notifications , function(key, value) {
-                        $('.all-notifications').append('<a class="text-muted" href="'+ value.redirect_url +'"> <div class="recent-message d-flex px-4 py-3 my-2  '+ value.read_class +'">  <div class="avatar avatar-lg display-5">'+ value.icon +'</div><div class="name ms-4"> <h5 class="mb-1">'+ value.title +'</h5><h6 class="text-muted mb-0">'+ value.description +'</h6><small class="text-muted mb-0">'+ value.created_ago +'</small></div></div></a>');
+                        $('.all-notifications').append('<a onclick="markNotificationRead(this)" data-id="'+ value.id +'" class="text-muted notification-link" data-href="'+ value.redirect_url +'"> <div class="recent-message d-flex px-4 py-3 my-2  '+ value.read_class +'">  <div class="avatar avatar-lg display-5">'+ value.icon +'</div><div class="name ms-4"> <h5 class="mb-1">'+ value.title +'</h5><h6 class="text-muted mb-0">'+ value.description +'</h6><small class="text-muted mb-0">'+ value.created_ago +'</small></div></div></a>');
                     })
                 }
             } else {
@@ -110,8 +110,7 @@
     });
 }
 
-
-    // Ajax request to get more notifications
+    // Ajax request to mark all notifications as read
     $('.mark-all-read').on('click', markAllNotificationsRead);
     function markAllNotificationsRead() {
         let clickedBtn = $(this);
@@ -152,5 +151,6 @@
             }
         });
     }
+
 </script>
 @endsection

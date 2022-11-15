@@ -40,6 +40,7 @@
                                 <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                    aria-expanded="false">
                                     <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                                    <span class="badge bg-danger rounded-circle position-relative" style="bottom: 12px; right: 12px">{{ Auth::user()->countUserUnreadNotifications() }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                     @if( Auth::user()->getUserLatestNotifications()->count() > 0 )
@@ -48,7 +49,7 @@
                                         </li>
                                         @foreach( Auth::user()->getUserLatestNotifications() as $notification )
                                             <li class="{{ empty($notification->read_at)?'bg-light':'' }}">
-                                                <a href="{{ url($notification->redirect_url) }}" class="dropdown-item">
+                                                <a data-id="{{ $notification->id }}" data-href="{{ url($notification->redirect_url) }}" class="dropdown-item notification-link">
                                                     <b>{{ $notification->title }}</b>
                                                     <br>
                                                     {{ substr($notification->description,0,40).'...' }}
@@ -150,6 +151,32 @@
 @section('javascript')
     <script src="{!! asset("assets/js/bootstrap.bundle.min.js") !!}"></script>
     <script src="{!! asset("assets/js/jquery-3.6.1.min.js") !!}"></script>
+
+    <script>
+        // Ajax request to mark notification as Read
+        $('.notification-link').on('click', function (){
+            markNotificationRead(this);
+        });
+        function markNotificationRead(element) {
+            let redirectUrl = $(element).data("href");
+            let notificationId = $(element).data("id");
+            $.ajax({
+                type:'POST',
+                url: "{{ url('mark-notification-read') }}",
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "notification_id": notificationId
+                },
+                success:function(res) {
+                    if ( redirectUrl != '#' ) {
+                        window.location = redirectUrl;
+                    }
+                }
+            });
+        }
+    </script>
+
 @show
 </body>
 </html>
