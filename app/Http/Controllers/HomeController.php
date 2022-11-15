@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PushNotificationEvent;
 use App\Mail\resetpassMail;
+use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Users\User;
 use App\Models\Events\Event;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +47,8 @@ class HomeController extends Controller
     }
 
     /**
+     * information of pending payments
+     *
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */

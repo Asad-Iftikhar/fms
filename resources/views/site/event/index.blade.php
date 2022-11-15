@@ -7,15 +7,13 @@
 @section('content')
     <div class="page-content">
 
-{{--        Tabs For active and finished events--}}
-
+        {{--        Tabs For active and finished events--}}
         <div class="tab">
             <button class="tablinks active" onclick="clickHandle(event, 'ActiveEvents')">Active Events</button>
             <button class="tablinks" onclick="clickHandle(event, 'FinishedEvents')">Finished Events</button>
         </div>
 
-{{--        Active Event listing--}}
-
+        {{--        Active Event listing--}}
         <div id="ActiveEvents" class="tabcontent" style="display: block;">
             <div class="page-heading email-application">
                 <section class="section content-area-wrapper">
@@ -41,7 +39,7 @@
                                                                                 </span>
                                                                         </div>
                                                                         <div class="mail-meta-item">
-                                                                            <a href=" {{ url('account/event/' . $collection->id . '/' . $collection->name ) }} ">
+                                                                            <a href=" {{ url('event/' . $collection->id . '/' . $collection->name ) }} ">
                                                                                 View
                                                                             </a>
                                                                         </div>
@@ -87,7 +85,7 @@
             </div>
         </div>
 
-{{--        Finished Event Listing--}}
+        {{--        Finished Event Listing--}}
 
         <div id="FinishedEvents" class="tabcontent">
             <div class="page-heading email-application">
@@ -115,7 +113,7 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="mail-meta-item">
-                                                                            <a href=" {{ url('account/event/' . $collection->id . '/' . $collection->name ) }} ">
+                                                                            <a href=" {{ url('event/' . $collection->id . '/' . $collection->name ) }} ">
                                                                                 View
                                                                             </a>
                                                                         </div>
@@ -160,29 +158,29 @@
                 </section>
             </div>
         </div>
-
     </div>
 @section('javascript')
+    @parent
     <script>
-        function clickHandle(evt, eventName) {
-            let i, tabcontent, tablinks;
+    function clickHandle(evt, eventName) {
+    let i, tabcontent, tablinks;
 
-            // This is to clear the previous clicked content.
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
+    // This is to clear the previous clicked content.
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+    }
 
-            // Set the tab to be "active".
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
+    // Set the tab to be "active".
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
 
-            // Display the clicked tab and set it to active.
-            document.getElementById(eventName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
+    // Display the clicked tab and set it to active.
+    document.getElementById(eventName).style.display = "block";
+    evt.currentTarget.className += " active";
+    }
     </script>
 @stop
 @stop

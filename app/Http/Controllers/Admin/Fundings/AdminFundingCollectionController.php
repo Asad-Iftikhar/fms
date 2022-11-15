@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Admin\Fundings;
 
+use App\Events\PushNotificationEvent;
 use App\Http\Controllers\AdminController;
+use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Events\Event;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Fundings\FundingType;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use PHPUnit\TextUI\Exception;
 use Illuminate\Support\Facades\Validator;
+use Pusher\Pusher;
 
 /**
  * Class AdminFundingCollectionController
@@ -257,5 +261,50 @@ class AdminFundingCollectionController extends AdminController
                 return redirect()->back()->with('success', 'Deleted Successfully');
             }
         }
+    }
+
+    /**
+     * send message using pusher -> Admin side
+     *
+     * @param $collectionId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendMessage($collectionId){
+        $response = [
+            'status' => false,
+            'message' => ''
+        ];
+        if ($fundingCollection = FundingCollection::find($collectionId)) {
+            $user = Auth::user();
+            $rules = array(
+                'content' => 'required|string',
+                'collection_id' => 'required|string',
+                'chat_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048'
+            );
+            $validator = Validator::make(request()->only(['content', 'collection_id', 'image_id']), $rules);
+
+            if ($validator->passes()) {
+                $chat = new FundingCollectionMessage();
+                $chat->collection_id = request()->input('collection_id');
+                $chat->from_user = $user->id;
+                $chat->content = request()->input('content');
+//                $chat->is_read = 0;
+                if (request()->hasFile('chat_image')) {
+                    $filename = $this->upload_file(request()->file('chat_image'), '/chat/', 'chat_');
+                    $chat->image_id = $filename;
+                }
+                if ($chat->save()) {
+                    $response['status'] = true;
+                    $response['message'] = $chat->getMessageHtml();
+
+                    // Chat message event
+                    event(new PushNotificationEvent('my-event-' . $fundingCollection->id, $chat->getSentMessageHtml()));
+
+                } else {
+                    return response()->json($response);
+                }
+            }
+        }
+        return response()->json($response);
     }
 }
