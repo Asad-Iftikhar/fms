@@ -19,8 +19,11 @@ class DatabaseBackUp extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Create backup of your database';
 
+    /**
+     * DatabaseBackUp constructor.
+     */
     public function __construct()
     {
         parent::__construct();
