@@ -19,13 +19,12 @@ Cron Tab for Database backup
 
 Pusher:
 Installation
-You can get the Pusher Channels PHP library via a composer package called pusher-php-server. See https://packagist.org/packages/pusher/pusher-php-server
-`$ composer require pusher/pusher-php-server`
-Or add to `composer.json`:
+- You can get the Pusher Channels PHP library via a composer package called pusher-php-server.`$ composer require pusher/pusher-php-server`
+- Or add to `composer.json`:
 `"require": {
     "pusher/pusher-php-server": "^7.2"
 }`
-- Make an account on Pusher `pusher.com`.
+- Make an account on Pusher `(https://pusher.com/)`.
 - Use the credentials from your Pusher Channels application to create a new Pusher\Pusher instance.
 - After making channel it will provide you App keys.
 Example:
