@@ -18,13 +18,12 @@ class EventController extends AuthController
     public function getIndex()
     {
         if (!Auth::check()) {
-            return view( 'site.account.login' );
-        }
-        else {
-            $User =  Auth::user();
-            $activeEvents = Event::where('status','=','active')->get();
-            $finishedEvents = Event::where('status','=','finished')->get();
-            return view("site.event.index",compact('activeEvents','finishedEvents'));
+            return view('site.account.login');
+        } else {
+            $User = Auth::user();
+            $activeEvents = Event::where('status', '=', 'active')->get();
+            $finishedEvents = Event::where('status', '=', 'finished')->get();
+            return view("site.event.index", compact('activeEvents', 'finishedEvents'));
         }
     }
 
@@ -32,24 +31,12 @@ class EventController extends AuthController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getEvent($id) {
-
-        $rules = [
-          'id' => $id
-        ];
-
-        $validator = Validator::make($rules, [
-           'id' => 'required|exists:events,id'
-        ]);
-
-        if($validator->passes())
-        {
-            if( $event = Event::find($id) ) {
-                return view('site.event.detail',compact('event'));
-            }
-        }
-        else {
-            return redirect('account/event')->with('error', "No Record Exist");
+    public function detail($id)
+    {
+        if ($event = Event::find($id)) {
+            return view('site.event.detail', compact('event'));
+        } else {
+            return redirect('events')->with('error', "No Record Exist");
         }
     }
 }

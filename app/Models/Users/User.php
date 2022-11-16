@@ -60,6 +60,9 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return mixed|string|null
+     */
     public function preferredLocale() {
         return $this->locale;
     }
@@ -71,6 +74,9 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         return $this->belongsToMany( Role::class, 'role_user' )->withTimestamps();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function avatarImage() {
         return $this->belongsTo(Media::class,'avatar');
     }
@@ -80,6 +86,13 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      */
     public function fundingCollectionsUser() {
         return $this->hasMany(FundingCollection::class,'user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages() {
+        return $this->hasMany(FundingCollectionMessage::class, 'from_user');
     }
 
     /**
@@ -337,5 +350,10 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         return $this->firstname . ' ' . $this->lastname;
     }
 
-
+    /**
+     * @return int
+     */
+    public function getUserChatCount() {
+        return $this->messages()->where('is_read','=',0)->count();
+    }
 }

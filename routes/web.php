@@ -19,12 +19,14 @@ Route::get( 'collection/{id}', 'HomeController@getCollectionInfo' );
 Route::get( 'account', 'Account\AccountController@getIndex' );
 
 #User Side Collection Route
-Route::get('account/collection','Collection\CollectionController@getIndex');
-Route::get('account/collection/{id}','Collection\CollectionController@getCollection');
+Route::get('collections','Collection\CollectionController@getIndex');
+Route::get('collections/{id}','Collection\CollectionController@detail');
+Route::post('collections/{id}/sendMessage','Collection\CollectionController@sendMessage');
+Route::get('collections/{id}/markMessagesAsSeen','Collection\CollectionController@markMessageAsRead');
 
 #User Side Event Route
-Route::get('account/event','Event\EventController@getIndex');
-Route::get('account/event/{id}/{name}','Event\EventController@getEvent');
+Route::get('events','Event\EventController@getIndex');
+Route::get('event/{id}/{name}','Event\EventController@detail');
 
 # settings
 Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );

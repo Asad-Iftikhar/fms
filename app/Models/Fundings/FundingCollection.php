@@ -18,8 +18,8 @@ namespace App\Models\Fundings;
  */
 
 use App\Models\Base;
+use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Events\Event;
-use App\Models\Notifications\Notification;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -57,6 +57,10 @@ class FundingCollection extends Base {
      */
     public function event() {
         return $this->belongsTo(Event::class,'event_id');
+    }
+
+    public function messages() {
+        return $this->hasMany(FundingCollectionMessage::class,'collection_id')->orderBy('created_at','asc');
     }
 
     /**
