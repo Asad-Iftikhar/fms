@@ -10,3 +10,10 @@ Open the console and cd your project root directory and run following commands t
 - Run `php artisan migrate` (Run `php artisan migrate:fresh` for fresh migrations)
 - Run `php artisan db:seed`
 - Run `php artisan passport:install`
+
+Cron Tab for Database backup
+- Run following command in the terminal.
+`crontab -e`
+- Select the editor in order to add cronjob for example `'bin/nano/'`
+- Add cron command in the file you just created using above mentioned step. Command: `* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1`
+
