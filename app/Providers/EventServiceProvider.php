@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\EventNotification;
+use App\Events\UserNotification;
 use App\Listeners\SendEventNotification;
+use App\Listeners\SendUserNotification;
 use App\Models\Events\Event;
 use App\Models\Events\EventGuests;
 use App\Models\Fundings\FundingCollection;

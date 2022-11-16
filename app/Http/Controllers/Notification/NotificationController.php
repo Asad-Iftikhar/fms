@@ -49,9 +49,9 @@ class NotificationController extends AuthController
                 if($notifications->count() > 0){
                     foreach ($notifications as $notification) {
                         $notification->icon = $notification->getNotificationIcon();
+                        $notification->created_ago = \Carbon\Carbon::createFromTimeStamp(strtotime( $notification->created_at ))->diffForHumans();
                         if( empty($notification->read_at) ) {
                             $notification->read_class = 'bg-light';
-                            $notification->created_ago = \Carbon\Carbon::createFromTimeStamp(strtotime( $notification->created_at ))->diffForHumans();
                         }else{
                             $notification->read_class = '';
                         }

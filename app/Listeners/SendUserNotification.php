@@ -31,39 +31,27 @@ class SendUserNotification
     {
         $action = $event->action;
         $object = $event->object ;
-        dd($object);
+        $notification = new Notification();
+        $notification->user_type = 'user';
         if ( $object instanceof EventGuests ) {
-
-        }elseif ( $object instanceof FundingCollection  ) {
-
+            if($action == 'created') {
+                $notification->title = 'Event Invitation';
+                $notification->description = 'You are Invited to '.$object->event->name.' which is to take place on '. $object->$event->event_date;
+                $notification->user_id = $object->user_id;
+                $object->notifications()->save($notification);
+            }
+        } elseif ( $object instanceof FundingCollection  ) {
+            if($action == 'created') {
+                $notification->title = 'New Collection Created';
+                $notification->description = 'A New Collection with amount '.$object->amount;
+            } else {
+                $notification->title = 'Collection Updated';
+                $notification->description = 'Your Collection with title '.$object->getCollectionTitle().' is updated.';
+            }
+            $notification->user_id = $object->user_id;
+            $object->notifications()->save($notification);
         } else {
 
-        }
-        foreach ( $event->getGuests as $guest ) {
-            $event_notification = new Notification();
-            $event_notification->user_type = 'user';
-            if($action == 'created') {
-                $event_notification->title = 'New Event Created';
-                $event_notification->description = 'A New Event '.$event->name.' is Created with status '.$event->status;
-            } else {
-                $event_notification->title = 'Event Updated';
-                $event_notification->description = 'An Event '.$event->name.' is Updated with status '.$event->status;
-            }
-            $event_notification->user_id = $guest->user_id;
-            $event->notifications()->save($event_notification);
-        }
-        foreach ( $event->fundingCollections as $fundingCollection ) {
-            $event_notification = new Notification();
-            $event_notification->user_type = 'user';
-            if($action == 'created') {
-                $event_notification->title = 'New Event Created';
-                $event_notification->description = 'A New Event '.$event->name.' is Created with status '.$event->status;
-            } else {
-                $event_notification->title = 'Event Updated';
-                $event_notification->description = 'An Event '.$event->name.' is Updated with status '.$event->status;
-            }
-            $event_notification->user_id = $fundingCollection->user_id;
-            $event->notifications()->save($event_notification);
         }
     }
 }

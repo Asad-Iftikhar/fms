@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Events\EventGuests;
+use App\Events\UserNotification;
 
 class EventGuestsObserver
 {

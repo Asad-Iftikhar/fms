@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Fundings\FundingCollection;
+use App\Events\UserNotification;
 
 class FundingCollectionObserver
 {
@@ -14,8 +15,14 @@ class FundingCollectionObserver
      */
     public function created(FundingCollection $fundingCollection)
     {
-        if( $fundingCollection->event->status == 'active' || $fundingCollection->event->status == 'finished' || $fundingCollection->funding_type_id > 0) {
-            event(new userNotification($fundingCollection, 'created'));
+        if(!empty($fundingCollection->event)){
+            if( $fundingCollection->event->status == 'active' || $fundingCollection->event->status == 'finished') {
+                event(new UserNotification($fundingCollection, 'created'));
+            }
+        }else{
+            if( $fundingCollection->funding_type_id > 0 ) {
+                event(new UserNotification($fundingCollection, 'created'));
+            }
         }
     }
 
@@ -27,8 +34,14 @@ class FundingCollectionObserver
      */
     public function updated(FundingCollection $fundingCollection)
     {
-        if( $fundingCollection->event->status == 'active' || $fundingCollection->event->status == 'finished' || $fundingCollection->funding_type_id > 0 ) {
-            event(new userNotification($fundingCollection, 'updated'));
+        if(!empty($fundingCollection->event)){
+            if( $fundingCollection->event->status == 'active' || $fundingCollection->event->status == 'finished') {
+                event(new UserNotification($fundingCollection, 'updated'));
+            }
+        }else{
+            if( $fundingCollection->funding_type_id > 0 ) {
+                event(new UserNotification($fundingCollection, 'updated'));
+            }
         }
     }
 

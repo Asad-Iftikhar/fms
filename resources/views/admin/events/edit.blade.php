@@ -162,6 +162,41 @@
                                 <h6>Collections from users</h6>
                             </div>
                         </div>
+                        <?php $count = 1 ?>
+                        @if( !empty (old('collection_users')) )
+                            <div class="col-md-8" id="participant_fieldset">
+                                @foreach(old('collection_users') as $key=>$collection)
+                                    <div class="row collections-row" style="display: none">
+                                        <div class="col-md-6 mb-4">
+                                            <div class="form-group">
+                                                <label for="UserSelection{{$key}}">Select multiple users for collection</label>
+                                                <select id="UserSelection{{$key}}" name="collection_users[{{$key}}][]" class="choices form-select multiple-remove"
+                                                        multiple="multiple">
+                                                    @foreach($users as $user)
+                                                        <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="amount-input">Amount</label>
+                                                {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
+                                                <input type="number" data-id="UserSelection{{$key}}" value="{{ old('amount')[$key] }}"
+                                                       class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
+                                                       placeholder="Amount" name="amount[{{$key}}]" id="amount-input">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 justify-content-end d-flex">
+                                            <div class="form-group py-4">
+                                                <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php $count++ ?>
+                                @endforeach
+                            </div>
+                        @else
                         <div class="col-md-8" id="participant_fieldset">
                             <?php  $count = 0 ?>
                             @foreach($collections as $key=>$collection)
@@ -195,7 +230,7 @@
                                 <?php  $count++ ?>
                             @endforeach
                         </div>
-
+                        @endif
                         <div class="row collections-row" style="display: none">
                             <div class="col-md-12">
                                 <button id="" class="btn-add btn btn-success"><i class="bi-plus-circle"></i> Add Row</button>
