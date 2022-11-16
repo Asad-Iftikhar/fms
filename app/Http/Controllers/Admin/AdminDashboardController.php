@@ -7,6 +7,7 @@ use Hashids\Hashids;
 use Helpers\DashboardStats;
 use App\Models\Users\User;
 use App\Models\Activity;
+use Illuminate\Support\Carbon;
 
 class AdminDashboardController extends AdminController {
 
@@ -22,6 +23,13 @@ class AdminDashboardController extends AdminController {
         $totalFunds = FundingCollection::totalAvailableFunds();
         $totalPendings = FundingCollection::getOverallPendings();
         $totalCollection = FundingCollection::getTotalCollection();
+        $pendingCollectionPercentage = FundingCollection::getPendingCollectionPercentage();
+        $receivedCollectionPercentage = FundingCollection::getReceivedCollectionPercentage();
+
+//        $fundingCollectionsMonthly = FundingCollection::select('id','created_at')->get()->groupBy(function ($fundingCollectionsMonthly){
+//            Carbon::parse('created_at')->format('M');
+//        });
+
         //Total Members
         $UsersWithRoles = User::has('Roles')->get()->pluck('id');
         if ( is_array( $UsersWithRoles ) && !empty( $UsersWithRoles ) ) {
@@ -30,6 +38,6 @@ class AdminDashboardController extends AdminController {
             $TotalUsers = User::where( 'activated', '=', true )->where( 'disabled', '=', false )->count();
         }
         // Show the page
-        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','activeUsersCount','activeEvents'));
+        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','activeUsersCount','activeEvents', 'pendingCollectionPercentage','receivedCollectionPercentage'));
     }
 }

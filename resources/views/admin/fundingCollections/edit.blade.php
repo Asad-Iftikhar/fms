@@ -174,8 +174,8 @@
             });
 
             /*pusher*/
-            let pusher = new Pusher( '{{env("PUSHER_APP_KEY")}}' , {
-                cluster: '{{env("PUSHER_APP_CLUSTER")}}',
+            let pusher = new Pusher( '{{ env("PUSHER_APP_KEY") }}' , {
+                cluster: '{{ env("PUSHER_APP_CLUSTER") }}',
                 forceTLS: true
             });
 
