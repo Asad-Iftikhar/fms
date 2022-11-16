@@ -251,10 +251,10 @@ class AdminEventsController extends AdminController {
                         return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !, Event Cost , Cash by Funds, Payment Mode and collections cannot be updated because someone has paid collection');
                     }
                     // Save collection
-                    if ($event->payment_mode == 2) {
-                        if ($amounts = request()->input('amount', array())) {
-                            foreach ($amounts as $key => $amount) {
-                                if( $amount > 0 ) {
+                    if ( $event->payment_mode == 2 ) {
+                        if ( $amounts = request()->input( 'amount', array() ) ) {
+                            foreach ( $amounts as $key => $amount ) {
+                                if ( $amount > 0 ) {
                                     $users = request()->input('collection_users');
                                     $users = $users[$key];
                                     foreach ($users as $user) {
@@ -268,7 +268,7 @@ class AdminEventsController extends AdminController {
                         }
                     }
                     if( $event->status == 'active' || $event->status == 'finished' ) {
-                        event(new EventNotification($event, 'updated'));
+                        event( new EventNotification( $event, 'updated' ) );
                     }
                     return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !');
                 } else {

@@ -130,6 +130,7 @@
                 btnIcon.addClass("d-none");
                 if ( res.status ) {
                     $('.recent-message').removeClass('bg-light');
+                    $('.unread-notification-badge').html('0');
                     swal({
                         title: 'Success',
                         text: res.msg,

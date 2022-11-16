@@ -126,6 +126,7 @@ class NotificationController extends AuthController
                 $res['msg'] = 'No Unread Notification Found';
             }
         }
+        $res['unread_count'] = Auth::user()->countUserUnreadNotifications();
         return response()->json( $res );
     }
 
