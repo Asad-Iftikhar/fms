@@ -35,4 +35,4 @@ Pusher:
 `PUSHER_APP_KEY=55c4f792919f9dc8b0fb`
 `PUSHER_APP_SECRET=a3506f210c79b3efebf9`
 `PUSHER_APP_CLUSTER=ap2`
-There is another change in .env file and that is `BROADCAST_DRIVER`. Default it is set to `BROADCAST_DRIVER=log` just replace log with `BROADCAST_DRIVER=pusher`
+There is another change in .env file and that is `BROADCAST_DRIVER`. Default it is set to `BROADCAST_DRIVER=log` just replace log with `BROADCAST_DRIVER=pusher`.
