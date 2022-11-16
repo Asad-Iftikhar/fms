@@ -26,7 +26,6 @@ Installation
 }`
 - Make an account on Pusher https://pusher.com/.
 - Use the credentials from your Pusher Channels application to create a new Pusher\Pusher instance.
-- After making channel it will provide you App keys.
 - Example:
 `app_id = "1504064"`
 `key = "55c4f792919f9dc8b0fb"`
