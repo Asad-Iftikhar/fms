@@ -87,7 +87,6 @@
 @section('javascript')
     @parent
     <script src="{!! asset('assets/js/pusher.min.js') !!}"></script>
-    <script src="http://homestead.test/assets/js/jquery-3.6.1.min.js"></script>
 
     <script>
         $(document).ready(function () {
