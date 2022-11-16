@@ -24,12 +24,12 @@ Installation
 `"require": {
     "pusher/pusher-php-server": "^7.2"
 }`
-- Make an account on Pusher `(https://pusher.com/)`.
+- Make an account on Pusher https://pusher.com/.
 - Use the credentials from your Pusher Channels application to create a new Pusher\Pusher instance.
 - After making channel it will provide you App keys.
-Example:
-`app_id = "1504064"
-key = "55c4f792919f9dc8b0fb"
-secret = "a3506f210c79b3efebf9"
-cluster = "ap2"`
+- Example:
+`app_id = "1504064"`
+`key = "55c4f792919f9dc8b0fb"`
+`secret = "a3506f210c79b3efebf9"`
+`cluster = "ap2"`
 - Add these App keys in .env file
