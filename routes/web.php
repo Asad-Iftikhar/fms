@@ -158,4 +158,13 @@ Route::post( 'admin/events/remind-participant', 'Admin\Events\AdminEventsControl
 Route::post( 'admin/events/invite-all', 'Admin\Events\AdminEventsController@inviteAll' );
 Route::post( 'admin/events/remind-all', 'Admin\Events\AdminEventsController@remindAll' );
 
+#Admin Notifications
+Route::get( 'admin/notifications', 'Admin\Notifications\AdminNotificationsController@index' );
+Route::post( 'admin/get-more-admin-notifications', 'Admin\Notifications\AdminNotificationsController@getAdminNotifications' );
+
+# Mark Admin Notifications as Read
+Route::post( 'admin/mark-all-admin-notifications-read', 'Admin\Notifications\AdminNotificationsController@markAllAdminNotificationsRead' );
+Route::post( 'admin/mark-notification-read', 'Admin\Notifications\AdminNotificationsController@markNotificationRead' );
+
+
 

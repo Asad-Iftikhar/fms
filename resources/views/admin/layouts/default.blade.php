@@ -34,16 +34,37 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                                <li class="nav-item dropdown me-3">
+                                <li class="nav-item">
                                     <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                        aria-expanded="false">
                                         <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                                        <span class="badge bg-danger rounded-circle position-relative admin-unread-notification-badge" style="bottom: 12px; right: 12px">{{ \App\Models\Notifications\Notification::countAdminUnreadNotifications() }}</span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <h6 class="dropdown-header">Notifications</h6>
+                                        @if( \App\Models\Notifications\Notification::countAdminUnreadNotifications() > 0 )
+                                            <li>
+                                                <h6 class="dropdown-header">Notifications</h6>
+                                            </li>
+                                            @foreach( \App\Models\Notifications\Notification::getAdminLatestUnreadNotifications() as $notification )
+                                                <li class="{{ empty($notification->read_at)?'bg-light':'' }}">
+                                                    <a data-id="{{ $notification->id }}" data-href="{!! url($notification->redirect_url)  !!}" class="dropdown-item notification-link">
+                                                        <b>{{ $notification->title }}</b>
+                                                        <br>
+                                                        {{ substr($notification->description,0,40).'...' }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        @else
+                                            <li>
+                                                <h6 class="dropdown-header">No Notifications Found</h6>
+                                            </li>
+                                        @endif
+                                        <hr>
+                                        <li class="text-center">
+                                            <a href="{{ url('admin/notifications') }}" class="dropdown-item">
+                                                <h6>See All Notifications</h6>
+                                            </a>
                                         </li>
-                                        <li><a class="dropdown-item">No notification available</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -129,6 +150,32 @@
     <script src="{{ asset("/assets/js/bootstrap.bundle.min.js") }}"></script>
     <script src="{{ asset("/assets/js/main.js") }}"></script>
     <script src="{!! asset("assets/js/jquery-3.6.1.min.js") !!}"></script>
+
+    <script>
+        // Ajax request to mark notification as Read
+        $('.notification-link').on('click', function (){
+            markNotificationRead(this);
+        });
+        function markNotificationRead(element) {
+            let redirectUrl = $(element).data("href");
+            let notificationId = $(element).data("id");
+            $.ajax({
+                type:'POST',
+                url: "{{ url('mark-notification-read') }}",
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "notification_id": notificationId
+                },
+                success:function(res) {
+                    if ( redirectUrl != '#' ) {
+                        window.location = redirectUrl;
+                    }
+                    $('.admin-unread-notification-badge').html(res.unread_count);
+                }
+            });
+        }
+    </script>
 @show
 </body>
 

@@ -50,12 +50,14 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="p-4">
-                            <button class='load-more btn btn-block btn-xl btn-light-primary font-bold mt-3'>
-                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                Load More
-                            </button>
-                        </div>
+                        @if( $all_notifications->count() > 0 )
+                            <div class="p-4">
+                                <button class='load-more btn btn-block btn-xl btn-light-primary font-bold mt-3'>
+                                    <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    Load More
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
