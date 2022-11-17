@@ -86,6 +86,7 @@ class FundingCollectionMessage extends Model
      * @param $userId
      */
     static public function markMessagesAsRead ($collectionId, $userId) {
+        DB::connection()->enableQueryLog();
         FundingCollectionMessage::where('collection_id',$collectionId)->where('from_user', '!=', $userId)->update(['is_read'=>'1']);
     }
 
@@ -97,6 +98,7 @@ class FundingCollectionMessage extends Model
      * @param integer|null $collectionId
      */
     public static function getUnreadMessagesCountByUserId(int $userId, $isPending = null, $collectionId = null) {
+
         $UnreadCountQuery =  FundingCollectionMessage::whereHas('fundingCollection', function ($subQuery) use ($userId, $isPending) {
             $subQuery->where('user_id', $userId);
             if (!is_null($isPending)) {
@@ -106,7 +108,16 @@ class FundingCollectionMessage extends Model
         if (!is_null($collectionId)) {
             $UnreadCountQuery->where('collection_id', $collectionId);
         }
+        return $UnreadCountQuery->get()->count();
 
+    }
+
+    public static function getUnreadMessagesCountByAdminId($collectionId = null) {
+        $UnreadCountQuery = FundingCollectionMessage::where('collection_id',$collectionId)->where('is_read',0)
+            ->leftJoin('funding_collections', function ($query) {
+               $query->on('funding_collection_messages.collection_id','=','funding_collections.id')
+               ->where('funding_collection_messages.from_user','!=','funding_collections.user_id');
+            });
         return $UnreadCountQuery->get()->count();
     }
 }

@@ -92,10 +92,12 @@ class AdminFundingCollectionController extends AdminController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function getEditFundingCollection($id) {
+    public function getEditFundingCollection($fundingCollectionId) {
         $fundingTypes = FundingType::all();
         $events = Event::all();
-        if ($fundingCollection = FundingCollection::find($id)) {
+        if ($fundingCollection = FundingCollection::find($fundingCollectionId)) {
+            $userId = Auth::user()->id;
+            FundingCollectionMessage::markMessagesAsRead($fundingCollectionId, $userId);
             return view('admin.fundingCollections.edit', compact('fundingTypes', 'fundingCollection', 'events'));
         }
     }
@@ -230,7 +232,7 @@ class AdminFundingCollectionController extends AdminController
             $collection->collectionUserName = $collection->user->linkWithFullName();
             $collection->eventName = $collection->getEventName();
             $collection->paymentStatus = $collection->getPaymentStatusBadge();
-            $collection->action = '<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+            $collection->action = '<span class="badge bg-danger">'. FundingCollectionMessage::getUnreadMessagesCountByAdminId($collection->id) .'</span>&nbsp;&nbsp;<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
 
         # response
@@ -306,5 +308,17 @@ class AdminFundingCollectionController extends AdminController
             }
         }
         return response()->json($response);
+    }
+
+    /**
+     * Mark unread messages as read
+     *
+     * @param $fundingCollectionId
+     */
+    public function markMessageAsRead($fundingCollectionId) {
+        if ( $fundingCollection = FundingCollection::with('messages')->find($fundingCollectionId) ) {
+                $user = Auth::user();
+                FundingCollectionMessage::markMessagesAsRead($fundingCollectionId, $user->id);
+        }
     }
 }

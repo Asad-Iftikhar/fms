@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('admin/get-post-chart-data','Admin\AdminDashboardController@getMonthlyCollectionData');
+
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'collection/{id}', 'HomeController@getCollectionInfo' );
@@ -123,6 +126,7 @@ Route::post('admin/funding/collections/create','Admin\Fundings\AdminFundingColle
 Route::get('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@getEditFundingCollection');
 Route::post('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@postEditFundingCollection');
 Route::post('admin/funding/collections/{id}/sendMessage','Admin\Fundings\AdminFundingCollectionController@sendMessage');
+Route::get('admin/funding/collections/{id}/markMessagesAsSeen','Admin\Fundings\AdminFundingCollectionController@markMessageAsRead');
 
 #Admin Delete Funding collection
 Route::get('admin/funding/collections/delete/{id}','Admin\Fundings\AdminFundingCollectionController@deleteFundingCollection');

@@ -103,8 +103,10 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <div class="card chart-container">
+                                        <canvas id="chart"></canvas>
+                                    </div>
                                 </div>
-{{--                                {{ $fundingCollectionsMonthly }}--}}
                             </div>
                         </div>
                     </div>
@@ -131,51 +133,28 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-                </div>
-            </div>
         </section>
     </div>
     @section('javascript')
         @parent
-        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
         <script>
-            window.onload = function () {
-                var chart = new CanvasJS.Chart("chartContainer", {
-                    animationEnabled: true,
-                    theme: "light1", // "light1", "light2", "dark1", "dark2"
-                    title:{
-                        text: "Monthly Collection Stats"
-                    },
-                    axisY: {
-                        includeZero: true
-                    },
-                    data: [{
-                        type: "column", //change type to bar, line, area, pie, etc
-                        //indexLabel: "{y}", //Shows y value on all Data Points
-                        indexLabelFontColor: "#5A5757",
-                        indexLabelFontSize: 16,
-                        indexLabelPlacement: "outside",
-                        dataPoints: [
-                            { y: 25, label: "JAN" },
-                            { y: 50, label: "FEB" },
-                            { y: 12, label: "MAR" },
-                            { y: 69, label: "APR" },
-                            { y: 50, label: "MAY" },
-                            { y: 46, label: "JUN" },
-                            { y: 80, label: "JUL" },
-                            { y: 90, label: "AUG" },
-                            { y: 30, label: "SEPT" },
-                            { y: 35, label: "OCT" },
-                            { y: 95, label: "NOV" },
-                            { y: 25, label: "DEC" }
-                        ]
-                    }]
+            const ctx = document.getElementById("chart").getContext('2d');
+            const myChart = new Chart(ctx, {
+                let request = $.ajax({
+                    method: 'GET',
+                    url: "{{ url() }}"
                 });
-                chart.render();
-            }
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                            }
+                        }]
+                    }
+                },
+            });
         </script>
     @stop
 @stop

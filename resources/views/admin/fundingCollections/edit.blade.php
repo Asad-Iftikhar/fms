@@ -181,6 +181,26 @@
 
             let channel = pusher.subscribe('my-channel');
             channel.bind('my-event-admin', function (data) {
+                $.ajax({
+                    method: 'get',
+                    url: "{{ url("admin/funding/collections/" . $fundingCollection->id . "/markMessagesAsSeen") }}",
+                    data: {
+                        _token: '{!! csrf_token() !!}'
+                    },
+                    processData: false,
+                    contentType: false,
+                    dataType: 'JSON',
+                }).done(function (data) {
+                    if (data.status) {
+                        $('.chat-content').append(data.message);
+                        $('#chatForm')[0].reset();
+                        $("#scroll").animate({
+                            scrollTop: $('#scroll').get(0).scrollHeight
+                        }, 1);
+                    } else {
+                        alert('Not able to send');
+                    }
+                });
                 $('.chat-content').append(data.content);
                 $("#scroll").animate({
                     scrollTop: $('#scroll').get(0).scrollHeight
