@@ -23,6 +23,7 @@ use App\Models\Events\Event;
 use App\Models\Notifications\Notification;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Carbon;
 
 class FundingCollection extends Base {
     /**
@@ -230,6 +231,20 @@ class FundingCollection extends Base {
         }
     }
 
+
+    public static function getPendingCollectionPercentage() {
+        $pendingCollectionPercentage = FundingCollection::where('is_received',0)->count();
+        $totalCollectionCount = FundingCollection::count();
+        $pendingPercentage = ($pendingCollectionPercentage / $totalCollectionCount)*100;
+        return $pendingPercentage . "%";
+    }
+
+    public static function getReceivedCollectionPercentage() {
+        $receivedCollectionPercentage = FundingCollection::where('is_received',1)->count();
+        $totalCollectionCount = FundingCollection::count();
+        $receivedPercentage = ($receivedCollectionPercentage / $totalCollectionCount)*100;
+        return $receivedPercentage . "%";
+    }
     public function notifications()
     {
         return $this->morphMany(Notification::class, 'type');
