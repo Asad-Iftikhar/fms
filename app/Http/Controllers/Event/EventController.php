@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Event;
 
 use App\Http\Controllers\AuthController;
 use App\Models\Events\Event;
+use App\Models\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 

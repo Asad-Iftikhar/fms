@@ -48,37 +48,37 @@
                     </div>
                 </div>
                 <div class="col-6">
-                        <section class="section">
-                            <div class="card">
-                                <div class="card-body pt-4 bg-grey"  id="scroll" style="height: 300px; overflow: auto;">
-                                    <div class="chat-content">
-                                        @foreach ($fundingCollection->messages as $message)
-                                            {!! $message->getMessageHtml() !!}
-                                        @endforeach
-                                    </div>
+                    <section class="section">
+                        <div class="card">
+                            <div class="card-body pt-4 bg-grey"  id="scroll" style="height: 300px; overflow: auto;">
+                                <div class="chat-content">
+                                    @foreach ($fundingCollection->messages as $message)
+                                        {!! $message->getMessageHtml() !!}
+                                    @endforeach
                                 </div>
-                                <form method="post" id="chatForm" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="card-footer">
-                                        <div class="message-form d-flex flex-direction-column align-items-center">
-                                            <div class="d-flex flex-grow-1 ml-4">
-                                                <input id="chat_message" name="content" type="text" class="form-control"
-                                                       placeholder="Type your message..">
-                                                <input type="file" name="chat_image" id="chat-image"
-                                                       class="btn custom-file-input" style="width: 45%">
-                                                <button id="send" name="send" class="btn btn-success">
-                                                    Send
-                                                </button>
-                                                <input type="hidden" name="collection_id" id="collection_id"
-                                                       value="{{ $fundingCollection->id }}">
-                                                <input type="hidden" name="user_id" id="user_id"
-                                                       value="{{ $fundingCollection->user_id }}">
-                                            </div>
+                            </div>
+                            <form method="post" id="chatForm" enctype="multipart/form-data">
+                                @csrf
+                                <div class="card-footer">
+                                    <div class="message-form d-flex flex-direction-column align-items-center">
+                                        <div class="d-flex flex-grow-1 ml-4">
+                                            <input id="chat_message" name="content" type="text" class="form-control"
+                                                   placeholder="Type your message..">
+                                            <input type="file" name="chat_image" id="chat-image"
+                                                   class="btn custom-file-input" style="width: 45%">
+                                            <button id="send" name="send" class="btn btn-success">
+                                                Send
+                                            </button>
+                                            <input type="hidden" name="collection_id" id="collection_id"
+                                                   value="{{ $fundingCollection->id }}">
+                                            <input type="hidden" name="user_id" id="user_id"
+                                                   value="{{ $fundingCollection->user_id }}">
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                        </section>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
                 </div>
             </div>
         </section>
@@ -87,7 +87,6 @@
 @section('javascript')
     @parent
     <script src="{!! asset('assets/js/pusher.min.js') !!}"></script>
-    <script src="http://homestead.test/assets/js/jquery-3.6.1.min.js"></script>
 
     <script>
         $(document).ready(function () {

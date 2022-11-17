@@ -78,7 +78,7 @@
                                 <select name="guests[]" class="choices form-select multiple-remove"
                                         multiple="multiple">
                                     @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->username}}</option>
+                                        <option {{ (in_array($user->id, old( 'guests', [])))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -142,35 +142,71 @@
                             <h6>Collections from users</h6>
                         </div>
                     </div>
-                    <div class="col-md-8" id="participant_fieldset">
-                        <div class="row collections-row" style="display: none">
-                            <div class="col-md-6 mb-4">
-                                <div class="form-group">
-                                    <label for="UserSelection0">Select multiple users for collection</label>
-                                    <select id="UserSelection0" name="collection_users[0][]" class="choices form-select multiple-remove"
-                                            multiple="multiple">
-                                        @foreach($users as $user)
-                                            <option value="{{$user->id}}">{{$user->username}}</option>
-                                        @endforeach
-                                    </select>
+                    <?php $counter = 1 ?>
+                    @if( !empty (old('collection_users')) )
+                        <div class="col-md-8" id="participant_fieldset">
+                            @foreach(old('collection_users') as $key=>$collection)
+                                <div class="row collections-row" style="display: none">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-group">
+                                            <label for="UserSelection{{$key}}">Select multiple users for collection</label>
+                                            <select id="UserSelection{{$key}}" name="collection_users[{{$key}}][]" class="choices form-select multiple-remove"
+                                                    multiple="multiple">
+                                                @foreach($users as $user)
+                                                    <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="amount-input">Amount</label>
+                                            {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
+                                            <input type="number" data-id="UserSelection{{$key}}" value="{{ old('amount')[$key] }}"
+                                                   class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
+                                                   placeholder="Amount" name="amount[{{$key}}]" id="amount-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 justify-content-end d-flex">
+                                        <div class="form-group py-4">
+                                            <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="amount-input">Amount</label>
-                                    {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
-                                    <input type="number" data-id="UserSelection0" value="{{ old('amount[0]') }}"
-                                           class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
-                                           placeholder="Amount" name="amount[0]" id="amount-input">
+                                <?php $counter++ ?>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="col-md-8" id="participant_fieldset">
+                            <div class="row collections-row" style="display: none">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-group">
+                                        <label for="UserSelection0">Select multiple users for collection</label>
+                                        <select id="UserSelection0" name="collection_users[0][]" class="choices form-select multiple-remove"
+                                                multiple="multiple">
+                                            @foreach($users as $user)
+                                                <option value="{{$user->id}}">{{$user->username}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2 justify-content-end d-flex">
-                                <div class="form-group py-4">
-                                    <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="amount-input">Amount</label>
+                                        {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
+                                        <input type="number" data-id="UserSelection0" value="{{ old('amount[0]') }}"
+                                               class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
+                                               placeholder="Amount" name="amount[0]" id="amount-input">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 justify-content-end d-flex">
+                                    <div class="form-group py-4">
+                                        <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="row collections-row" style="display: none">
                         <div class="col-md-12">
@@ -195,13 +231,12 @@
 
 <script>
 
+    let Counter = {{ $counter }};
     $( document ).ready(function() {
         if($('.payment_mode_radio:checked').val() == 1) {
-            console.log('hide');
             $('#cash-by-collections-div').hide();
             $('.collections-row').hide();
         }else {
-            console.log('show');
             $('#cash-by-collections-div').show();
             $('.collections-row').show();
         }
@@ -218,7 +253,6 @@
             $('.collections-row').hide();
         }
     });
-    let Counter = 1;
     // jquery.repeater
     $(function () {
         $(document).on('click', '.btn-add', function (e) {
@@ -268,11 +302,6 @@
                 selectedUser.push(parseInt($(option).val()));
             }
         });
-        /*let selectedValues = values.map(function (Option, Sec) {
-           return $(Sec).val();
-        });
-        console.log(selectedValues);*/
-        // alert('array ready');
 
         $('.choices').find('.choices__item--choice').show();
         if(selectedUser){
@@ -300,7 +329,6 @@
                 totalCollections += ($(Element).val())*($( '#' + selectUserFieldId + ' option:selected' ).length);
 
             });
-            console.log(totalCollections);
             $('#cash-by-collections-input').val(totalCollections);
             $('#cash-by-funds-input').val(Math.min(totalFunds,(totalCost-totalCollections)));
         }

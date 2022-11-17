@@ -17,6 +17,7 @@
 </head>
 <body>
 <div id="app">
+
     <div id="main" class='layout-navbar'>
         <header style="border-bottom: 1px solid #00000021">
             <nav class="navbar navbar-expand navbar-light ">
@@ -39,12 +40,33 @@
                                 <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                    aria-expanded="false">
                                     <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                                    <span class="badge bg-danger rounded-circle position-relative unread-notification-badge" style="bottom: 12px; right: 12px">{{ Auth::user()->countUserUnreadNotifications() }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <h6 class="dropdown-header">Notifications</h6>
+                                    @if( Auth::user()->getUserLatestNotifications()->count() > 0 )
+                                        <li>
+                                            <h6 class="dropdown-header">Notifications</h6>
+                                        </li>
+                                        @foreach( Auth::user()->getUserLatestNotifications() as $notification )
+                                            <li class="{{ empty($notification->read_at)?'bg-light':'' }}">
+                                                <a data-id="{{ $notification->id }}" data-href="{{ url($notification->redirect_url) }}" class="dropdown-item notification-link">
+                                                    <b>{{ $notification->title }}</b>
+                                                    <br>
+                                                    {{ substr($notification->description,0,40).'...' }}
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li>
+                                            <h6 class="dropdown-header">No Notifications Found</h6>
+                                        </li>
+                                    @endif
+                                    <hr>
+                                    <li class="text-center">
+                                        <a href="{{ url('notifications') }}" class="dropdown-item">
+                                            <h6>See All Notifications</h6>
+                                        </a>
                                     </li>
-                                    <li><a class="dropdown-item">No notification available</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -52,14 +74,14 @@
                             <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                 <div class="user-menu d-flex">
                                     <div class="user-name text-end me-3">
-                                        <h6 class="mb-0 text-gray-600">{{ Auth::user()->first_name.' '.Auth::user()->last_name }}</h6>
+                                        <h6 class="mb-0 text-gray-600">{{ Auth::user()->getFullName() }}</h6>
                                         @if(Auth::user()->can('admin'))
                                             <p class="mb-0 text-sm text-gray-600">Administrator</p>
                                         @endif
                                     </div>
                                     <div class="user-img d-flex align-items-center">
                                         <div class="avatar avatar-md">
-                                            <img src="{{ asset('assets/images/faces/1.jpg') }}">
+                                            <img src="{{ Auth::user()->getUserAvatar() }}">
                                         </div>
                                     </div>
                                 </div>
@@ -129,6 +151,33 @@
 @section('javascript')
     <script src="{!! asset("assets/js/bootstrap.bundle.min.js") !!}"></script>
     <script src="{!! asset("assets/js/jquery-3.6.1.min.js") !!}"></script>
+
+    <script>
+        // Ajax request to mark notification as Read
+        $('.notification-link').on('click', function (){
+            markNotificationRead(this);
+        });
+        function markNotificationRead(element) {
+            let redirectUrl = $(element).data("href");
+            let notificationId = $(element).data("id");
+            $.ajax({
+                type:'POST',
+                url: "{{ url('mark-notification-read') }}",
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "notification_id": notificationId
+                },
+                success:function(res) {
+                    if ( redirectUrl != '#' ) {
+                        window.location = redirectUrl;
+                    }
+                    $('.unread-notification-badge').html(res.unread_count);
+                }
+            });
+        }
+    </script>
+
 @show
 </body>
 </html>

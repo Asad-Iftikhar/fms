@@ -39,6 +39,14 @@ Route::get( 'account/setting/remove-avatar', 'Account\AccountController@removeAv
 Route::get( 'account/setting/change-password', 'Account\AccountController@getProfileSettings' );
 Route::post( 'account/setting/change-password', 'Account\AccountController@postChangePassword' );
 
+# Notifications
+Route::get( '/notifications', 'Notification\NotificationController@notifications' );
+Route::post( 'get-notifications', 'Notification\NotificationController@getNotifications' );
+
+# Mark Notifications as Read
+Route::post( 'mark-all-notifications-read', 'Notification\NotificationController@markAllRead' );
+Route::post( 'mark-notification-read', 'Notification\NotificationController@markNotificationRead' );
+
 
 # Login
 Route::get( 'account/login', 'AuthController@index' );
@@ -122,7 +130,6 @@ Route::post('admin/funding/collections/create','Admin\Fundings\AdminFundingColle
 #Admin Update Funding Collection
 Route::get('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@getEditFundingCollection');
 Route::post('admin/funding/collections/edit/{id}', 'Admin\Fundings\AdminFundingCollectionController@postEditFundingCollection');
-Route::post('admin/funding/collections/{id}/sendMessage','Admin\Fundings\AdminFundingCollectionController@sendMessage');
 
 #Admin Delete Funding collection
 Route::get('admin/funding/collections/delete/{id}','Admin\Fundings\AdminFundingCollectionController@deleteFundingCollection');

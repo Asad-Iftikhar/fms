@@ -2,11 +2,11 @@
 
 namespace App\Models\Users;
 
-
 use App\Models\Base;
-use App\Models\Fundings\FundingCollectionMessage;
+use App\Models\Events\Event;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Media\Media;
+use App\Models\Notifications\Notification;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
@@ -82,7 +82,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function fundingCollectionsUser() {
         return $this->hasMany(FundingCollection::class,'user_id');
@@ -93,6 +93,13 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      */
     public function messages() {
         return $this->hasMany(FundingCollectionMessage::class, 'from_user');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function notification() {
+        return $this->hasMany(Notification::class,'user_id');
     }
 
     /**
@@ -252,6 +259,69 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         } else {
             return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-success">Activate</a>';
         }
+    }
+
+
+    /**
+     * Get User Latest Unread Notifications
+     *
+     * @return string
+     */
+    public function countUserUnreadNotifications() {
+        return $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->count();
+
+    }
+
+    /**
+     * Get User Latest Unread Notifications
+     *
+     * @return string
+     */
+    public function getAllUserUnreadNotifications() {
+        return $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->get();
+
+    }
+
+    /**
+     * Get User Latest Unread Notifications
+     *
+     * @return string
+     */
+    public function getUserLatestNotifications() {
+        $notifications = $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6)->get();
+        foreach ( $notifications as $notification ) {
+            if( $notification->type instanceof Event ) {
+                $notification->redirect_url = 'account/event/'.$notification->type->id.'/'.$notification->type->name ;
+            } elseif ( $notification->type instanceof FundingCollection ) {
+                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+            } elseif ( $notification->type instanceof User ) {
+                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+            } else {
+                $notification->redirect_url = '#' ;
+            }
+        }
+        return $notifications;
+    }
+
+    /**
+     * Get User Latest Unread Notifications
+     *
+     * @return string
+     */
+    public function getUserNotifications( $offset = 0, $limit = 6) {
+        $notifications = $this->notification()->where('user_type', '=', 'user')->orderBy('created_at', 'DESC')->skip($offset)->take($limit)->get();
+        foreach ( $notifications as $notification ) {
+            if( $notification->type instanceof Event ) {
+                $notification->redirect_url = 'account/event/'.$notification->type->id.'/'.$notification->type->name ;
+            } elseif ( $notification->type instanceof FundingCollection ) {
+                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+            } elseif ( $notification->type instanceof User ) {
+                $notification->redirect_url = '#' ;
+            } else {
+                $notification->redirect_url = '#' ;
+            }
+        }
+        return $notifications;
     }
 
     /**

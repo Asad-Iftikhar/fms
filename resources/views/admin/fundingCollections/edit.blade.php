@@ -134,9 +134,7 @@
     <script>
         $(document).ready(function () {
             $("#funding_type_id").change(function () {
-                console.log('#funding_type_id option[value="' + $(this).val() + '"]');
                 let amount = $('#funding_type_id option[value="' + $(this).val() + '"]').data('amount');
-                console.log(amount);
                 $("#amount").val(amount);
             });
         });
