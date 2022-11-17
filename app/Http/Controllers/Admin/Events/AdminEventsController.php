@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin\Events;
 
+use App\Events\EventNotification;
 use App\Http\Controllers\AdminController;
 use App\Mail\InviteGuestMail;
 use App\Mail\InviteParticipantMail;
 use App\Mail\RemindMail;
 use App\Models\Events\Event;
+use App\Models\Notifications\Notification;
 use App\Models\Users\User;
 use App\Models\Events\EventGuests;
 use App\Models\Fundings\FundingCollection;
@@ -15,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Mail;
+use App\Jobs\InviteAllParticipants;
+use App\Jobs\RemindAllParticipants;
 
 class AdminEventsController extends AdminController {
     //
@@ -52,29 +56,25 @@ class AdminEventsController extends AdminController {
      */
     public function postCreateEvent ( Request $request ) {
         //  Validate Form
-        if($request->input('status') == 'draft'){
-            $rules = array (
-                'name' => 'required',
-                'description' => 'nullable',
-                'event_date' => 'nullable|date',
-                'status' => 'required',
-                'event_cost' => 'nullable|integer',
-                'payment_mode' => 'required',
-                'guests' => 'nullable',
-                'cash_by_funds' => 'nullable|integer',
-                'cash_by_collections' => 'nullable|integer',
-            );
+        $rules = array (
+            'name' => 'required',
+            'description' => 'nullable',
+            'event_date' => 'nullable|date',
+            'status' => 'required',
+            'event_cost' => 'nullable|integer',
+            'payment_mode' => 'required',
+            'guests' => 'nullable',
+            'cash_by_funds' => 'nullable|integer',
+            'cash_by_collections' => 'nullable|integer',
+            'event_cost' => 'nullable|integer',
+        );
+        if ( $request->input('status') == 'draft') {
+            $rules['event_date'] = 'nullable|date';
+        } elseif ( $request->input('status') == 'draft' ) {
+            $rules['event_date'] = 'required|date';
         } else {
-            $rules = array (
-                'name' => 'required',
-                'description' => 'nullable',
-                'event_date' => 'required|date',
-                'status' => 'required',
-                'event_cost' => 'required|integer',
-                'payment_mode' => 'required',
-                'guests' => 'nullable',
-                'cash_by_funds' => 'required|integer',
-            );
+            $rules['event_cost'] = 'required|integer';
+            $rules['event_date'] = 'required|date';
         }
         $validator = Validator::make( request()->all(), $rules );
         if ( $validator->passes() ) {
@@ -87,17 +87,17 @@ class AdminEventsController extends AdminController {
             $event->payment_mode = $request->input('payment_mode');
             $event->cash_by_funds = $request->input('cash_by_funds');
             $event->created_by = Auth::user()->id;
-            if ( $event->status == 'active' ) {
-                if ( $event->payment_mode == 2 ) {
-                    if( ($event->cash_by_funds + $request->input('cash_by_collections'))  != $event->event_cost ) {
-                        return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event Cost should be equal to collections and funds');
-                    }
-                } else {
-                    if( $event->cash_by_funds < $event->event_cost ) {
-                        return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be active ');
-                    }
-                }
-            }
+//            if ( $event->status == 'active' ) {
+//                if ( $event->payment_mode == 2 ) {
+//                    if( ($event->cash_by_funds + $request->input('cash_by_collections'))  != $event->event_cost ) {
+//                        return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event Cost should be equal to collections and funds');
+//                    }
+//                } else {
+//                    if( $event->cash_by_funds < $event->event_cost ) {
+//                        return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be active ');
+//                    }
+//                }
+//            }
             if ( $event->status == 'finished' ) {
                 if ( $event->payment_mode == 2 ) {
                     return redirect()->back()->withInput()->with('error', 'Collections are not marked as paid so you cant save event as finished ');
@@ -113,18 +113,23 @@ class AdminEventsController extends AdminController {
                     if( $amounts = request()->input( 'amount', array() )){
                         $users=[];
                         foreach( $amounts as $key=>$amount ) {
-                            $users = request()->input( 'collection_users' );
-                            $users = $users[$key];
-                            foreach($users as $user){
-                                $fundingCollection = new fundingCollection;
-                                $fundingCollection->user_id = $user;
-                                $fundingCollection->amount = $amount;
-                                $fundingCollection->event_id = $event->id;
-                                $fundingCollection->is_received = 0;
-                                $fundingCollection->save();
+                            if( $amount > 0 ) {
+                                $users = request()->input( 'collection_users' );
+                                $users = $users[$key];
+                                foreach($users as $user){
+                                    $fundingCollection = new fundingCollection;
+                                    $fundingCollection->user_id = $user;
+                                    $fundingCollection->amount = $amount;
+                                    $fundingCollection->event_id = $event->id;
+                                    $fundingCollection->is_received = 0;
+                                    $fundingCollection->save();
+                                }
                             }
                         }
                     }
+                }
+                if( $event->status == 'active' || $event->status == 'finished' ) {
+                    event(new EventNotification($event, 'created'));
                 }
                 return redirect( 'admin/events/edit/'.$event->id )->with( 'success', 'Created Successfully !' );
             }else{
@@ -156,7 +161,8 @@ class AdminEventsController extends AdminController {
                 $collections[$element['amount']][] = $element->user_id;
             }
             $selectedUsers = json_encode($selectedUsers);
-            return view('admin.events.edit', compact('event','users', 'guestIds', 'totalFunds', 'collections', 'selectedUsers'));
+            $currentDate = \Illuminate\Support\Carbon::now()->toDateString();
+            return view('admin.events.edit', compact('event','users', 'guestIds', 'totalFunds', 'collections', 'selectedUsers', 'currentDate'));
         } else {
             return redirect('admin/events')->with( 'error', 'No Event Found !' );
         }
@@ -171,29 +177,25 @@ class AdminEventsController extends AdminController {
         //  Validate Form
         if( $event = Event::find($event_id) ) {
             $request = request();
-            if ($request->input('status') == 'draft') {
-                $rules = array(
-                    'name' => 'required',
-                    'description' => 'nullable',
-                    'event_date' => 'nullable|date',
-                    'status' => 'required',
-                    'event_cost' => 'nullable|integer',
-                    'payment_mode' => 'required',
-                    'guests' => 'nullable',
-                    'cash_by_funds' => 'nullable|integer',
-                    'cash_by_collections' => 'nullable|integer',
-                );
+            $rules = array (
+                'name' => 'required',
+                'description' => 'nullable',
+                'event_date' => 'nullable|date',
+                'status' => 'required',
+                'event_cost' => 'nullable|integer',
+                'payment_mode' => 'required',
+                'guests' => 'nullable',
+                'cash_by_funds' => 'nullable|integer',
+                'cash_by_collections' => 'nullable|integer',
+                'event_cost' => 'nullable|integer',
+            );
+            if ( $request->input('status') == 'draft') {
+                $rules['event_date'] = 'nullable|date';
+            } elseif ( $request->input('status') == 'draft' ) {
+                $rules['event_date'] = 'required|date';
             } else {
-                $rules = array(
-                    'name' => 'required',
-                    'description' => 'nullable',
-                    'event_date' => 'required|date',
-                    'status' => 'required',
-                    'event_cost' => 'required|integer',
-                    'payment_mode' => 'required',
-                    'guests' => 'nullable',
-                    'cash_by_funds' => 'required|integer',
-                );
+                $rules['event_cost'] = 'required|integer';
+                $rules['event_date'] = 'required|date';
             }
             $validator = Validator::make(request()->all(), $rules);
             if ($validator->passes()) {
@@ -214,18 +216,18 @@ class AdminEventsController extends AdminController {
                 }
                 $event->status = $request->input('status');
                 // Returning errors if some cases are not satisfied in active status
-                if ( $event->status == 'active' ) {
-                    // Return Error If Funds are insufficent and status is active
-                    if ( $event->payment_mode == 2 && $collectionPaid == 0 ) {
-                        if( ($event->cash_by_funds + $request->input('cash_by_collections'))  != $event->event_cost ) {
-                            return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event Cost should be equal to collections and funds');
-                        }
-                    } else {
-                        if( $event->cash_by_funds < $event->event_cost && $collectionPaid == 0 ) {
-                            return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be active ');
-                        }
-                    }
-                }
+//                if ( $event->status == 'active' ) {
+//                    // Return Error If Funds are insufficent and status is active
+//                    if ( $event->payment_mode == 2 && $collectionPaid == 0 ) {
+//                        if( ($event->cash_by_funds + $request->input('cash_by_collections'))  != $event->event_cost ) {
+//                            return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event Cost should be equal to collections and funds');
+//                        }
+//                    } else {
+//                        if( $event->cash_by_funds < $event->event_cost && $collectionPaid == 0 ) {
+//                            return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be active ');
+//                        }
+//                    }
+//                }
                 if ( $event->status == 'finished' ) {
                     if ( $event->payment_mode == 2 ) {
                         foreach( $event->fundingCollections()->get() as $collection ){
@@ -248,37 +250,36 @@ class AdminEventsController extends AdminController {
                         // If any collection is paid no need to update further things just return
                         return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !, Event Cost , Cash by Funds, Payment Mode and collections cannot be updated because someone has paid collection');
                     }
-                    // Delete all old collections
-                    fundingCollection::where('event_id',$event->id)->delete();
                     // Save collection
-                    if ($event->payment_mode == 2) {
-                        if ($amounts = request()->input('amount', array())) {
-                            foreach ($amounts as $key => $amount) {
-                                $users = request()->input('collection_users');
-                                $users = $users[$key];
-                                foreach ($users as $user) {
-                                    $fundingCollection = new fundingCollection;
-                                    $fundingCollection->user_id = $user;
-                                    $fundingCollection->amount = $amount;
-                                    $fundingCollection->event_id = $event->id;
-                                    $fundingCollection->is_received = 0;
-                                    $fundingCollection->save();
+                    if ( $event->payment_mode == 2 ) {
+                        if ( $amounts = request()->input( 'amount', array() ) ) {
+                            foreach ( $amounts as $key => $amount ) {
+                                if ( $amount > 0 ) {
+                                    $users = request()->input('collection_users');
+                                    $users = $users[$key];
+                                    foreach ($users as $user) {
+                                        $fundingCollection = fundingCollection::updateOrCreate(
+                                            ['user_id' => $user, 'event_id' => $event->id],
+                                            ['amount' => $amount, 'is_received' => 0]
+                                        );
+                                    }
                                 }
                             }
                         }
                     }
+                    if( $event->status == 'active' || $event->status == 'finished' ) {
+                        event( new EventNotification( $event, 'updated' ) );
+                    }
                     return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !');
                 } else {
-                    return redirect('admin/events/create')->withInput()->with('error', 'Something Went Wrong !');
+                    return redirect('admin/events/edit/' . $event->id)->withInput()->with('error', 'Something Went Wrong !');
                 }
             }
             // Return with errors
-            return redirect('admin/events/create')->withInput()->withErrors($validator);
+            return redirect('admin/events/edit/' . $event->id)->withInput()->withErrors($validator);
         }
         return redirect('admin/events');
     }
-
-
 
     /**
      * Soft Delete Event
@@ -444,23 +445,27 @@ class AdminEventsController extends AdminController {
         $res['status'] = 0;
         $collectionId = $request->input('id');
         if ( $collection = FundingCollection::find($collectionId) ) {
-            $collection->is_reminded = 1;
-            $collection->last_reminded = Carbon::now()->toDateTimeString();
-            if( $collection->save() ) {
-                $collection->email = $collection->user->email;
-                $collection->name = $collection->user->getFullName();
-                $collection->title = $collection->getCollectionTitle();
-                $collection->amount = $collection->amount;
-                try {
-                    //Email sending
-                    Mail::to($collection->email)->send(new RemindMail($collection));
-                    $res['reminded_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
-                    $res['btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
-                    $res['msg'] = 'Reminder sent successfully';
-                    $res['status'] = 1;
-                } catch (\Exception $e) {
-                    $res['msg'] = 'Something Went Wrong, Cannot Send Email';
+            if($collection->is_received == 0){
+                $collection->is_reminded = 1;
+                $collection->last_reminded = Carbon::now()->toDateTimeString();
+                if( $collection->save() ) {
+                    $collection->email = $collection->user->email;
+                    $collection->name = $collection->user->getFullName();
+                    $collection->title = $collection->getCollectionTitle();
+                    $collection->amount = $collection->amount;
+                    try {
+                        //Email sending
+                        Mail::to($collection->email)->send(new RemindMail($collection));
+                        $res['reminded_text'] = \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans();
+                        $res['btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
+                        $res['msg'] = 'Reminder sent successfully';
+                        $res['status'] = 1;
+                    } catch (\Exception $e) {
+                        $res['msg'] = 'Something Went Wrong, Cannot Send Email';
+                    }
                 }
+            } else {
+                $res['msg'] = 'Collection is already paid';
             }
         } else {
             $res['msg'] = 'Participant Not Found';
@@ -468,4 +473,55 @@ class AdminEventsController extends AdminController {
         return response()->json( $res );
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function inviteAll(Request $request) {
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
+        $eventId = $request->input('event_id');
+        if ( $event = Event::find($eventId) ) {
+            if($event->fundingCollections->count() > 0 || $event->getGuests->count() > 0){
+                InviteAllParticipants::dispatch($eventId);
+                $res['invited_text'] = 'Sending...';
+                $res['invite_btn_text'] = '<i class="iconly-boldSend"></i> Re Invite';
+                $res['msg'] = 'All participants are invited successfully.';
+                $res['status'] = 1;
+            }else{
+                $res['msg'] = 'No Participants Found';
+            }
+        } else {
+            $res['msg'] = 'Event Not Found';
+        }
+        return response()->json( $res );
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function remindAll(Request $request) {
+        $res = [
+            'msg' => 'Something Went Wrong, Please Try Again later',
+            'status' => 0
+        ];
+        $eventId = $request->input('event_id');
+        if ( $event = Event::find($eventId) ) {
+            if($event->fundingCollections->count() > 0){
+                RemindAllParticipants::dispatch($eventId);
+                $res['reminded_text'] = 'Sending...';
+                $res['remind_btn_text'] = '<i class="iconly-boldSend"></i> Remind again';
+                $res['msg'] = 'All participants are reminded successfully';
+                $res['status'] = 1;
+            }else{
+                $res['msg'] = 'No Participants Found';
+            }
+        } else {
+            $res['msg'] = 'Event Not Found';
+        }
+        return response()->json( $res );
+    }
 }

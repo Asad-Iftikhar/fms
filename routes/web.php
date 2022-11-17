@@ -42,6 +42,14 @@ Route::get( 'account/setting/remove-avatar', 'Account\AccountController@removeAv
 Route::get( 'account/setting/change-password', 'Account\AccountController@getProfileSettings' );
 Route::post( 'account/setting/change-password', 'Account\AccountController@postChangePassword' );
 
+# Notifications
+Route::get( '/notifications', 'Notification\NotificationController@notifications' );
+Route::post( 'get-notifications', 'Notification\NotificationController@getNotifications' );
+
+# Mark Notifications as Read
+Route::post( 'mark-all-notifications-read', 'Notification\NotificationController@markAllRead' );
+Route::post( 'mark-notification-read', 'Notification\NotificationController@markNotificationRead' );
+
 
 # Login
 Route::get( 'account/login', 'AuthController@index' );
@@ -146,9 +154,13 @@ Route::post( 'admin/events/edit/{id}', 'Admin\Events\AdminEventsController@postE
 #Admin Delete Event
 Route::get( 'admin/events/delete/{id}', 'Admin\Events\AdminEventsController@deleteEvent' );
 
-#Admin Ajax Requests of Event Participants
+#Admin Ajax Requests to Invite / Remind Event Participants
 Route::post( 'admin/events/invite-guest', 'Admin\Events\AdminEventsController@inviteGuest' );
 Route::post( 'admin/events/invite-participant', 'Admin\Events\AdminEventsController@inviteParticipant' );
 Route::post( 'admin/events/remind-participant', 'Admin\Events\AdminEventsController@remindParticipant' );
+
+#Admin Ajax Requests to Invite / Remind all Event Participants
+Route::post( 'admin/events/invite-all', 'Admin\Events\AdminEventsController@inviteAll' );
+Route::post( 'admin/events/remind-all', 'Admin\Events\AdminEventsController@remindAll' );
 
 

@@ -162,6 +162,41 @@
                                 <h6>Collections from users</h6>
                             </div>
                         </div>
+                        <?php $count = 1 ?>
+                        @if( !empty (old('collection_users')) )
+                            <div class="col-md-8" id="participant_fieldset">
+                                @foreach(old('collection_users') as $key=>$collection)
+                                    <div class="row collections-row" style="display: none">
+                                        <div class="col-md-6 mb-4">
+                                            <div class="form-group">
+                                                <label for="UserSelection{{$key}}">Select multiple users for collection</label>
+                                                <select id="UserSelection{{$key}}" name="collection_users[{{$key}}][]" class="choices form-select multiple-remove"
+                                                        multiple="multiple">
+                                                    @foreach($users as $user)
+                                                        <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="amount-input">Amount</label>
+                                                {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
+                                                <input type="number" data-id="UserSelection{{$key}}" value="{{ old('amount')[$key] }}"
+                                                       class="form-control quantity-inputs {!! $errors->has('amount') ? 'is-invalid' : '' !!} "
+                                                       placeholder="Amount" name="amount[{{$key}}]" id="amount-input">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 justify-content-end d-flex">
+                                            <div class="form-group py-4">
+                                                <button id="" class="btn-remove btn btn-danger"><i class="bi-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php $count++ ?>
+                                @endforeach
+                            </div>
+                        @else
                         <div class="col-md-8" id="participant_fieldset">
                             <?php  $count = 0 ?>
                             @foreach($collections as $key=>$collection)
@@ -195,7 +230,7 @@
                                 <?php  $count++ ?>
                             @endforeach
                         </div>
-
+                        @endif
                         <div class="row collections-row" style="display: none">
                             <div class="col-md-12">
                                 <button id="" class="btn-add btn btn-success"><i class="bi-plus-circle"></i> Add Row</button>
@@ -216,8 +251,19 @@
                         <div class="col-md-6">
                             <h4>Guests and Participants</h4>
                         </div>
-                        <div class="col-md-6">
-
+                        <div class="col-md-6 text-end">
+                            @if($event->event_date >= $currentDate || $event->status != 'finished')
+                            <button class="btn btn-primary ajax-all-btn" data-action="{{ url('admin/events/invite-all') }}" data-id="{{ $event->id }}">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <i class="iconly-boldSend"></i> Invite all
+                            </button>
+                            @endif
+                            @if($event->status != 'finished')
+                            <button class="btn btn-primary ajax-all-btn" data-action="{{ url('admin/events/remind-all') }}" data-id="{{ $event->id }}">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <i class="iconly-boldSend"></i> Remind all
+                            </button>
+                            @endif
                         </div>
                     </div>
                     <table class="table table-striped mb-0">
@@ -245,10 +291,12 @@
                                     <td class="last_invited">{{ (empty($guest->last_invited ))? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans() }}</td>
                                     <td class="">N/A</td>
                                     <td>
-                                        <button class="btn btn-info btn-sm ajax-btn" data-action="{{ url('admin/events/invite-guest') }}" data-id="{{ $guest->id }}">
-                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                            <i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite' }}
-                                        </button>
+                                        @if($event->event_date >= $currentDate || $event->status != 'finished')
+                                            <button class="btn btn-info btn-sm invite-btn ajax-btn" data-action="{{ url('admin/events/invite-guest') }}" data-id="{{ $guest->id }}">
+                                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                                <i class="iconly-boldSend"></i> {{ ($guest->is_invited == 0)?'Invite':'Re Invite' }}
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -263,14 +311,18 @@
                                 <td class="last_invited">{{ ( empty ( $collection->last_invited ) ) ? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans() }}</td>
                                 <td class="last_reminded">{{ ( empty ( $collection->last_reminded ) ) ? 'Not Reminded' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_reminded ))->diffForHumans() }}</td>
                                 <td>
-                                    <button class="btn btn-info btn-sm ajax-btn" data-action="{{ url('admin/events/invite-participant') }}" data-id="{{ $collection->id }}">
-                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                        <i class="iconly-boldSend"></i> {{ ($collection->is_invited == 0)?'Invite':'Re Invite' }}
-                                    </button>
-                                    <button class="btn btn-warning btn-sm ajax-btn" data-action="{{ url('admin/events/remind-participant') }}" data-id="{{ $collection->id }}">
-                                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                                        <i class="iconly-boldSend"></i> {{ ($collection->is_reminded == 0)?' Send Reminder':' Remind again' }}
-                                    </button>
+                                    @if($event->event_date >= $currentDate || $event->status != 'finished')
+                                        <button class="btn btn-info btn-sm invite-btn ajax-btn" data-action="{{ url('admin/events/invite-participant') }}" data-id="{{ $collection->id }}">
+                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            <i class="iconly-boldSend"></i> {{ ($collection->is_invited == 0)?'Invite':'Re Invite' }}
+                                        </button>
+                                    @endif
+                                    @if($collection->is_received == 0 || $event->status != 'finished')
+                                        <button class="btn btn-warning btn-sm remind-btn ajax-btn" data-action="{{ url('admin/events/remind-participant') }}" data-id="{{ $collection->id }}">
+                                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                            <i class="iconly-boldSend"></i> {{ ($collection->is_reminded == 0)?' Send Reminder':' Remind again' }}
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -399,7 +451,6 @@
         }
 
         // Ajax request to invite and remind participants and guests
-
         $('.ajax-btn').on('click', sendInvite);
         function sendInvite() {
             let clickedBtn = $(this);
@@ -432,6 +483,63 @@
                             }
                             if(res.btn_text) {
                                 $(clickedBtn).html(res.btn_text);
+                            }
+                            swal({
+                                title: 'Success',
+                                text: res.msg,
+                                icon: "success",
+                            }).then(() => {
+
+                            });
+                        } else {
+                            swal({
+                                title: 'Error',
+                                text: res.msg,
+                                icon: "error",
+                            }).then(() => {
+
+                            });
+                        }
+                    }, 100);
+
+                }
+            });
+        }
+
+
+        $('.ajax-all-btn').on('click', sendInvitesToAll);
+        function sendInvitesToAll() {
+            let clickedBtn = $(this);
+            let btnIcon = clickedBtn.find("span");
+            clickedBtn.attr("disabled", true);
+            btnIcon.removeClass("d-none");
+            let eventId = $(this).data('id');
+            let action = $(this).data('action');
+            clickedBtn.attr("disabled", true);
+            $.ajax({
+                type:'POST',
+                url: action,
+                dataType: "json",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "event_id": eventId
+                },
+                success:function(res) {
+                    setTimeout(function () {
+                        clickedBtn.attr("disabled", false);
+                        btnIcon.addClass("d-none");
+                        if ( res.status ) {
+                            if(res.invited_text) {
+                                $('.last_invited').html(res.invited_text);
+                            }
+                            if(res.reminded_text) {
+                                $('.last_reminded').html(res.reminded_text);
+                            }
+                            if(res.invite_btn_text) {
+                                $('.invite-btn').html(res.invite_btn_text);
+                            }
+                            if(res.remind_btn_text) {
+                                $('.remind-btn').html(res.remind_btn_text);
                             }
                             swal({
                                 title: 'Success',

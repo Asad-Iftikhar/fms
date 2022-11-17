@@ -4,9 +4,11 @@ use App\Http\Controllers\AuthorizedController;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\Notifications\Notification;
 
 
 class AccountController extends AuthorizedController {
+
 
     /**
      * Shows the account main page.
@@ -17,7 +19,8 @@ class AccountController extends AuthorizedController {
     public function getIndex() {
         // Get the user information
         $user = Auth::user();
-        return view( 'site/account/dashboard', compact( 'user' ) );
+        $notifications = Notification::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->limit(6)->get();
+        return view( 'site/account/dashboard', compact( 'user', 'notifications' ) );
     }
 
     /**

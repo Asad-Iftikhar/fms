@@ -20,6 +20,7 @@ namespace App\Models\Fundings;
 use App\Models\Base;
 use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Events\Event;
+use App\Models\Notifications\Notification;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
@@ -243,5 +244,9 @@ class FundingCollection extends Base {
         $totalCollectionCount = FundingCollection::count();
         $receivedPercentage = ($receivedCollectionPercentage / $totalCollectionCount)*100;
         return $receivedPercentage . "%";
+    }
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'type');
     }
 }

@@ -53,7 +53,6 @@
         // Simple Datatable
         $(document).ready(function()
         {
-            console.log("here");
             // DataTable
             $('#fundcollectionTable').DataTable({
                 processing: true,

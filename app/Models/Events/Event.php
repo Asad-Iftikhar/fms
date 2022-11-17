@@ -4,6 +4,7 @@ namespace App\Models\Events;
 
 use App\Models\Base;
 use App\Models\Fundings\FundingCollection;
+use App\Models\Notifications\Notification;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -44,14 +45,10 @@ class Event extends Base {
      * @var array
      */
     protected $fillable = array('name', 'description', 'created_by', 'event_date', 'event_cost', 'cash_by_funds', 'status', 'payment_mode');
-    /**
-     * @var mixed
-     */
 
     /**
      * @var mixed
      */
-
     public function fundingCollectionEvent() {
         return $this->hasMany(FundingCollection::class,'funding_collections')->withTimestamps();
     }
@@ -109,4 +106,10 @@ class Event extends Base {
             return '<span class="badge bg-danger">Finished</span>';
         }
     }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'type');
+    }
+
 }
