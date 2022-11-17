@@ -76,51 +76,36 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-xl-12">
+                    <div class="col-8">
                         <div class="card">
                             <div class="card-header">
-                                <h4>Latest Comments</h4>
+                                Overall Collection Percentage
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-lg">
+                                    <table class="table table-success table-striped">
                                         <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Comment</th>
+                                            <th style="width: 50%">Pending Collection</th>
+                                            <th>Received Collection</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
                                             <td class="col-3">
                                                 <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-md">
-                                                        <img src="assets/images/faces/5.jpg">
-                                                    </div>
-                                                    <p class="font-bold ms-3 mb-0">Si Cantik</p>
+                                                    <p class="font-bold ms-3 mb-0">{{ $pendingCollectionPercentage }}</p>
                                                 </div>
                                             </td>
                                             <td class="col-auto">
-                                                <p class=" mb-0">Congratulations on your graduation!</p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="col-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar avatar-md">
-                                                        <img src="assets/images/faces/2.jpg">
-                                                    </div>
-                                                    <p class="font-bold ms-3 mb-0">Si Ganteng</p>
-                                                </div>
-                                            </td>
-                                            <td class="col-auto">
-                                                <p class=" mb-0">Wow amazing design! Can you make another
-                                                    tutorial for
-                                                    this design?</p>
+                                                <p class="font-bold ms-3 mb-0">{{ $receivedCollectionPercentage }}</p>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <div class="card chart-container">
+                                        <canvas id="chart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -150,4 +135,33 @@
             </div>
         </section>
     </div>
+    @section('javascript')
+        @parent
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+        <script>
+            const ctx = document.getElementById("chart").getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["rice", "yam", "tomato", "potato",
+                        "beans", "maize", "oil"],
+                    datasets: [{
+                        label: 'Monthly Collection',
+                        backgroundColor: 'rgba(161, 198, 247, 1)',
+                        borderColor: 'rgb(47, 128, 237)',
+                        data: [300, 400, 200, 500, 800, 900, 200],
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                            }
+                        }]
+                    }
+                },
+            });
+        </script>
+    @stop
 @stop
