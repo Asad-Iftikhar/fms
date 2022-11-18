@@ -9,8 +9,24 @@
 
         {{--        Tabs For active and finished events--}}
         <div class="tab">
-            <button class="tablinks active" onclick="clickHandle(event, 'ReceivedCollection')">Received Collections <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages) }}</span></button>
-            <button class="tablinks" onclick="clickHandle(event, 'PendingCollection')">Pending Collections <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages) }}</span></button>
+            <button class="tablinks active" onclick="clickHandle(event, 'ReceivedCollection')">
+                Received Collections
+                @if (\App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages) > 0)
+                    <span class="badge rounded-pill bg-danger" style="font-size: 75%">
+                        {{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages) }}
+                    </span>
+                @else
+                @endif
+            </button>
+            <button class="tablinks" onclick="clickHandle(event, 'PendingCollection')">
+                Pending Collections
+                @if (\App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages) > 0)
+                <span class="badge rounded-pill bg-danger" style="font-size: 75%">
+                    {{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages) }}
+                </span>
+                @else
+                @endif
+            </button>
         </div>
 
         {{--        Received Collection listing--}}
@@ -43,8 +59,11 @@
                                                                         </div>
                                                                         <div class="mail-meta-item">
                                                                             <a href=" {{ url('collections/' . $collection->id ) }} ">
-                                                                                <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages, $collection->id) }}</span>
-                                                                                View
+                                                                                @if (\App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages, $collection->id) > 0)
+                                                                                <span class="badge rounded-pill bg-danger" style="font-size: 75%">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages, $collection->id) }}</span>
+                                                                                @else
+                                                                                @endif
+                                                                                    View
                                                                             </a>
                                                                         </div>
                                                                     </div>
@@ -118,8 +137,11 @@
                                                                         </div>
                                                                         <div class="mail-meta-item">
                                                                             <a href=" {{ url('collections/' . $collection->id ) }} ">
+                                                                                @if (\App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages, $collection->id) > 0)
                                                                                 <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages, $collection->id) }}</span>
-                                                                                View
+                                                                                @else
+                                                                                @endif
+                                                                                    View
                                                                             </a>
                                                                         </div>
                                                                     </div>

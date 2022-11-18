@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::get('admin/get-post-chart-data','Admin\AdminDashboardController@getMonthlyCollectionData');
-
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
 Route::get( 'collection/{id}', 'HomeController@getCollectionInfo' );
@@ -76,6 +73,8 @@ Route::get( 'account/logout', 'AuthController@getLogout' );
 */
 # Admin Dashboard
 Route::get( 'admin', 'Admin\AdminDashboardController@getIndex' );
+Route::get('admin/get-post-chart-data','Admin\AdminDashboardController@getMonthlyCollectionData');
+Route::get('admin/get-post-pie-chart-data','Admin\AdminDashboardController@getCollectionPercentage');
 
 #Admin users
 Route::get( 'admin/users', 'Admin\Users\AdminUsersController@getIndex' );

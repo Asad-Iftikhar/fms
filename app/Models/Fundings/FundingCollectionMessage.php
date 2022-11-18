@@ -12,11 +12,28 @@ use DB;
 
 class FundingCollectionMessage extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'funding_collection_messages';
 
+    /**
+     * @var string[]
+     */
     protected $fillable = ['content', 'from_user', 'collection_id'];
 
+    /**
+     * Boolean to check Pending Collection Messages
+     *
+     * @var PendingCollectionMessages
+     */
     public const PendingCollectionMessages = 0;
+
+    /**
+     * Boolean to check Received Collection Messages
+     *
+     * @var ReceivedCollectionMessages
+     */
     public const ReceivedCollectionMessages = 1;
 
     /**
@@ -112,6 +129,10 @@ class FundingCollectionMessage extends Model
 
     }
 
+    /**
+     * @param null $collectionId
+     * @return mixed
+     */
     public static function getUnreadMessagesCountByAdminId($collectionId = null) {
         $UnreadCountQuery = FundingCollectionMessage::where('collection_id',$collectionId)->where('is_read',0)
             ->leftJoin('funding_collections', function ($query) {
