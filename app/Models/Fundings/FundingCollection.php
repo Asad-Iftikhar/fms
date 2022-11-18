@@ -61,6 +61,9 @@ class FundingCollection extends Base {
         return $this->belongsTo(Event::class,'event_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function messages() {
         return $this->hasMany(FundingCollectionMessage::class,'collection_id')->orderBy('created_at','asc');
     }
@@ -231,20 +234,9 @@ class FundingCollection extends Base {
         }
     }
 
-
-    public static function getPendingCollectionPercentage() {
-        $pendingCollectionPercentage = FundingCollection::where('is_received',0)->count();
-        $totalCollectionCount = FundingCollection::count();
-        $pendingPercentage = ($pendingCollectionPercentage / $totalCollectionCount)*100;
-        return $pendingPercentage . "%";
-    }
-
-    public static function getReceivedCollectionPercentage() {
-        $receivedCollectionPercentage = FundingCollection::where('is_received',1)->count();
-        $totalCollectionCount = FundingCollection::count();
-        $receivedPercentage = ($receivedCollectionPercentage / $totalCollectionCount)*100;
-        return $receivedPercentage . "%";
-    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function notifications()
     {
         return $this->morphMany(Notification::class, 'type');
