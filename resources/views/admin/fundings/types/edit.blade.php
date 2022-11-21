@@ -29,12 +29,14 @@
                     <div class="row">
                         <div class="form-group mb-3">
                             <label for="description">Description</label>
+                            {!! $errors->first('description', '<small class="text-danger">:message</small>') !!}
                             <textarea type="text" class="form-control" rows="3"  id="description" name="description">{{ old('description', $fundingType->description) }}</textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group mb-3">
                                 <label for="amount">Amount</label>
+                                {!! $errors->first('amount', '<small class="text-danger">:message</small>') !!}
                                 <div class="col-md-12 mb-4">
                                     <input type="text" class="form-control {!! $errors->has('amount') ? 'is-invalid' : '' !!}" value="{{ old('amount', $fundingType->amount) }}" id="amount" name="amount" required/>
                                 </div>

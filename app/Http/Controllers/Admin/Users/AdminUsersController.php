@@ -62,6 +62,7 @@ class AdminUsersController extends AdminController {
             'dob' => 'nullable|date',
             'joining_date' => 'nullable|date',
             'phone' => 'nullable|min:11|unique:users',
+            'activated' => 'required',
             'password' => 'required|min:6',
             'confirm_password' => 'required|same:password'
 
@@ -82,6 +83,7 @@ class AdminUsersController extends AdminController {
             $user->dob = $request->input('dob');
             $user->joining_date = $request->input('joining_date');
             $user->gender = $request->input('gender');
+            $user->activated = $request->input('activated');
             $user->password = bcrypt($request->input('password'));
             if($user->save()){
                 $user->roles()->sync( request()->input( 'roles', array() ) );
@@ -136,6 +138,7 @@ class AdminUsersController extends AdminController {
                 'email' => 'email|required|unique:users,email,'.$user->id,
                 'dob' => 'nullable|date',
                 'joining_date' => 'nullable|date',
+                'activated' => 'required',
                 'phone' => 'nullable|min:11|unique:users,phone,'.$user->id,
                 'password' => 'nullable|required_with:password_confirmation|min:6|confirmed',
 
@@ -155,6 +158,7 @@ class AdminUsersController extends AdminController {
                 $user->dob = $request->input('dob');
                 $user->joining_date = $request->input('joining_date');
                 $user->gender = $request->input('gender');
+                $user->activated = $request->input('activated');
                 if ( $request->input('password') != '' ) {
                     $user->password = bcrypt($request->input('password'));
                 }

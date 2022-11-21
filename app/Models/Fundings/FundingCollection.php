@@ -245,6 +245,7 @@ class FundingCollection extends Base {
         $receivedPercentage = ($receivedCollectionPercentage / $totalCollectionCount)*100;
         return $receivedPercentage . "%";
     }
+
     public function notifications()
     {
         return $this->morphMany(Notification::class, 'type');

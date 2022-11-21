@@ -45,6 +45,7 @@ Route::post( 'account/setting/change-password', 'Account\AccountController@postC
 # Notifications
 Route::get( '/notifications', 'Notification\NotificationController@notifications' );
 Route::post( 'get-notifications', 'Notification\NotificationController@getNotifications' );
+Route::get( 'birthday-notification/{id}', 'Notification\NotificationController@birthdayNotification' );
 
 # Mark Notifications as Read
 Route::post( 'mark-all-notifications-read', 'Notification\NotificationController@markAllRead' );

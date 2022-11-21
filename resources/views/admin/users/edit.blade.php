@@ -158,11 +158,11 @@
                         <div class="col-md-6">
                             <h6>Activation Status</h6>
                             <div class="btn-group">
-                                <input type="radio" value="0" class="btn-check payment_mode_radio" name="payment_mode"
+                                <input type="radio" value="0" class="btn-check" name="activated"
                                        id="danger-outlined" {{ old ( 'activated', $user->activated ) == "0" ? 'checked' : '' }}
                                        autocomplete="off" checked>
                                 <label class="btn btn-outline-danger" for="danger-outlined">Inactive</label>
-                                <input type="radio" value="1" class="btn-check payment_mode_radio" name="payment_mode"
+                                <input type="radio" value="1" class="btn-check" name="activated"
                                        id="success-outlined" {{ old ( 'activated', $user->activated ) == "1" ? 'checked' : '' }}
                                        autocomplete="off">
                                 <label class="btn btn-outline-success" for="success-outlined">Active</label>

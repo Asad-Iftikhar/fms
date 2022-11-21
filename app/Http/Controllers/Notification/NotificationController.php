@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Notification;
 use App\Http\Controllers\AuthController;
 use App\Models\Events\Event;
 use App\Models\Notifications\Notification;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -26,6 +27,21 @@ class NotificationController extends AuthController
             $all_notifications = $user->getUserNotifications();
             return view("site.notifications.notifications", compact('all_notifications'));
         }
+    }
+
+    /**
+     * Get Home Page View
+     * @return \Illuminate\View\View
+     */
+    public function birthdayNotification($id)
+    {
+        $user =  Auth::user();
+        if( $notification = Notification::find($id) ) {
+            if( $notification->type instanceof User ) {
+                return view("site.notifications.birthday-notification", compact('notification'));
+            }
+        }
+        return abort(404);
     }
 
     /**
