@@ -16,6 +16,7 @@ Open the console and cd your project root directory and run following commands t
 `crontab -e`
 - Select the editor in order to add cronjob for example `'bin/nano/'`
 - Add cron command `* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1` in the file you just created using above mentioned step.
+- Running The Scheduler Locally: This command will run in the foreground and invoke the scheduler according to what you set the conditions until you terminate the command: `php artisan schedule:work`
 
 ## Pusher:
 - You can get the Pusher Channels PHP library via a composer package called pusher-php-server.`$ composer require pusher/pusher-php-server`
