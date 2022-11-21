@@ -90,7 +90,7 @@
                     <div class="card-header">
                         <h4>Collections Percentage</h4>
                         <div class="card apexcharts-canvas">
-                            <canvas id="piechart" style="width: 100%"></canvas>
+                            <canvas id="piechart" style="width: 100%; height: 200px;"></canvas>
                         </div>
                     </div>
                     <div class="card-content pb-4">
