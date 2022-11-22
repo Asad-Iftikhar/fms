@@ -76,37 +76,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                Overall Collection Percentage
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-success table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 50%">Pending Collection</th>
-                                            <th>Received Collection</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td class="col-3">
-                                                <div class="d-flex align-items-center">
-                                                    <p class="font-bold ms-3 mb-0">{{ $pendingCollectionPercentage }}</p>
-                                                </div>
-                                            </td>
-                                            <td class="col-auto">
-                                                <p class="font-bold ms-3 mb-0">{{ $receivedCollectionPercentage }}</p>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="card chart-container">
-                                        <canvas id="chart"></canvas>
-                                    </div>
-                                </div>
+                            <div class="card-body apexcharts-canvas">
+                                <canvas id="chart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -115,10 +88,14 @@
             <div class="col-12 col-lg-3">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Active Events</h4>
+                        <h4>Collections Percentage</h4>
+                        <div class="card apexcharts-canvas">
+                            <canvas id="piechart" style="width: 100%; height: 200px;"></canvas>
+                        </div>
                     </div>
                     <div class="card-content pb-4">
-                        <div class="upcommingevent ms-4">
+                        <h4>Active Events</h4>
+                        <div class="upcommingevent m-4" style="align-items: center;">
                             @if ($activeEvents->count())
                                 @foreach($activeEvents as $activeEvent)
                                     <i class="iconly-boldCalendar text-primary"></i>
@@ -137,30 +114,64 @@
     </div>
     @section('javascript')
         @parent
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+        <script src="{!! asset('assets/vendors/apexcharts/locales/Chart.js') !!}"></script>
         <script>
-            const ctx = document.getElementById("chart").getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'bar',
+            const graphChart = document.getElementById("chart").getContext('2d');
+            $.ajax({
+                method: 'GET',
+                url: '{{ url('admin/get-post-chart-data') }}',
                 data: {
-                    labels: ["rice", "yam", "tomato", "potato",
-                        "beans", "maize", "oil"],
-                    datasets: [{
-                        label: 'Monthly Collection',
-                        backgroundColor: 'rgba(161, 198, 247, 1)',
-                        borderColor: 'rgb(47, 128, 237)',
-                        data: [300, 400, 200, 500, 800, 900, 200],
-                    }]
+                    _token: '{!! csrf_token() !!}'
                 },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                            }
+                dataType: 'JSON',
+            }).done(function (response){
+                const myChart = new Chart(graphChart, {
+                    type: 'bar',
+                    data: {
+                        labels: response.month,
+                        datasets: [{
+                            label: 'Monthly Collection',
+                            backgroundColor: 'rgb(93, 218, 180)',
+                            borderColor: 'rgb(47, 128, 237)',
+                            data: response.collectionCount,
                         }]
-                    }
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                    min: 0,
+                                    max: response.max,
+                                }
+                            }]
+                        }
+                    },
+                });
+            });
+        </script>
+        <script>
+            const ctx1 = document.getElementById("piechart").getContext('2d');
+            $.ajax({
+                method: 'GET',
+                url: '{{ url('admin/get-post-pie-chart-data') }}',
+                data: {
+                    _token: '{!! csrf_token() !!}'
                 },
+                dataType: 'JSON',
+
+            }).done(function (response) {
+                const myChart = new Chart(ctx1, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ["Pendings", "Received"],
+                        datasets: [{
+                            label: 'Collections',
+                            data: [response.pendings, response.received],
+                            backgroundColor: ["#57CAEB", "#5DDAB4"]
+                        }]
+                    },
+                });
             });
         </script>
     @stop

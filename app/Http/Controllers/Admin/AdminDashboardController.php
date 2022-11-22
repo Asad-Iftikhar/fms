@@ -23,8 +23,6 @@ class AdminDashboardController extends AdminController {
         $totalFunds = FundingCollection::totalAvailableFunds();
         $totalPendings = FundingCollection::getOverallPendings();
         $totalCollection = FundingCollection::getTotalCollection();
-        $pendingCollectionPercentage = FundingCollection::getPendingCollectionPercentage();
-        $receivedCollectionPercentage = FundingCollection::getReceivedCollectionPercentage();
 
         //Total Members
         $UsersWithRoles = User::has('Roles')->get()->pluck('id');
@@ -34,9 +32,15 @@ class AdminDashboardController extends AdminController {
             $TotalUsers = User::where( 'activated', '=', true )->where( 'disabled', '=', false )->count();
         }
         // Show the page
-        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','activeUsersCount','activeEvents', 'pendingCollectionPercentage','receivedCollectionPercentage'));
+        return view( 'admin/dashboard/index', compact( 'TotalUsers', 'UsersWithRoles','totalFunds','totalPendings','totalCollection','activeUsersCount','activeEvents'));
     }
 
+    /**
+     * Get all records on the basis of created_at column
+     *
+     * @return array
+     * @throws \Exception
+     */
     function getAllMonths(){
         $monthArray = array();
         $collectionDates = FundingCollection::orderBy('created_at','ASC')->pluck('created_at');
@@ -52,11 +56,23 @@ class AdminDashboardController extends AdminController {
         return $monthArray;
     }
 
-    function getMonthlyCollectionCount( $month ){
-            $monthlyCollectionCount = FundingCollection::whereMonth('created_at',$month)->get()->count();
+    /**
+     * Sum of amount with respect to each month
+     *
+     * @param $month
+     * @return mixed
+     */
+    function getMonthlyCollectionCount($month ){
+            $monthlyCollectionCount = FundingCollection::whereMonth('created_at',$month)->get()->sum('amount');
             return $monthlyCollectionCount;
     }
 
+    /**
+     * json response
+     *
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
     function getMonthlyCollectionData(){
 
         $monthlyCollectionCountArray = array();
@@ -77,6 +93,29 @@ class AdminDashboardController extends AdminController {
             'max' => $max,
         );
 
-        return $monthlyCollectionDataArray;
+        return response()->json($monthlyCollectionDataArray);
+    }
+
+    /**
+     * Percentages of pending and received collections
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    function getCollectionPercentage(){
+
+        $pendingCollectionPercentage = FundingCollection::where('is_received',0)->count();
+        $totalCollectionCount = FundingCollection::count();
+        $pendingPercentage = round(($pendingCollectionPercentage / $totalCollectionCount)*100);
+
+        $receivedCollectionPercentage = FundingCollection::where('is_received',1)->count();
+        $totalCollectionCount = FundingCollection::count();
+        $receivedPercentage = round(($receivedCollectionPercentage / $totalCollectionCount)*100);
+
+        $collactionArray = array(
+            'pendings'=> $pendingPercentage,
+            'received'=> $receivedPercentage
+        );
+
+        return response()->json($collactionArray);
     }
 }

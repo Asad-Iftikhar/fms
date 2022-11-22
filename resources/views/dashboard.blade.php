@@ -99,7 +99,7 @@
                                                     <td>{{ $collection->getCollectionTypeName() }}</td>
                                                     <td>{{ $collection->amount }}</td>
                                                     <td>{{ $collection->getEvent() }}</td>
-                                                    <td><a href="{{ url('collection/' . $collection->id) }}">View</a></td>
+                                                    <td><a href="{{ url('collections/' . $collection->id) }}">View</a></td>
                                                 </tr>
                                             @endforeach
                                         @else
@@ -121,7 +121,7 @@
                         <h4>Active Events</h4>
                     </div>
                     <div class="card-content pb-4">
-                        <div class="upcommingevent ms-4">
+                        <div class="upcommingevent m-4" style="align-items: center;">
                             @if ($activeEvents->count())
                                 @foreach($activeEvents as $activeEvent)
                                     <i class="iconly-boldCalendar text-primary"></i>
