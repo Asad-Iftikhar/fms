@@ -232,7 +232,7 @@ class AdminFundingCollectionController extends AdminController
             $collection->collectionUserName = $collection->user->linkWithFullName();
             $collection->eventName = $collection->getEventName();
             $collection->paymentStatus = $collection->getPaymentStatusBadge();
-            $collection->action = (FundingCollectionMessage::getUnreadMessagesCountByAdminId($collection->id)?'<span class="badge rounded-pill bg-danger" style="font-size: 75%">'. FundingCollectionMessage::getUnreadMessagesCountByAdminId($collection->id) .'</span>':'').'&nbsp;&nbsp;<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
+            $collection->action = (FundingCollectionMessage::getAdminUnreadMessagesCountByCollectionId($collection->id)?'<span class="badge rounded-pill bg-danger" style="font-size: 75%">'. FundingCollectionMessage::getAdminUnreadMessagesCountByCollectionId($collection->id) .'</span>':'').'&nbsp;&nbsp;<a href="' . url('admin/funding/collections/edit') . '/' . $collection->id . '" class="edit btn btn-outline-info">Edit</a>&nbsp;&nbsp;<button onClick="confirmDelete(\'' . url('admin/funding/collections/delete') . '/' . $collection->id . '\')" class="delete-btn delete btn btn-outline-danger fa fa-trash">Delete</button>';
         }
 
         # response
