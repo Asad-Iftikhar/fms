@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text( 'description' );
             $table->integer( 'amount' );
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 };

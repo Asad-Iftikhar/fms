@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean( 'is_invited' )->default( 0 );
             $table->dateTime( 'last_invited' )->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -46,7 +46,6 @@ return new class extends Migration
             $table->string( 'description' )->nullable();
             $table->integer( 'level' );
             $table->timestamps();
-            $table->softDeletes();
         } );
 
         Schema::create( 'role_user', function (Blueprint $table) {

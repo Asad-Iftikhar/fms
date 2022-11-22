@@ -105,6 +105,9 @@ class AdminFundingTypeController extends AdminController {
     public function deleteFundingtypes($fundingtypeId) {
         $fundingtype = FundingType::find($fundingtypeId);
         if($fundingtype != null){
+            if($fundingtype->fundingCollections->first()){
+                return redirect()->back()->with('error', "Cannot Delete because it contain funding collections");
+            }
             $fundingtype->delete();
             return redirect()->back()->with('success', 'Deleted Successfully');
         } else {

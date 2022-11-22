@@ -28,7 +28,6 @@ return new class extends Migration
             $table->dateTime( 'last_reminded' )->nullable();
             $table->dateTime( 'last_invited' )->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 };
