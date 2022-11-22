@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PushNotificationEvent;
+use App\Jobs\BirthdayNotification;
 use App\Mail\resetpassMail;
 use App\Models\Fundings\FundingCollectionMessage;
 use App\Models\Fundings\FundingCollection;

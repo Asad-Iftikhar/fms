@@ -151,11 +151,7 @@ class AdminEventsController extends AdminController {
             $selectedUsers = $guestIds;
             $collectionsData = $event->fundingCollections()->get();
             $collections = [];
-            if ( $event->status == 'finished' ) {
-                $users = User::withTrashed()->get();
-            }else{
-                $users = User::all();
-            }
+            $users = User::all();
             foreach ($collectionsData as $element) {
                 array_push($selectedUsers, $element->user_id);
                 $collections[$element['amount']][] = $element->user_id;
@@ -210,9 +206,9 @@ class AdminEventsController extends AdminController {
                 $event->event_date = $request->input('event_date');
                 if(!($collectionPaid)){
                     // If any collection is paid following attributes will not be updated
-                    $event->event_cost = $request->input('event_cost');
                     $event->payment_mode = $request->input('payment_mode');
-                    $event->cash_by_funds = $request->input('cash_by_funds');
+//                    $event->event_cost = $request->input('event_cost');
+//                    $event->cash_by_funds = $request->input('cash_by_funds');
                 }
                 $event->status = $request->input('status');
                 // Returning errors if some cases are not satisfied in active status
@@ -230,14 +226,12 @@ class AdminEventsController extends AdminController {
 //                }
                 if ( $event->status == 'finished' ) {
                     if ( $event->payment_mode == 2 ) {
-                        foreach( $event->fundingCollections()->get() as $collection ){
-                            if ( $collection->is_received == 0 ) {
-                                // Return Error If All Collections are not Paid
-                                return redirect()->back()->withInput()->with('error', 'All Collections are not marked as paid so you cant save event as finished ');
-                            }
+                        if ( $event->fundingCollections()->where('is_received', '=', 0)->count() ) {
+                            // Return Error If All Collections are not Paid
+                            return redirect()->back()->withInput()->with('error', 'All Collections are not marked as paid so you cant save event as finished ');
                         }
                     } else {
-                        // Return Error If All Insufficent Funds are not Paid
+                        // Return Error If All Insufficent Funds
                         if( $event->cash_by_funds < $event->event_cost ) {
                             return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be finished ');
                         }
@@ -246,25 +240,31 @@ class AdminEventsController extends AdminController {
                 if ($event->save()) {
                     // Save Guests in event_guest table
                     $event->guests()->sync(request()->input('guests', array()));
-                    if( $collectionPaid ){
-                        // If any collection is paid no need to update further things just return
-                        return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !, Event Cost , Cash by Funds, Payment Mode and collections cannot be updated because someone has paid collection');
-                    }
+//                    if( $collectionPaid ){
+//                        // If any collection is paid no need to update further things just return
+//                        return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !, Event Cost , Cash by Funds, Payment Mode and collections cannot be updated because someone has paid collection');
+//                    }
                     // Save collection
                     if ( $event->payment_mode == 2 ) {
-                        if ( $amounts = request()->input( 'amount', array() ) ) {
+                        if ( $amounts = request()->input( 'amount', [] ) ) {
+                            $selectedUsers = [];
+                            $paidCollectionUsers = $event->fundingCollections()->where('is_received', 1)->pluck('user_id')->toArray();
                             foreach ( $amounts as $key => $amount ) {
                                 if ( $amount > 0 ) {
-                                    $users = request()->input('collection_users');
-                                    $users = $users[$key];
-                                    foreach ($users as $user) {
-                                        $fundingCollection = fundingCollection::updateOrCreate(
-                                            ['user_id' => $user, 'event_id' => $event->id],
-                                            ['amount' => $amount, 'is_received' => 0]
-                                        );
+                                    $inputUsers = request()->input('collection_users');
+                                    $usersByAmount = $inputUsers[$key];
+                                    foreach ($usersByAmount as $userId) {
+                                        array_push($selectedUsers, (int)$userId);
+                                        if( !in_array( $userId, $paidCollectionUsers ) ) {
+                                            FundingCollection::updateOrCreate(
+                                                ['user_id' => $userId, 'event_id' => $event->id],
+                                                ['amount' => $amount, 'is_received' => 0]
+                                            );
+                                        }
                                     }
                                 }
                             }
+                            FundingCollection::whereNotIn('user_id', array_unique($selectedUsers))->where('event_id', $event->id)->where('is_received', 0)->forceDelete();
                         }
                     }
                     if( $event->status == 'active' || $event->status == 'finished' ) {

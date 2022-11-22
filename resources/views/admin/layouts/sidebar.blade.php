@@ -68,6 +68,13 @@
                         </a>
                     </li>
                 @endif
+                <li @class(["sidebar-item", "active" => \Request::is('admin/notifications') || \Request::is('admin/notifications/*') ])>
+                    <a href="{{ url('admin/notifications') }}" class='sidebar-link'>
+                        <i class="bi bi-alarm"></i>
+                        <span>Notifications</span>
+                        <span class="badge bg-danger rounded-circle admin-unread-notification-badge">{{ \App\Models\Notifications\Notification::countAdminUnreadNotifications() }}</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

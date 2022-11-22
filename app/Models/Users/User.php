@@ -96,6 +96,14 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\morphMany
+     */
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'type');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function notification() {
@@ -295,7 +303,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
             } elseif ( $notification->type instanceof FundingCollection ) {
                 $notification->redirect_url = 'account/collection/'.$notification->type->id ;
             } elseif ( $notification->type instanceof User ) {
-                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+                $notification->redirect_url = 'birthday-notification/'. $notification->id ;
             } else {
                 $notification->redirect_url = '#' ;
             }
@@ -316,7 +324,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
             } elseif ( $notification->type instanceof FundingCollection ) {
                 $notification->redirect_url = 'account/collection/'.$notification->type->id ;
             } elseif ( $notification->type instanceof User ) {
-                $notification->redirect_url = '#' ;
+                $notification->redirect_url = 'birthday-notification/'. $notification->id ;
             } else {
                 $notification->redirect_url = '#' ;
             }
@@ -344,10 +352,10 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      * @return string
      */
     public function getFullName() {
-        if (is_null($this->firstname) && is_null($this->lastname)) {
+        if (is_null($this->first_name) && is_null($this->last_name)) {
             return '@'.$this->username;
         }
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     /**

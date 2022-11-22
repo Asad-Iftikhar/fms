@@ -70,7 +70,7 @@
             columnDefs: [
                 {
                     'orderable': false,
-                    'targets': [ 3 ]
+                    'targets': [ 3,4 ]
                 },
                 {
                     targets: -1,

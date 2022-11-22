@@ -73,5 +73,67 @@ class Notification extends Base {
         return $this->belongsTo(User::class,'user_id');
     }
 
+    /**
+     * Get Admin Latest Unread Notifications
+     *
+     * @return string
+     */
+    public static function countAdminUnreadNotifications() {
+        return Notification::where('user_type', '=', 'admin')->whereNull('read_at')->count();
+
+    }
+
+    /**
+     * Get User Latest Unread Notifications
+     *
+     * @return string
+     */
+    public static function getAllAdminUnreadNotifications() {
+        return Notification::where('user_type', '=', 'admin')->whereNull('read_at')->get();
+
+    }
+
+    /**
+     * Get Admin Latest Unread Notifications
+     *
+     * @return string
+     */
+    public static function getAdminLatestUnreadNotifications() {
+        $notifications = Notification::where('user_type', '=', 'admin')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6)->get();
+        foreach ( $notifications as $notification ) {
+            if( $notification->type instanceof Event ) {
+                $notification->redirect_url = 'admin/event/edit/'.$notification->type->id ;
+            } elseif ( $notification->type instanceof FundingCollection ) {
+                $notification->redirect_url = 'admin/funding/collections/edit/'.$notification->type->id ;
+            } elseif ( $notification->type instanceof User ) {
+                $notification->redirect_url = 'admin/users/edit/'.$notification->type->id ;
+            } else {
+                $notification->redirect_url = '#' ;
+            }
+        }
+        return $notifications;
+    }
+
+    /**
+     * Get Admin Latest Unread Notifications
+     *
+     * @return string
+     */
+    public static function getAdminNotifications( $offset = 0, $limit = 6) {
+        $notifications = Notification::where('user_type', '=', 'admin')->orderBy('created_at', 'DESC')->skip($offset)->take($limit)->get();
+        foreach ( $notifications as $notification ) {
+            if ( $notification->type instanceof Event ) {
+                $notification->redirect_url = 'admin/events/edit/'.$notification->type->id ;
+            } elseif ( $notification->type instanceof FundingCollection ) {
+                $notification->redirect_url = 'admin/funding/collections/edit/'.$notification->type->id ;
+            } elseif ( $notification->type instanceof User ) {
+                $notification->redirect_url = 'admin/users/edit/'.$notification->type->id ;
+            } else {
+                $notification->redirect_url = '#' ;
+            }
+        }
+        return $notifications;
+    }
+
 
 }
