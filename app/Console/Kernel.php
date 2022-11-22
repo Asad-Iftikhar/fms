@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('database:backup')->weeklyOn(1,'8:00');
-        $schedule->job(new BirthdayNotification)->everyMinute();
+        $schedule->job(new BirthdayNotification)->daily();
 
     }
 

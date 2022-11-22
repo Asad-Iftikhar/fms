@@ -33,8 +33,7 @@ class BirthdayNotification implements ShouldQueue
      */
     public function handle()
     {
-//        $birthday_users = User::where('activated', 1)->whereDate('dob', Carbon::today())->get();
-        $birthday_users = User::where('activated', 1)->get();
+        $birthday_users = User::where('activated', 1)->whereDay('dob', Carbon::now()->format('d'))->whereMonth('dob', Carbon::now()->format('m'))->get();
         if( $birthday_users->count() > 0 ){
             foreach ($birthday_users as $bday_user) {
                 $notification = new Notification();

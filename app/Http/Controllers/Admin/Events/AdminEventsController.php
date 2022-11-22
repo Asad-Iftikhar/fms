@@ -151,7 +151,7 @@ class AdminEventsController extends AdminController {
             $selectedUsers = $guestIds;
             $collectionsData = $event->fundingCollections()->get();
             $collections = [];
-            $users = User::withTrashed()->get();
+            $users = User::all();
             foreach ($collectionsData as $element) {
                 array_push($selectedUsers, $element->user_id);
                 $collections[$element['amount']][] = $element->user_id;

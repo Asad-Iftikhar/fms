@@ -352,10 +352,10 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      * @return string
      */
     public function getFullName() {
-        if (is_null($this->firstname) && is_null($this->lastname)) {
+        if (is_null($this->first_name) && is_null($this->last_name)) {
             return '@'.$this->username;
         }
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     /**

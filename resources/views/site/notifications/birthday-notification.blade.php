@@ -10,13 +10,27 @@
                 align-items: center;
                 justify-content: center;
                 height:100vh;
-                background-color: #00bbf9;
+                margin:0px;
             }
+            #bg-video{
+                position: absolute;
+                width: 100%;
+                height:100%;
+                z-index: -1;
+                background-color: rgba(0,0,0,0.7);
+            }
+            #birthday-video{
+                object-fit: cover;
+                position: absolute;
 
+                width: 100%;
+                height: 100vh;
+                z-index: -2;
+            }
             .birthdayCard {
                 position: relative;
                 width: 250px;
-                height:350px;
+                height:380px;
                 cursor: pointer;
                 transform-style: preserve-3d;
                 transform: perspective(2500px);
@@ -52,7 +66,7 @@
                 position: relative;
                 background-color: #fff;
                 width: 250px;
-                height:350px;
+                height:380px;
                 overflow: hidden;
                 transform-origin: left;
                 box-shadow: inset 100px 20px 100px rgba(0,0,0,.13), 30px 0 50px rgba(0,0,0,0.1);
@@ -217,7 +231,7 @@
                 position: absolute;
                 background-color: #fff;
                 width: 250px;
-                height:350px;
+                height:380px;
                 z-index:-1;
                 left:0;
                 top:0;
@@ -242,19 +256,22 @@
             }
 
             .name {
-                margin-left:150px;
+                margin-left:auto;
             }
 
         </style>
     </head>
     <body>
+        <div id="bg-video">
+        </div>
+        <video id="birthday-video" muted loop="true" autoplay src="{!! asset('assets/videos/birthday-video.mp4') !!}"></video>
         <div id="app">
             <div class="birthdayCard">
                 <div class="cardFront">
                     <div class="front-text">
                         <h3 class="happy">HAPPY</h3>
                         <h2 class="bday">BIRTHDAY</h2>
-                        <h3 class="toyou">to you!</h3>
+                        <h4 class="toyou">to you ! <br>{{ $notification->type->getFullName() }}</h4>
                     </div>
                     <div class="wrap-deco">
                         <div class="decorations"></div>
@@ -277,15 +294,15 @@
                         <h3 class="toyou">to you!</h3>
                     </div>
                     <div class="wishes">
-                        <p>Dear Friend,</p>
+                        <p>Dear {{ $notification->type->getFullName() }},</p>
                         <p>Happy birthday!! I hope your day is filled with lots of love and laughter! May all of your birthday wishes come true.</p>
-                        <p class="name">xxx</p>
+                        <p class="name">NextBridge</p>
+                        <br>
+                        <br>
+                        <small> Dated : {!! \Carbon\Carbon::parse($notification->created_at)->toDateString() !!}</small>
                     </div>
                 </div>
             </div>
         </div>
     </body>
-    <script>
-
-    </script>
 </html>
