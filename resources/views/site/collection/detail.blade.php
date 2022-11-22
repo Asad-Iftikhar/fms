@@ -10,75 +10,77 @@
 @section('content')
     <div class="page-content">
         <section class="section">
-            <div class="row">
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-6">
-                                    <h4>Collection Name :: <b>{{ $fundingCollection->getCollectionTypeName() }}</b></h4>
-                                </div>
-                                <div class="col-6">
-                            <span>
-                                <a href="{{ url('collections') }}" type="button" class="btn btn-primary"
-                                   style="float: right"><i class="iconly-boldArrow---Left-2"
-                                                           style="position: relative; top: 3px"></i> Back</a>
-                            </span>
+            <div class="card">
+                <div class="row p-2">
+                     <span class="mt-2">
+                        <a href="{{ url('collections') }}" type="button" class="btn btn-primary"
+                           style="float: right"><i class="iconly-boldArrow---Left-2" style="position: relative; top: 3px"></i> Back
+                        </a>
+                    </span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h4>Collection Name :: <b>{{ $fundingCollection->getCollectionTypeName() }}</b></h4>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <table class="table">
-                                    <tr>
-                                        <td>
-                                            <h5>Total Amount of Event :</h5>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-success" style="font-size: large">{{ $fundingCollection->amount . ' ' .'Rs' }}</span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><h5>Status :</h5></td>
-                                        <td><span class="badge bg-success" style="font-size: large">{{ $fundingCollection->getPaymentStatus() }}</span></td>
-                                    </tr>
-                                </table>
+                            <div class="card-body">
+                                <div class="row">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <h5>Total Amount of Event :</h5>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success" style="font-size: large">{{ $fundingCollection->amount . ' ' .'Rs' }}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><h5>Status :</h5></td>
+                                            <td><span class="badge bg-success" style="font-size: large">{{ $fundingCollection->getPaymentStatus() }}</span></td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-6">
-                    <section class="section">
-                        <div class="card">
-                            <div class="card-body pt-4 bg-grey"  id="scroll" style="height: 300px; overflow: auto;">
-                                <div class="chat-content">
-                                    @foreach ($fundingCollection->messages as $message)
-                                        {!! $message->getMessageHtml() !!}
-                                    @endforeach
-                                </div>
-                            </div>
-                            <form method="post" id="chatForm" enctype="multipart/form-data">
-                                @csrf
-                                <div class="card-footer">
-                                    <div class="message-form d-flex flex-direction-column align-items-center">
-                                        <div class="d-flex flex-grow-1 ml-4">
-                                            <input id="chat_message" name="content" type="text" class="form-control"
-                                                   placeholder="Type your message..">
-                                            <input type="file" name="chat_image" id="chat-image"
-                                                   class="btn custom-file-input" style="width: 45%">
-                                            <button id="send" name="send" class="btn btn-success">
-                                                Send
-                                            </button>
-                                            <input type="hidden" name="collection_id" id="collection_id"
-                                                   value="{{ $fundingCollection->id }}">
-                                            <input type="hidden" name="user_id" id="user_id"
-                                                   value="{{ $fundingCollection->user_id }}">
-                                        </div>
+                    <div class="col-md-6">
+                        <section class="section shadow p-2">
+                            <div class="card">
+                                <div class="card-body pt-4 bg-grey"  id="scroll" style="height: 300px; overflow: auto;">
+                                    <div class="chat-content">
+                                        @foreach ($fundingCollection->messages as $message)
+                                            {!! $message->getMessageHtml() !!}
+                                        @endforeach
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                    </section>
+                                <form method="post" id="chatForm" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="card-footer">
+                                        <div class="message-form d-flex flex-direction-column align-items-center">
+                                            <div class="d-flex flex-grow-1 ml-4">
+                                                <input id="chat_message" name="content" type="text" class="form-control"
+                                                       placeholder="Type your message..">
+                                                <input type="file" name="chat_image" id="chat-image"
+                                                       class="btn custom-file-input" style="width: 45%">
+                                                <button id="send" name="send" class="btn btn-success">
+                                                    Send
+                                                </button>
+                                                <input type="hidden" name="collection_id" id="collection_id"
+                                                       value="{{ $fundingCollection->id }}">
+                                                <input type="hidden" name="user_id" id="user_id"
+                                                       value="{{ $fundingCollection->user_id }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
                 </div>
             </div>
         </section>

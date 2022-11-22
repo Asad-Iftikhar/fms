@@ -66,7 +66,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <h6 class="text-muted font-semibold">Spended Collections</h6>
+                                        <h6 class="text-muted font-semibold">Paid Collections</h6>
                                         <h6 class="font-extrabold mb-0">{{$totalSpendings .' '.'Rs'}}</h6>
                                     </div>
                                 </div>
@@ -126,7 +126,14 @@
                                 @foreach($activeEvents as $activeEvent)
                                     <i class="iconly-boldCalendar text-primary"></i>
                                     {{'Event Name: ' . $activeEvent->name}}
+                                    @if(!empty($activeEvent->description))
                                     <p>{{'Event Description: '. $activeEvent->description}}</p>
+                                    @endif
+                                    <span style="float: right;">
+                                        <a href=" {{ url('events/' . $activeEvent->id . '/' . $activeEvent->name ) }} ">
+                                            View
+                                        </a>
+                                    </span>
                                     <hr>
                                 @endforeach
                             @else
