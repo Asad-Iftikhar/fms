@@ -263,12 +263,11 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     public function getChangeStatusButton() {
 
         if ($this->activated) {
-            return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-danger">Deactivate</a>';
+            return '<button onClick="confirmActiveDeactive(\''.url('admin/users/change-status').'/'. $this->id.'\')" class="btn btn-sm btn-outline-danger">Deactivate</button>';
         } else {
-            return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-success">Activate</a>';
+            return '<button onClick="confirmActiveDeactive(\''.url('admin/users/change-status').'/'. $this->id.'\')" class="btn btn-sm btn-outline-success">Activate</button>';
         }
     }
-
 
     /**
      * Get User Latest Unread Notifications
