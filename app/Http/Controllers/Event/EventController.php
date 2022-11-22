@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Event;
 
 use App\Http\Controllers\AuthController;
 use App\Models\Events\Event;
-use App\Models\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class EventController extends AuthController
 {
@@ -15,12 +13,10 @@ class EventController extends AuthController
      * Get Home Page View
      * @return \Illuminate\View\View
      */
-    public function getIndex()
-    {
+    public function getIndex() {
         if (!Auth::check()) {
             return view('site.account.login');
         } else {
-            $User = Auth::user();
             $activeEvents = Event::where('status', '=', 'active')->get();
             $finishedEvents = Event::where('status', '=', 'finished')->get();
             return view("site.event.index", compact('activeEvents', 'finishedEvents'));
@@ -31,8 +27,7 @@ class EventController extends AuthController
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function detail($id)
-    {
+    public function detail($id, $slug = null) {
         if ($event = Event::find($id)) {
             return view('site.event.detail', compact('event'));
         } else {

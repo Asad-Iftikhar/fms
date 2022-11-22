@@ -299,9 +299,9 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         $notifications = $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6)->get();
         foreach ( $notifications as $notification ) {
             if( $notification->type instanceof Event ) {
-                $notification->redirect_url = 'account/event/'.$notification->type->id.'/'.$notification->type->name ;
+                $notification->redirect_url = 'events/'.$notification->type->id.'/'.$notification->type->name ;
             } elseif ( $notification->type instanceof FundingCollection ) {
-                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+                $notification->redirect_url = 'collections/'.$notification->type->id ;
             } elseif ( $notification->type instanceof User ) {
                 $notification->redirect_url = 'birthday-notification/'. $notification->id ;
             } else {
@@ -320,9 +320,9 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         $notifications = $this->notification()->where('user_type', '=', 'user')->orderBy('created_at', 'DESC')->skip($offset)->take($limit)->get();
         foreach ( $notifications as $notification ) {
             if( $notification->type instanceof Event ) {
-                $notification->redirect_url = 'account/event/'.$notification->type->id.'/'.$notification->type->name ;
+                $notification->redirect_url = 'events/'.$notification->type->id.'/'.$notification->type->name ;
             } elseif ( $notification->type instanceof FundingCollection ) {
-                $notification->redirect_url = 'account/collection/'.$notification->type->id ;
+                $notification->redirect_url = 'collections/'.$notification->type->id ;
             } elseif ( $notification->type instanceof User ) {
                 $notification->redirect_url = 'birthday-notification/'. $notification->id ;
             } else {
