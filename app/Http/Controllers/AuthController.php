@@ -60,7 +60,7 @@ class AuthController extends Controller
                 $throttler->clear($request);
                 Auth::logoutOtherDevices(request()->input('password'));
                 return redirect()->intended('account')->with('success', 'You have successfully logged in.');
-            } elseif ( ( $user = User::where('activated',0)->get()->first() )) {
+            } elseif ( ( $user = User::where($field, $request->input('username'))->where('activated',0)->first() )) {
                 return redirect()->back()->withErrors(['username' => 'Contact moderator for account activation']);
             }
             return redirect()->back()->withErrors(['error' => 'Incorrect Email or Password!']);

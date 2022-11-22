@@ -65,8 +65,8 @@ class UsersTablesSeeder extends Seeder {
             'disabled' => 0,
             'dob' => date( '1999-07-23' ),
             'gender' => 'male',
-            'first_name' => 'Saadaan',
-            'last_name' => 'Ali'
+            'first_name' => 'Abdul',
+            'last_name' => 'Hannan'
         ) );
         $user_id = DB::table( 'role_user' )->insert( array(
             'role_id' => $role_id,

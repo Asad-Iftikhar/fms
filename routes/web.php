@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 # Dashboard
 Route::get( '/', 'HomeController@getIndex' );
-Route::get( 'account', 'HomeController@getIndex' );
 Route::get( 'collection/{id}', 'HomeController@getCollectionInfo' );
+Route::get( 'account', 'HomeController@getIndex' );
 
 #User Side Collection Route
 Route::get('collections','Collection\CollectionController@getIndex');

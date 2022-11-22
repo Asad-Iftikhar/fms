@@ -39,7 +39,7 @@
                                                                                 </span>
                                                                         </div>
                                                                         <div class="mail-meta-item">
-                                                                            <a href=" {{ url('event/' . $collection->id . '/' . $collection->name ) }} ">
+                                                                            <a href=" {{ url('events/' . $collection->id . '/' . $collection->name ) }} ">
                                                                                 View
                                                                             </a>
                                                                         </div>
@@ -113,7 +113,7 @@
                                                                             </span>
                                                                         </div>
                                                                         <div class="mail-meta-item">
-                                                                            <a href=" {{ url('event/' . $collection->id . '/' . $collection->name ) }} ">
+                                                                            <a href=" {{ url('events/' . $collection->id . '/' . $collection->name ) }} ">
                                                                                 View
                                                                             </a>
                                                                         </div>

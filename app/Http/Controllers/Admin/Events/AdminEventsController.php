@@ -207,23 +207,8 @@ class AdminEventsController extends AdminController {
                 if(!($collectionPaid)){
                     // If any collection is paid following attributes will not be updated
                     $event->payment_mode = $request->input('payment_mode');
-//                    $event->event_cost = $request->input('event_cost');
-//                    $event->cash_by_funds = $request->input('cash_by_funds');
                 }
                 $event->status = $request->input('status');
-                // Returning errors if some cases are not satisfied in active status
-//                if ( $event->status == 'active' ) {
-//                    // Return Error If Funds are insufficent and status is active
-//                    if ( $event->payment_mode == 2 && $collectionPaid == 0 ) {
-//                        if( ($event->cash_by_funds + $request->input('cash_by_collections'))  != $event->event_cost ) {
-//                            return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event Cost should be equal to collections and funds');
-//                        }
-//                    } else {
-//                        if( $event->cash_by_funds < $event->event_cost && $collectionPaid == 0 ) {
-//                            return redirect()->back()->withInput()->with('error', 'Not Enough Funds , Event cant be active ');
-//                        }
-//                    }
-//                }
                 if ( $event->status == 'finished' ) {
                     if ( $event->payment_mode == 2 ) {
                         if ( $event->fundingCollections()->where('is_received', '=', 0)->count() ) {
@@ -240,11 +225,10 @@ class AdminEventsController extends AdminController {
                 if ($event->save()) {
                     // Save Guests in event_guest table
                     $event->guests()->sync(request()->input('guests', array()));
-//                    if( $collectionPaid ){
-//                        // If any collection is paid no need to update further things just return
-//                        return redirect('admin/events/edit/' . $event->id)->with('success', 'Updated Successfully !, Event Cost , Cash by Funds, Payment Mode and collections cannot be updated because someone has paid collection');
-//                    }
                     // Save collection
+                    if ( $event->payment_mode == 1 ) {
+                        FundingCollection::where('event_id', $event->id)->where('is_received', 0)->delete();
+                    }
                     if ( $event->payment_mode == 2 ) {
                         if ( $amounts = request()->input( 'amount', [] ) ) {
                             $selectedUsers = [];
@@ -264,7 +248,7 @@ class AdminEventsController extends AdminController {
                                     }
                                 }
                             }
-                            FundingCollection::whereNotIn('user_id', array_unique($selectedUsers))->where('event_id', $event->id)->where('is_received', 0)->forceDelete();
+                            FundingCollection::whereNotIn('user_id', array_unique($selectedUsers))->where('event_id', $event->id)->where('is_received', 0)->delete();
                         }
                     }
                     if( $event->status == 'active' || $event->status == 'finished' ) {
@@ -282,7 +266,7 @@ class AdminEventsController extends AdminController {
     }
 
     /**
-     * Soft Delete Event
+     * Delete Event
      * @param $eventId
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -291,9 +275,12 @@ class AdminEventsController extends AdminController {
             if( $event->fundingCollections()->where('is_received',1)->first()){
                 return redirect()->back()->with('error', "Cannot Delete Because Collection is Paid");
             }
-            $event->delete();
+            if( $event->status == 'finished'){
+                return redirect()->back()->with('error', "Cannot Delete Because Event is Finished");
+            }
             $event->fundingCollections()->delete();
-
+            $event->getGuests()->delete();
+            $event->delete();
             return redirect()->back()->with('success', 'Deleted Successfully');
         } else {
             return redirect()->back()->with('error', "Event doesn't exists");

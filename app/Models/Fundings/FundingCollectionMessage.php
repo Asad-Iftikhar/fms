@@ -113,6 +113,7 @@ class FundingCollectionMessage extends Model
      * @param integer $userId
      * @param boolean|null $isPending
      * @param integer|null $collectionId
+     * @return integer
      */
     public static function getUnreadMessagesCountByUserId(int $userId, $isPending = null, $collectionId = null) {
 
@@ -130,15 +131,15 @@ class FundingCollectionMessage extends Model
     }
 
     /**
+     * Get Unread messages count for Admin User By collection Id
+     *
      * @param null $collectionId
      * @return mixed
      */
-    public static function getUnreadMessagesCountByAdminId($collectionId = null) {
-        $UnreadCountQuery = FundingCollectionMessage::where('collection_id',$collectionId)->where('is_read',0)
-            ->leftJoin('funding_collections', function ($query) {
-               $query->on('funding_collection_messages.collection_id','=','funding_collections.id')
-               ->where('funding_collection_messages.from_user','!=','funding_collections.user_id');
-            });
-        return $UnreadCountQuery->get()->count();
+    public static function getAdminUnreadMessagesCountByCollectionId($collectionId = null) {
+        $AdminUnreadCountQuery = FundingCollectionMessage::where('collection_id',$collectionId)->where('is_read',0)->whereHas('fundingCollection', function ($subQuery) use ($collectionId) {
+            $subQuery->whereColumn('user_id','=','from_user');
+        });
+        return $AdminUnreadCountQuery->get()->count();
     }
 }

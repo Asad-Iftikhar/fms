@@ -37,7 +37,6 @@ return new class extends Migration
             $table->boolean( 'disabled' )->default( 0 );
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes();
         });
 
         Schema::create( 'roles', function (Blueprint $table) {

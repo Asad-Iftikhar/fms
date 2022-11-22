@@ -102,7 +102,7 @@ class Notification extends Base {
         $notifications = Notification::where('user_type', '=', 'admin')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6)->get();
         foreach ( $notifications as $notification ) {
             if( $notification->type instanceof Event ) {
-                $notification->redirect_url = 'admin/event/edit/'.$notification->type->id ;
+                $notification->redirect_url = 'admin/events/edit/'.$notification->type->id ;
             } elseif ( $notification->type instanceof FundingCollection ) {
                 $notification->redirect_url = 'admin/funding/collections/edit/'.$notification->type->id ;
             } elseif ( $notification->type instanceof User ) {
