@@ -43,8 +43,6 @@
                                         @if(!empty($event->description))
                                         <td><h5>Description :</h5></td>
                                         <td><b><span style="font-size: large">{{ $event->description }}</span></b></td>
-                                        @else
-
                                         @endif
                                     </tr>
                                 </table>
@@ -86,7 +84,7 @@
                             @else
                                 <tr>
                                     <td align="center" colspan="7">
-                                        No Participants Found
+                                        No Data Found
                                     </td>
                                 </tr>
                             @endif
