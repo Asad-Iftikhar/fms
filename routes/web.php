@@ -26,7 +26,7 @@ Route::get('collections/{id}/markMessagesAsSeen','Collection\CollectionControlle
 
 #User Side Event Route
 Route::get('events','Event\EventController@getIndex');
-Route::get('event/{id}/{name}','Event\EventController@detail');
+Route::get('events/{id}/{name?}','Event\EventController@detail');
 
 # settings
 Route::get( 'account/setting/profile', 'Account\AccountController@getProfileSettings' );
@@ -40,7 +40,7 @@ Route::get( 'account/setting/change-password', 'Account\AccountController@getPro
 Route::post( 'account/setting/change-password', 'Account\AccountController@postChangePassword' );
 
 # Notifications
-Route::get( '/notifications', 'Notification\NotificationController@notifications' );
+Route::get( 'notifications', 'Notification\NotificationController@notifications' );
 Route::post( 'get-notifications', 'Notification\NotificationController@getNotifications' );
 Route::get( 'birthday-notification/{id}', 'Notification\NotificationController@birthdayNotification' );
 
