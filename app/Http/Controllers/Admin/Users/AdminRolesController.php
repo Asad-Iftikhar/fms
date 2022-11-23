@@ -126,6 +126,9 @@ class AdminRolesController extends AdminController {
             return redirect( 'admin/roles' )->with( 'error', 'Not allowed' );
         }
         if( $role = Role::find($RoleId) ) {
+            if($role->users->first()){
+                return redirect()->back()->with('error', "Role is assigned to a user , cannot delete");
+            }
             $role->delete();
             return redirect()->back()->with('success', 'Deleted Successfully');
         } else {

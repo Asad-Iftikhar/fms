@@ -259,7 +259,10 @@ class AdminFundingCollectionController extends AdminController
                 return redirect()->back()->with('success', 'Deleted Successfully');
             }
             else {
-                return redirect()->back()->with('error', "Cannot delete");
+                if( $fundingcollection->is_received == 1 ){
+                    return redirect()->back()->with('error', "Cannot delete because collection is paid");
+                }
+                return redirect()->back()->with('error', "Cannot delete this collection from here, Please go to Event and remove from there");
             }
         }
     }

@@ -48,14 +48,11 @@
     <script type="text/javascript" src="{{ asset('assets/DataTables-1.12.1/datatables.min.js') }}"></script>
     <script src="{{ asset('assets/js/sweetalert/sweetalert.min.js') }}"></script>
 
-<script type="text/javascript">
-
-    // Simple Datatable
-    $(document).ready(function()
-    {
+    <script type="text/javascript">
+    // Ajax Request to populate Datatable
+    $(document).ready(function() {
         // DataTable
-        $('#userdatatable').DataTable
-        ({
+        $('#userdatatable').DataTable({
             processing: true,
             serverSide: true,
             order: [[0, "desc"]],
@@ -78,10 +75,9 @@
                 }
             ]
         });
-
-
     });
 
+    // Sweetalert to confirm before Deleting User
     function confirmDelete(delUrl){
         swal({
             title: "Are you sure?",
@@ -92,6 +88,22 @@
         }).then((willDelete) => {
             if (willDelete) {
                 window.location.href = delUrl;
+            } else {
+
+            }
+        });
+    };
+    // Sweetalert to confirm before Activate4/Deactivate User
+    function confirmActiveDeactive(changeStatusUrl){
+        swal({
+            title: "Are you sure?",
+            text: "Are you sure you want to change the status of this user ?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willChange) => {
+            if (willChange) {
+                window.location.href = changeStatusUrl;
             } else {
 
             }

@@ -39,7 +39,9 @@
                                 <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                    aria-expanded="false">
                                     <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
-                                    <span class="badge bg-danger rounded-circle position-relative unread-notification-badge" style="bottom: 12px; right: 12px">{{ Auth::user()->countUserUnreadNotifications() }}</span>
+                                    @if( Auth::user()->getUserLatestNotifications()->count() > 0 )
+                                        <span class="badge bg-danger rounded-circle position-relative unread-notification-badge" style="bottom: 12px; right: 12px">{{ Auth::user()->countUserUnreadNotifications() }}</span>
+                                    @endif
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                     @if( Auth::user()->getUserLatestNotifications()->count() > 0 )
