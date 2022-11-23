@@ -111,11 +111,11 @@ class AdminDashboardController extends AdminController {
         $totalCollectionCount = FundingCollection::count();
         $receivedPercentage = round(($receivedCollectionPercentage / $totalCollectionCount)*100);
 
-        $collactionArray = array(
+        $collectionArray = array(
             'pendings'=> $pendingPercentage,
             'received'=> $receivedPercentage
         );
 
-        return response()->json($collactionArray);
+        return response()->json($collectionArray);
     }
 }
