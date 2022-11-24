@@ -24,7 +24,6 @@ return new class extends Migration
             $table->integer('cash_by_collections')->nullable();
             $table->enum('payment_mode',[1,2])->default(1);
             $table->enum('status',['draft','active','finished'])->default('draft');
-            $table->softDeletes();
             $table->timestamps();
         });
     }

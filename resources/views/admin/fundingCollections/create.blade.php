@@ -49,7 +49,7 @@
                                     <option>Select Funding Type</option>
                                     @foreach( $availableFundingTypes as $availableFundingType)
                                         <option
-                                            value="{{ $availableFundingType->id }}">{{ $availableFundingType->name }}</option>
+                                            value="{{ $availableFundingType->id }}">{{ $availableFundingType->name.' ('.$availableFundingType->amount.')' }}</option>
                                     @endforeach
                                 </select>
                             </div>

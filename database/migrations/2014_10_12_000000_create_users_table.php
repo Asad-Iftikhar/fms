@@ -37,7 +37,6 @@ return new class extends Migration
             $table->boolean( 'disabled' )->default( 0 );
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes();
         });
 
         Schema::create( 'roles', function (Blueprint $table) {
@@ -47,7 +46,6 @@ return new class extends Migration
             $table->string( 'description' )->nullable();
             $table->integer( 'level' );
             $table->timestamps();
-            $table->softDeletes();
         } );
 
         Schema::create( 'role_user', function (Blueprint $table) {

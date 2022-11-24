@@ -44,7 +44,7 @@ class FundingCollection extends Base {
      * @return mixed
      */
     public function user() {
-        return $this->belongsTo(User::class, 'user_id')->withTrashed();
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**

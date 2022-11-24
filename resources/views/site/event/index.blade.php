@@ -100,7 +100,7 @@
                                         <div class="email-app-list">
                                             <div class="email-user-list list-group ps ps--active-y">
                                                 @if( count($finishedEvents)>0 )
-                                                    @foreach( $finishedEvents as $collection )
+                                                    @foreach( $finishedEvents as $event )
                                                         <ul class="users-list-wrapper media-list">
                                                             <li class="media mail-read">
                                                                 <div class="media-body">
@@ -109,24 +109,24 @@
                                                                             <span
                                                                                 class="list-group-item-text text-truncate"
                                                                                 style="color: red">
-                                                                                <h4> {{ 'Event Name: ' . $collection->name }} </h4>
+                                                                                <h4> {{ 'Event Name: ' . $event->name }} </h4>
                                                                             </span>
                                                                         </div>
                                                                         <div class="mail-meta-item">
-                                                                            <a href=" {{ url('events/' . $collection->id . '/' . $collection->name ) }} ">
+                                                                            <a href=" {{ url('events/' . $event->id . '/' . str_replace(' ', '-', $event->name )) }} ">
                                                                                 View
                                                                             </a>
                                                                         </div>
                                                                     </div>
                                                                     <div class="mail-message">
                                                                         <h5 class="list-group-item-text mb-0 truncate">
-                                                                            {{ 'Event Cost: ' . $collection->event_cost }}
-                                                                            {{ 'Event Status: ' . $collection->status }}
+                                                                            {{ 'Event Cost: ' . $event->event_cost }}
+                                                                            {{ 'Event Status: ' . $event->status }}
                                                                         </h5>
                                                                         <div class="mail-meta-item">
                                                                         <span class="float-right">
                                                                             <span
-                                                                                class="bullet bullet-danger bullet-sm">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $collection->created_at )->toDateString() !!}</span>
+                                                                                class="bullet bullet-danger bullet-sm">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $event->created_at )->toDateString() !!}</span>
                                                                         </span>
                                                                         </div>
                                                                     </div>

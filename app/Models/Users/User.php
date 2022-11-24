@@ -10,12 +10,11 @@ use App\Models\Notifications\Notification;
 use App\Models\Users\Roles\Role;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Translation\HasLocalePreference;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class User extends Base implements AuthenticatableContract, HasLocalePreference
 {
-    use \Illuminate\Auth\Authenticatable, SoftDeletes;
+    use \Illuminate\Auth\Authenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -263,12 +262,11 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
     public function getChangeStatusButton() {
 
         if ($this->activated) {
-            return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-danger">Deactivate</a>';
+            return '<button onClick="confirmActiveDeactive(\''.url('admin/users/change-status').'/'. $this->id.'\')" class="btn btn-sm btn-outline-danger">Deactivate</button>';
         } else {
-            return '<a href="'.url('admin/users/change-status/'.$this->id).'" class="btn btn-sm btn-outline-success">Activate</a>';
+            return '<button onClick="confirmActiveDeactive(\''.url('admin/users/change-status').'/'. $this->id.'\')" class="btn btn-sm btn-outline-success">Activate</button>';
         }
     }
-
 
     /**
      * Get User Latest Unread Notifications
@@ -299,7 +297,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         $notifications = $this->notification()->where('user_type', '=', 'user')->whereNull('read_at')->orderBy('created_at', 'DESC')->limit(6)->get();
         foreach ( $notifications as $notification ) {
             if( $notification->type instanceof Event ) {
-                $notification->redirect_url = 'events/'.$notification->type->id.'/'.$notification->type->name ;
+                $notification->redirect_url = 'events/'.$notification->type->id.'/'.str_replace(' ', '-', $notification->type->name) ;
             } elseif ( $notification->type instanceof FundingCollection ) {
                 $notification->redirect_url = 'collections/'.$notification->type->id ;
             } elseif ( $notification->type instanceof User ) {
@@ -320,7 +318,7 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
         $notifications = $this->notification()->where('user_type', '=', 'user')->orderBy('created_at', 'DESC')->skip($offset)->take($limit)->get();
         foreach ( $notifications as $notification ) {
             if( $notification->type instanceof Event ) {
-                $notification->redirect_url = 'events/'.$notification->type->id.'/'.$notification->type->name ;
+                $notification->redirect_url = 'events/'.$notification->type->id.'/'.str_replace(' ', '-', $notification->type->name) ;
             } elseif ( $notification->type instanceof FundingCollection ) {
                 $notification->redirect_url = 'collections/'.$notification->type->id ;
             } elseif ( $notification->type instanceof User ) {
@@ -337,14 +335,8 @@ class User extends Base implements AuthenticatableContract, HasLocalePreference
      * @return string
      */
     public function linkWithFullName() {
+        return '<a href="'.url("admin/users/edit").'/'. $this->id .'" type="button">' . $this->getFullName() . '</a>';
 
-        if ($this->trashed()) {
-            # if user deleted then no need to show its link
-            return $this->getFullName();
-        } else {
-            // if user not deleted
-            return '<a href="'.url("admin/users/edit").'/'. $this->id .'" type="button">' . $this->getFullName() . '</a>';
-        }
     }
 
     /**

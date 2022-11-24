@@ -38,7 +38,9 @@
                                     <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
                                        aria-expanded="false">
                                         <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
-                                        <span class="badge bg-danger rounded-circle position-relative admin-unread-notification-badge" style="bottom: 12px; right: 12px">{{ \App\Models\Notifications\Notification::countAdminUnreadNotifications() }}</span>
+                                        @if( \App\Models\Notifications\Notification::countAdminUnreadNotifications() > 0 )
+                                            <span class="badge bg-danger rounded-circle position-relative admin-unread-notification-badge" style="bottom: 12px; right: 12px">{{ \App\Models\Notifications\Notification::countAdminUnreadNotifications() }}</span>
+                                        @endif
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                         @if( \App\Models\Notifications\Notification::countAdminUnreadNotifications() > 0 )

@@ -72,7 +72,9 @@
                     <a href="{{ url('admin/notifications') }}" class='sidebar-link'>
                         <i class="bi bi-alarm"></i>
                         <span>Notifications</span>
-                        <span class="badge bg-danger rounded-circle admin-unread-notification-badge">{{ \App\Models\Notifications\Notification::countAdminUnreadNotifications() }}</span>
+                        @if( \App\Models\Notifications\Notification::countAdminUnreadNotifications() > 0 )
+                            <span class="badge bg-danger rounded-circle admin-unread-notification-badge">{{ \App\Models\Notifications\Notification::countAdminUnreadNotifications() }}</span>
+                        @endif
                     </a>
                 </li>
             </ul>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\AdminController;
+use App\Models\Fundings\FundingCollection;
 use Illuminate\Http\Request;
 use App\Models\Users\User;
 use App\Models\Users\Roles\Role;
@@ -237,7 +238,7 @@ class AdminUsersController extends AdminController {
     }
 
     /**
-     * Soft Delete User
+     * Activate Dea User
      * @param $userId
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
@@ -271,8 +272,11 @@ class AdminUsersController extends AdminController {
         if( $userId == 1 ){
             return redirect( 'admin/users' )->with( 'error', 'Not allowed' );
         }else{
-            if( $role = User::find($userId) ) {
-                $role->delete();
+            if( $user = FundingCollection::where('user_id', $userId)->first() ) {
+                return redirect()->back()->with('error', "Cannot Delete User Because it has collections");
+            }
+            if( $user = User::find($userId) ) {
+                $user->delete();
                 return redirect()->back()->with('success', 'Deleted Successfully');
             } else {
                 return redirect()->back()->with('error', "User doesn't exists");

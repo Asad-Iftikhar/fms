@@ -6,7 +6,6 @@ use App\Models\Base;
 use App\Models\Fundings\FundingCollection;
 use App\Models\Notifications\Notification;
 use App\Models\Users\User;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Events\Event
@@ -26,8 +25,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 class Event extends Base {
-
-    use SoftDeletes;
 
     const officeFundOnly = 1;
     const officeFundWithCollection = 2;
@@ -68,7 +65,7 @@ class Event extends Base {
     }
 
     public function user() {
-        return $this->belongsTo( User::class, 'created_by' )->withTrashed();
+        return $this->belongsTo( User::class, 'created_by' );
     }
 
     public function fundingCollections(): object {
