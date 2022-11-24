@@ -39,7 +39,7 @@ class UsersTablesSeeder extends Seeder {
 
 
         $user_id = DB::table( 'users' )->insertGetId( array(
-            'username' => 'saadaanali',
+            'username' => 'saadaan_ali',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'saadaan.ali@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -57,7 +57,7 @@ class UsersTablesSeeder extends Seeder {
             'updated_at' => date( 'Y-m-d H:i:s' )
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'abdulhannan',
+            'username' => 'abdul_hannan',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'abdul.hanan@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -75,7 +75,7 @@ class UsersTablesSeeder extends Seeder {
             'updated_at' => date( 'Y-m-d H:i:s' )
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'aneesmuhammad',
+            'username' => 'anees_muhammad',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'anees.muhammad@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -87,7 +87,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Muhammad'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'Arif Muhammad',
+            'username' => 'arif_muhammad',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'arif.muhammad@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -99,7 +99,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Muhammad'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'asimshahzad',
+            'username' => 'asim_shahzad',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'asim.shahzad@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -111,7 +111,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Shahzad'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'rajarizwan',
+            'username' => 'raja_rizwan',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'raja.rizwan@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -123,7 +123,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Rizwan'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'faisalshahzad',
+            'username' => 'faisal_shahzad',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'faisal.shahzad@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -135,7 +135,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Shahzad'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'tariqabbasi',
+            'username' => 'tariq_abbasi',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'tariq.abbasi@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -147,7 +147,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Abbasi'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'yasirrehman',
+            'username' => 'yasir_rehman',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'yasir.rehman@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -159,7 +159,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Rehman'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'sohailmaroof',
+            'username' => 'sohail_maroof',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'sohail.maroof@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -171,7 +171,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Maroof'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'haroonkhan',
+            'username' => 'haroon_khan',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'haroon.khan@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -183,7 +183,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Khan'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'ishaqzahoor',
+            'username' => 'ishaq_zahoor',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'ishaq.zahoor@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -195,7 +195,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Zahoor'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'ziatariq',
+            'username' => 'zia_tariq',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'zia.tariq@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -207,7 +207,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Tariq'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'shahzaibkhan',
+            'username' => 'shahzaib_khan',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'shahzaib.khan@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -219,7 +219,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Khan'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'ahmadali',
+            'username' => 'ahmad_ali',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'ahmad.ali@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -231,7 +231,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Ali'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'arslanazhar',
+            'username' => 'arslan_azhar',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'arslan.azhar@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -243,7 +243,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Azhar'
         ) );
         $user_id = DB::table( 'users' )->insertGetId( array(
-            'username' => 'syedaquratulain',
+            'username' => 'syeda_quratulain',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'syeda.quratulain@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -261,7 +261,7 @@ class UsersTablesSeeder extends Seeder {
             'updated_at' => date( 'Y-m-d H:i:s' )
         ) );
         $user_id = DB::table( 'users' )->insertGetId( array(
-            'username' => 'asadiftikhar',
+            'username' => 'asad_iftikhar',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'asad.iftikhar@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -279,7 +279,7 @@ class UsersTablesSeeder extends Seeder {
             'updated_at' => date( 'Y-m-d H:i:s' )
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'bushramushtaq',
+            'username' => 'bushra_mushtaq',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'bushra.mushtaq@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -291,7 +291,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Mushtaq'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'noreengul',
+            'username' => 'noreen_gul',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'noreen.gul@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -303,7 +303,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Gul'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'abubakarsiddique',
+            'username' => 'abubakar_siddique',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'abubakar.siddique@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -315,7 +315,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Siddique'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'taimoorali',
+            'username' => 'taimoor_ali',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'taimoor.ali@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -327,7 +327,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Ali'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'izazkhan',
+            'username' => 'izaz_khan',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'izaz.khan@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -339,7 +339,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Khan'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'sajjadhussain',
+            'username' => 'sajjad_hussain',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'sajjad.hussain@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -351,7 +351,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Hussain'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'azizhassan',
+            'username' => 'aziz_hassan',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'aziz.hassan@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),
@@ -363,7 +363,7 @@ class UsersTablesSeeder extends Seeder {
             'last_name' => 'Hassan'
         ) );
         DB::table( 'users' )->insertGetId( array(
-            'username' => 'alihasnain',
+            'username' => 'ali_hasnain',
             'password' => bcrypt( 'fms12345' ),
             'email' => 'ali.hasnain@nxb.com.pk',
             'created_at' => date( 'Y-m-d H:i:s' ),

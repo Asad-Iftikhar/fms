@@ -36,12 +36,14 @@
                                                 <h5>Total Amount of Event :</h5>
                                             </td>
                                             <td>
-                                                <span class="badge bg-success" style="font-size: large">{{ $fundingCollection->amount . ' ' .'Rs' }}</span>
+                                                <h5><span class="badge bg-success" style="font-size: large">{{ $fundingCollection->amount . ' ' .'PKR-/' }}</span></h5>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td><h5>Status :</h5></td>
-                                            <td><span class="badge bg-success" style="font-size: large">{{ $fundingCollection->getPaymentStatus() }}</span></td>
+                                            <td>
+                                                <h5><span class="badge bg-success" style="font-size: large">{{ $fundingCollection->getPaymentStatus() }}</span></h5>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>

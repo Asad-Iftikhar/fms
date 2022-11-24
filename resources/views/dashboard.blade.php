@@ -84,6 +84,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover table-lg table-striped">
+                                        @if(count($pendingPaymentList) > 0)
                                         <thead>
                                         <tr>
                                             <th>Fund Type Name</th>
@@ -93,7 +94,6 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @if(count($pendingPaymentList) > 0)
                                             @foreach($pendingPaymentList as $collection)
                                                 <tr>
                                                     <td>{{ $collection->getCollectionTypeName() }}</td>
@@ -102,12 +102,12 @@
                                                     <td><a href="{{ url('collections/' . $collection->id) }}">View</a></td>
                                                 </tr>
                                             @endforeach
+                                        </tbody>
                                         @else
                                             <tr>
                                                 <td colspan="4" style="text-align: center; color: red">No Pending Available</td>
                                             </tr>
                                         @endif
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -125,15 +125,10 @@
                             @if ($activeEvents->count())
                                 @foreach($activeEvents as $activeEvent)
                                     <i class="iconly-boldCalendar text-primary"></i>
-                                    {{'Event Name: ' . $activeEvent->name}}
+                                    <a href="{{ url('events/' . $activeEvent->id . '/' . $activeEvent->name ) }}">{{'Event Name: ' . $activeEvent->name}}</a>
                                     @if(!empty($activeEvent->description))
-                                    <p>{{'Event Description: '. $activeEvent->description}}</p>
+                                    <p>{{'Event Description: '. Illuminate\Support\Str::limit($activeEvent->description, $limit=15, $end=' ...') }}</p>
                                     @endif
-                                    <span style="float: right;">
-                                        <a href=" {{ url('events/' . $activeEvent->id . '/' . $activeEvent->name ) }} ">
-                                            View
-                                        </a>
-                                    </span>
                                     <hr>
                                 @endforeach
                             @else

@@ -98,7 +98,7 @@
                                     <select name="guests[]" class="choices form-select multiple-remove"
                                             multiple="multiple">
                                         @foreach($users as $user)
-                                            <option {{ (in_array($user->id, old( 'guests', $guestIds)))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                            <option {{ (in_array($user->id, old( 'guests', $guestIds)))?'selected':'' }} value="{{$user->id}}">{{$user->getFullName()}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -173,7 +173,7 @@
                                                 <select id="UserSelection{{$key}}" name="collection_users[{{$key}}][]" class="choices form-select multiple-remove"
                                                         multiple="multiple">
                                                     @foreach($users as $user)
-                                                        <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                                        <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->getFullName()}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -203,11 +203,11 @@
                                 <div class="row collections-row" style="display: none">
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="UserSelection{{$count}}">Select multiple users for collection</label>
-                                            <select id="UserSelection{{$count}}" name="collection_users[{{$count}}][]" class="choices form-select multiple-remove"
+                                            <label for="UserSelection{{ $count }}">Select multiple users for collection</label>
+                                            <select id="UserSelection{{ $count }}" name="collection_users[{{ $count }}][]" class="choices form-select multiple-remove"
                                                     multiple="multiple">
                                                 @foreach($users as $user)
-                                                    <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                                    <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{ $user->id }}">{{ $user->getFullName() }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -285,7 +285,7 @@
                                     <td class="">
                                         <img height="70px" class="text-center mx-auto" src="{{ $guest->user->getUserAvatar() }}">
                                     </td>
-                                    <td class="text-bold-500">{{ $guest->user->username }}</td>
+                                    <td class="text-bold-500">{{ $guest->user->getFullName() }}</td>
                                     <td>Guest</td>
                                     <td>N/A</td>
                                     <td class="last_invited">{{ (empty($guest->last_invited ))? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $guest->last_invited ))->diffForHumans() }}</td>
@@ -305,7 +305,7 @@
                                 <td class="">
                                     <img height="70px" class="text-center mx-auto" src="{{ $collection->user->getUserAvatar() }}">
                                 </td>
-                                <td class="text-bold-500">{{ $collection->user->username }}</td>
+                                <td class="text-bold-500">{{ $collection->user->getFullName() }}</td>
                                 <td class="text-bold-500">Participant</td>
                                 <td class="text-bold-500">{{ $collection->amount }}</td>
                                 <td class="last_invited">{{ ( empty ( $collection->last_invited ) ) ? 'Not Invited' : \Carbon\Carbon::createFromTimeStamp(strtotime( $collection->last_invited ))->diffForHumans() }}</td>
@@ -359,6 +359,7 @@
         });
 
         var users = {!! $users !!};
+console.log(users);
         var selectedUser = {!! $selectedUsers !!};
         $('.payment_mode_radio').change(function () {
             if (this.value == 2) {
@@ -404,7 +405,7 @@
 
             $(users).each(function (index, user) {
                 if ( $.inArray( parseInt(user.id), selectedUser) == -1) {
-                    values += '<option value="' + user.id + '">' + user.username + '</option>';
+                    values += '<option value="' + user.id + '">' + user.firstname + ' ' + user.lastname + '</option>';
                 }
             });
             return values;
@@ -563,5 +564,4 @@
             });
         }
     </script>
-
 @endsection

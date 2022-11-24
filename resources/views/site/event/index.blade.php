@@ -31,31 +31,28 @@
                                                         <ul class="users-list-wrapper media-list">
                                                             <li class="media mail-read">
                                                                 <div class="media-body">
-                                                                    <div class="user-details">
-                                                                        <div class="mail-items">
+                                                                    <a href=" {{ url('events/' . $collection->id . '/' . $collection->name ) }} ">
+                                                                        <div class="user-details">
+                                                                            <div class="mail-items">
                                                                                 <span
                                                                                     class="list-group-item-text text-truncate">
                                                                                     <h4> {{ 'Event Name: ' . $collection->name }} </h4>
                                                                                 </span>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="mail-meta-item">
-                                                                            <a href=" {{ url('events/' . $collection->id . '/' . $collection->name ) }} ">
-                                                                                View
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mail-message">
-                                                                        <h5 class="list-group-item-text mb-0 truncate">
-                                                                            {{ 'Event Cost: ' . $collection->event_cost }}
-                                                                            {{ 'Event Status: ' . $collection->status }}
-                                                                        </h5>
-                                                                        <div class="mail-meta-item">
+                                                                        <div class="mail-message">
+                                                                            <h5 class="list-group-item-text mb-0 truncate">
+                                                                                {{ 'Event Cost: ' . $collection->event_cost }}
+                                                                                {{ 'Event Status: ' . $collection->status }}
+                                                                            </h5>
+                                                                            <div class="mail-meta-item">
                                                                         <span class="float-right">
                                                                             <span
                                                                                 class="bullet bullet-danger bullet-sm">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $collection->created_at )->toDateString() !!}</span>
                                                                         </span>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </a>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -104,6 +101,7 @@
                                                         <ul class="users-list-wrapper media-list">
                                                             <li class="media mail-read">
                                                                 <div class="media-body">
+                                                                    <a href=" {{ url('events/' . $event->id . '/' . str_replace(' ', '-', $event->name )) }} ">
                                                                     <div class="user-details">
                                                                         <div class="mail-items">
                                                                             <span
@@ -111,11 +109,6 @@
                                                                                 style="color: red">
                                                                                 <h4> {{ 'Event Name: ' . $event->name }} </h4>
                                                                             </span>
-                                                                        </div>
-                                                                        <div class="mail-meta-item">
-                                                                            <a href=" {{ url('events/' . $event->id . '/' . str_replace(' ', '-', $event->name )) }} ">
-                                                                                View
-                                                                            </a>
                                                                         </div>
                                                                     </div>
                                                                     <div class="mail-message">
@@ -130,6 +123,7 @@
                                                                         </span>
                                                                         </div>
                                                                     </div>
+                                                                    </a>
                                                                 </div>
                                                             </li>
                                                         </ul>

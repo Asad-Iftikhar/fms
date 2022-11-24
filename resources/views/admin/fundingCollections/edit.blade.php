@@ -91,7 +91,7 @@
                     </div>
                     <div class="col-6">
                         <label>Discussion Area</label>
-                        <section class="section" style="border-style: groove">
+                        <section class="section shadow">
                             <div class="card">
                                 <div class="card-body pt-4 bg-grey pb-0" id="scroll" style="height: 300px; overflow: auto;">
                                     <div class="chat-content">
