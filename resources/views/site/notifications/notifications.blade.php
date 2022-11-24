@@ -43,9 +43,9 @@
                                     </a>
                                 @endforeach
                             @else
-                                <div class="recent-message d-flex px-4 py-3 my-5">
-                                    <div class="name ms-4">
-                                        <h5 class="mb-1">No Notification(s) Found</h5>
+                                <div class="recent-message d-flex px-4 py-3 my-5 w-100">
+                                    <div class="name ms-4 alert-danger alert">
+                                        No Notification(s) Found
                                     </div>
                                 </div>
                             @endif

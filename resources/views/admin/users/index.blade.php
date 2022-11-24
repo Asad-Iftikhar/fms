@@ -30,7 +30,7 @@
                                   <th>ID</th>
                                   <th>Username</th>
                                   <th>Email</th>
-                                  <th>Active Status</th>
+                                  <th>Status</th>
                                   <th class="dt-right">Actions</th>
                                 </tr>
                              </thead>
@@ -67,7 +67,7 @@
             columnDefs: [
                 {
                     'orderable': false,
-                    'targets': [ 3,4 ]
+                    'targets': [ 4 ]
                 },
                 {
                     targets: -1,
