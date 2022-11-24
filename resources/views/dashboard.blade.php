@@ -117,7 +117,7 @@
             </div>
             <div class="col-12 col-lg-3">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header pb-0">
                         <h4>Active Events</h4>
                     </div>
                     <div class="card-content pb-4">

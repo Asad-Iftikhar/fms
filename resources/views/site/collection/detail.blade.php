@@ -48,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-6">
                         <section class="section shadow p-2">
                             <div class="card">
                                 <div class="card-body pt-4 bg-grey"  id="scroll" style="height: 300px; overflow: auto;">
