@@ -204,6 +204,7 @@ class AdminEventsController extends AdminController {
                 $event->name = $request->input('name');
                 $event->description = $request->input('description');
                 $event->event_date = $request->input('event_date');
+                $event->event_cost = $request->input('event_cost');
                 if(!($collectionPaid)){
                     // If any collection is paid following attributes will not be updated
                     $event->payment_mode = $request->input('payment_mode');

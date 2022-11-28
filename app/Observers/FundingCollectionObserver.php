@@ -53,7 +53,7 @@ class FundingCollectionObserver
      */
     public function deleted(FundingCollection $fundingCollection)
     {
-        //
+        $fundingCollection->notifications()->delete();
     }
 
     /**

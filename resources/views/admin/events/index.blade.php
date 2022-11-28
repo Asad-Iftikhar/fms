@@ -29,10 +29,10 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Event Cost</th>
+                                    <th>Cost</th>
                                     <th>Participants</th>
                                     <th>Payment Mode</th>
-                                    <th>Event Status</th>
+                                    <th>Status</th>
                                     <th>Event Date</th>
                                     <th>Created by</th>
                                     <th class="dt-right">Actions</th>
