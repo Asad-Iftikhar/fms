@@ -10,7 +10,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
-                    <h4>Edit User :: <b>{{ $user->username }}</b></h4>
+                    <h4>Edit User :: <b>{{ $user->getFullName() }}</b></h4>
                 </div>
                 <div class="col-6">
                     <span>

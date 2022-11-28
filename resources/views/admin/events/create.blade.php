@@ -78,7 +78,7 @@
                                 <select name="guests[]" class="choices form-select multiple-remove"
                                         multiple="multiple">
                                     @foreach($users as $user)
-                                        <option {{ (in_array($user->id, old( 'guests', [])))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                        <option {{ (in_array($user->id, old( 'guests', [])))?'selected':'' }} value="{{$user->id}}">{{$user->getFullName()}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -153,7 +153,7 @@
                                             <select id="UserSelection{{$key}}" name="collection_users[{{$key}}][]" class="choices form-select multiple-remove"
                                                     multiple="multiple">
                                                 @foreach($users as $user)
-                                                    <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->username}}</option>
+                                                    <option {{ (in_array($user->id, ( $collection )))?'selected':'' }} value="{{$user->id}}">{{$user->getFullName()}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -185,7 +185,7 @@
                                         <select id="UserSelection0" name="collection_users[0][]" class="choices form-select multiple-remove"
                                                 multiple="multiple">
                                             @foreach($users as $user)
-                                                <option value="{{$user->id}}">{{$user->username}}</option>
+                                                <option value="{{$user->id}}">{{$user->getFullName()}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -287,7 +287,7 @@
 
         $(users).each(function (index, user) {
             if ( $.inArray( parseInt(user.id), selectedUser) == -1) {
-                values += '<option value="' + user.id + '">' + user.username + '</option>';
+                values += '<option value="' + user.id + '">' + user.firstname + ' ' + user.lastname + '</option>';
             }
         });
         return values;

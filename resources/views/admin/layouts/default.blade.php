@@ -135,7 +135,7 @@
                                 <span class="text-danger">
                             <i class="bi bi-heart"></i>
                         </span> by
-                                <a href="http://nxb.com.pk">NextBridge</a>
+                                <a href="{{ url('admin') }}">NextBridge</a>
                             </p>
                         </div>
                     </div>

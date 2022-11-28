@@ -311,7 +311,7 @@ class AdminEventsController extends AdminController {
 
         $total = Event::count();
 
-        $totalFilter = Event::query()->where('deleted_at', NULL);
+        $totalFilter = Event::query();
         if (!empty($searchValue)){
             $totalFilter = $totalFilter->where('name', 'like', '%'.$searchValue.'%');
             $totalFilter = $totalFilter->orwhere('status', 'like', '%'.$searchValue.'%');
@@ -320,7 +320,7 @@ class AdminEventsController extends AdminController {
         }
         $totalFilter = $totalFilter->count();
 
-        $arrData = Event::query()->where('deleted_at', NULL);
+        $arrData = Event::query();
         $arrData = $arrData->skip($start)->take($rowperpage);
 
         //sorting

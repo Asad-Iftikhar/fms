@@ -59,7 +59,7 @@
             ajax: "{{ url('admin/users/getUsers') }}",
             columns: [
                 {data: 'id'},
-                {data: 'username'},
+                {data: 'fullname'},
                 {data: 'email'},
                 {data: 'activeStatus'},
                 {data: 'action'}

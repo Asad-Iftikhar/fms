@@ -93,14 +93,14 @@
                             <canvas id="piechart" style="width: 100%; height: 200px;"></canvas>
                         </div>
                     </div>
-                    <div class="card-content pb-4">
+                    <div class="card-content pb-0">
                         <h4>Active Events</h4>
-                        <div class="upcommingevent m-4" style="align-items: center;">
+                        <div class="upcommingevent mb-4" style="align-items: center;">
                             @if ($activeEvents->count())
                                 @foreach($activeEvents as $activeEvent)
                                     <i class="iconly-boldCalendar text-primary"></i>
-                                    {{'Event Name: ' . $activeEvent->name}}
-                                    <p>{{'Event Description: '. $activeEvent->description}}</p>
+                                    <a href="{{ url('admin/events/edit/' . $activeEvent->id) }}">{{'Event Name: ' . $activeEvent->name}}</a>
+                                    <p>{{'Event Description: '. Illuminate\Support\Str::limit($activeEvent->description, $limit=15, $end=' ...') }}</p>
                                     <hr>
                                 @endforeach
                             @else

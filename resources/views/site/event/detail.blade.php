@@ -3,6 +3,8 @@
 @section('styles')
     @parent
     <link rel="stylesheet" href="{{ asset("assets/css/pages/email.css") }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset("assets/DataTables-1.12.1/datatables.min.css") }}"/>
+    <link rel="stylesheet" href="{{ asset("assets/vendors/simple-datatables/style.css") }}">
 @stop
 @section('content')
     <div class="page-content">
@@ -50,10 +52,10 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <table class="table table-striped mb-0">
+                        <table class="table table-striped dataTable-table mb-0 shadow" id="participant_table">
                             <thead>
                             <tr>
-                                <th>Image</th>
+                                <th>Avatar</th>
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Amount</th>
@@ -95,4 +97,13 @@
             </div>
         </section>
     </div>
+    @section('javascript')
+        @parent
+        <script type="text/javascript" src="{{ asset('assets/DataTables-1.12.1/datatables.min.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#participant_table').DataTable();
+            });
+        </script>
+    @stop
 @stop

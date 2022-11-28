@@ -50,23 +50,23 @@
                                                         <ul class="users-list-wrapper media-list">
                                                             <li class="media mail-read">
                                                                 <div class="media-body">
-                                                                    <div class="user-details">
-                                                                        <div class="mail-items">
-                                                                    <span class="list-group-item-text text-truncate">
-                                                                        <h4>{{'Collection Name: ' . $collection->getCollectionEventName()}}</h4>
-
-                                                                    </span>
-                                                                        </div>
-                                                                        <div class="mail-meta-item">
-                                                                            <a href=" {{ url('collections/' . $collection->id ) }} ">
+                                                                    <a href="{{ url('collections/' . $collection->id ) }}">
+                                                                        <div class="user-details">
+                                                                            <div class="mail-items">
+                                                                            <span
+                                                                                class="list-group-item-text text-truncate">
+                                                                                <h4>{{'Collection Name: ' . $collection->getCollectionEventName()}}</h4>
+                                                                            </span>
+                                                                            </div>
+                                                                            <div class="mail-meta-item">
                                                                                 @if (\App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages, $collection->id) > 0)
-                                                                                <span class="badge rounded-pill bg-danger" style="font-size: 75%">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages, $collection->id) }}</span>
-                                                                                @else
+                                                                                    <span
+                                                                                        class="badge rounded-pill bg-danger"
+                                                                                        style="font-size: 75%">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::ReceivedCollectionMessages, $collection->id) }}</span>
                                                                                 @endif
-                                                                                    View
-                                                                            </a>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </a>
                                                                     <div class="mail-message">
                                                                         <h5 class="list-group-item-text mb-0 truncate">
                                                                             {{'Amount: ' . $collection->amount }}
@@ -129,34 +129,35 @@
                                                         <ul class="users-list-wrapper media-list">
                                                             <li class="media mail-read">
                                                                 <div class="media-body">
-                                                                    <div class="user-details">
-                                                                        <div class="mail-items">
-                                                                    <span class="list-group-item-text text-truncate">
-                                                                        <h4>{{'Collection Name: ' . $collection->getCollectionEventName()}}</h4>
-                                                                    </span>
-                                                                        </div>
-                                                                        <div class="mail-meta-item">
-                                                                            <a href=" {{ url('collections/' . $collection->id ) }} ">
-                                                                                @if (\App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages, $collection->id) > 0)
-                                                                                <span class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages, $collection->id) }}</span>
-                                                                                @else
-                                                                                @endif
-                                                                                    View
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="mail-message">
-                                                                        <h5 class="list-group-item-text mb-0 truncate">
-                                                                            {{'Amount: ' . $collection->amount }}
-                                                                            {{'Payment Status: ' .  $collection->getPaymentStatus() }}
-                                                                        </h5>
-                                                                        <div class="mail-meta-item">
-                                                                        <span class="float-right">
+                                                                    <a href="{{ url('collections/' . $collection->id ) }}">
+                                                                        <div class="user-details">
+                                                                            <div class="mail-items">
                                                                             <span
-                                                                                class="bullet bullet-danger bullet-sm">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $collection->created_at )->toDateString() !!}</span>
-                                                                        </span>
+                                                                                class="list-group-item-text text-truncate">
+                                                                                <h4>{{'Collection Name: ' . $collection->getCollectionEventName()}}</h4>
+                                                                            </span>
+                                                                            </div>
+                                                                            <div class="mail-meta-item">
+                                                                                @if (\App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages, $collection->id) > 0)
+                                                                                    <span
+                                                                                        class="badge bg-danger">{{ \App\Models\Fundings\FundingCollectionMessage::getUnreadMessagesCountByUserId(auth()->user()->id, \App\Models\Fundings\FundingCollectionMessage::PendingCollectionMessages, $collection->id) }}</span>
+                                                                                @endif
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                        <div class="mail-message">
+                                                                            <h5 class="list-group-item-text mb-0 truncate">
+                                                                                {{'Amount: ' . $collection->amount }}
+                                                                                {{'Payment Status: ' .  $collection->getPaymentStatus() }}
+                                                                            </h5>
+                                                                            <div class="mail-meta-item">
+                                                                                <span class="float-right">
+                                                                                    <span
+                                                                                        class="bullet bullet-danger bullet-sm"
+                                                                                        style="float: right;">{!! \Illuminate\Support\Carbon::createFromFormat( 'Y-m-d H:i:s', $collection->created_at )->toDateString() !!}</span>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
                                                                 </div>
                                                             </li>
                                                         </ul>
