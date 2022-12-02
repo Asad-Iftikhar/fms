@@ -46,33 +46,4 @@ class HomeController extends Controller
         })->get();
         return view( 'dashboard', compact( 'pendingPaymentList', 'totalAmount','pendingPayment','totalSpendings', 'totalCollection', 'activeEvents'));
     }
-
-    /**
-     * information of pending payments
-     *
-     * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function getCollectionInfo($id) {
-        $user = Auth::user();
-        $rules = [
-            'id' => $id
-        ];
-
-        $validator = Validator::make($rules, [
-            'id' => 'required|exists:funding_collections,id'
-        ]);
-        if( $validator->passes() ){
-            $pending = FundingCollection::find($id);
-            if( $pending->user_id == $user->id ) {
-                return view('detail',compact('pending'));
-            }
-            else{
-                return redirect('/')->with('error', "Insufficient permission");
-            }
-        }
-        else {
-            return redirect('/')->with('error', "No Record Exist");
-        }
-    }
 }
