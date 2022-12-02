@@ -165,10 +165,10 @@ Route::post( 'admin/events/remind-all', 'Admin\Events\AdminEventsController@remi
 
 #Admin Notifications
 Route::get( 'admin/notifications', 'Admin\Notifications\AdminNotificationsController@index' );
-Route::post( 'admin/get-more-admin-notifications', 'Admin\Notifications\AdminNotificationsController@getAdminNotifications' );
+Route::post( 'admin/get-more-notifications', 'Admin\Notifications\AdminNotificationsController@getAdminNotifications' );
 
 # Mark Admin Notifications as Read
-Route::post( 'admin/mark-all-admin-notifications-read', 'Admin\Notifications\AdminNotificationsController@markAllAdminNotificationsRead' );
+Route::post( 'admin/mark-all-notifications-as-read', 'Admin\Notifications\AdminNotificationsController@markAllAdminNotificationsRead' );
 Route::post( 'admin/mark-notification-read', 'Admin\Notifications\AdminNotificationsController@markNotificationRead' );
 
 

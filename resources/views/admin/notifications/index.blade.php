@@ -15,7 +15,7 @@
                 <div class="col-6 text-end">
                     <span>
                         @if( \App\Models\Notifications\Notification::countAdminUnreadNotifications() > 0)
-                            <button class="btn btn-dark mark-all-admin-read">Mark All As Read</button>
+                            <button class="btn btn-dark mark-all-notifications-as-read">Mark All As Read</button>
                         @endif
                     </span>
                 </div>
@@ -77,7 +77,7 @@
             clickedBtn.attr("disabled", true);
             $.ajax({
                 type:'POST',
-                url: "{{ url('admin/get-more-admin-notifications') }}",
+                url: "{{ url('admin/get-more-notifications') }}",
                 dataType: "json",
                 data: {
                     "_token": "{{ csrf_token() }}",
@@ -109,7 +109,7 @@
         }
 
         // Ajax request to mark all notifications as read
-        $('.mark-all-admin-read').on('click', markAllAdminNotificationsRead);
+        $('.mark-all-notifications-as-read').on('click', markAllAdminNotificationsRead);
         function markAllAdminNotificationsRead() {
             let clickedBtn = $(this);
             clickedBtn.attr("disabled", true);
@@ -118,7 +118,7 @@
             clickedBtn.attr("disabled", true);
             $.ajax({
                 type:'POST',
-                url: "{{ url('admin/mark-all-admin-notifications-read') }}",
+                url: "{{ url('admin/mark-all-notifications-as-read') }}",
                 dataType: "json",
                 data: {
                     "_token": "{{ csrf_token() }}"
