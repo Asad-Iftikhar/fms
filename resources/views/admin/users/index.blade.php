@@ -28,7 +28,7 @@
                             <thead>
                               <tr>
                                   <th>ID</th>
-                                  <th>Username</th>
+                                  <th>User</th>
                                   <th>Email</th>
                                   <th>Status</th>
                                   <th class="dt-right">Actions</th>
@@ -59,9 +59,9 @@
             ajax: "{{ url('admin/users/getUsers') }}",
             columns: [
                 {data: 'id'},
-                {data: 'fullname'},
+                {data: 'username'},
                 {data: 'email'},
-                {data: 'activeStatus'},
+                {data: 'activated'},
                 {data: 'action'}
             ],
             columnDefs: [

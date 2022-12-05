@@ -220,8 +220,8 @@ class AdminUsersController extends AdminController {
 
         $arrData = $arrData->get();
         foreach ($arrData as $data){
-            $data->fullname = $data->getFullName();
-            $data->activeStatus = $data->getUserActiveStatus();
+            $data->username = $data->getFullName();
+            $data->activated = $data->getUserActiveStatus();
             if($data->id != 1){
                 $data->action= $data->getChangeStatusButton().'&nbsp;<a href="'.url('admin/users/edit').'/'. $data->id .'" class="edit btn btn-sm btn-outline-primary"><i class="iconly-boldEdit"></i></a>&nbsp;<button onClick="confirmDelete(\''.url('admin/users/delete').'/'. $data->id.'\')" class="delete-btn delete btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>';
             }else{
